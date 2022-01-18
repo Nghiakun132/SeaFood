@@ -13,8 +13,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['namespace' => 'frontend'], function () {
-    Route::get('/', function () {
-        return view('welcome');
-    });
-});
+include('admin.php');
