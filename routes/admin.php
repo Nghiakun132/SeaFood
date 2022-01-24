@@ -9,6 +9,9 @@ Route::group(['namespace' => 'backend', 'prefix' => 'admin'], function () {
     Route::post('/dang-nhap', 'HomeController@postLogin')->name('admin.postLogin');
     //logout
     Route::get('/dang-xuat', 'HomeController@Logout')->name('admin.logout');
+    //change profile
+    Route::get('/thay-doi-thong-tin/{id}', 'HomeController@change_profile')->name('admin.change_profile');
+    Route::post('/thay-doi-thong-tin/{id}', 'HomeController@post_change_profile')->name('admin.post_change_profile');
 
     //categories
     Route::group(['prefix' => 'danh-muc'], function () {
@@ -29,12 +32,14 @@ Route::group(['namespace' => 'backend', 'prefix' => 'admin'], function () {
     });
     Route::group(['prefix' => 'san-pham'], function () {
         Route::get('/', 'ProductController@index')->name('admin.product');
-        Route::post('/', 'ProductController@store')->name('admin.product.store');
+        Route::get('/them-moi', 'ProductController@create')->name('admin.product.create');
+        Route::post('/them-moi', 'ProductController@store')->name('admin.product.store');
         Route::get('/sua/{id}', 'ProductController@edit')->name('admin.product.edit');
         Route::post('/sua/{id}', 'ProductController@update')->name('admin.product.update');
         Route::get('/xoa/{id}', 'ProductController@destroy')->name('admin.product.destroy');
         Route::get('/thay-doi-trang-thai/{id}', 'ProductController@changeStatus')->name('admin.product.changeStatus');
-        Route::get('/test', 'ProductController@test')->name('admin.product.test');
-        Route::post('/test', 'ProductController@test1')->name('admin.product.test');
+    });
+    Route::group(['prefix' => 'nhap-hang'], function (){
+        Route::get('/','ProductController@import')->name('admin.import');
     });
 });

@@ -47,7 +47,7 @@ class AdminController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
-            'password' => bcrypt('12345678'),
+            'password' => md5('12345678'),
         ];
         $this->admins->create($data);
         return redirect()->back()->with('success', 'Thêm thành công');

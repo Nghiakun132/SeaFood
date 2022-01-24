@@ -29,5 +29,9 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
-
+    'google' => [
+        'client_id' =>'845167596943-ge7nirl3hetoh67opdqb9ehdhoqarnd4.apps.googleusercontent.com',
+        'client_secret'=>'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',
+        'redirect' => 'http://localhost/nienluan/public/dang-nhap/google/callback',
+    ]
 ];

@@ -45,7 +45,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#" aria-expanded="true">
+                <a class="nav-link" href="{{ route('admin.product') }}" aria-expanded="true">
                     <i class="fas fa-fw fa-wrench"></i>
                     <span>Sản phẩm</span>
                 </a>
@@ -62,11 +62,11 @@
                     <span>Khách hàng</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{ route('admin.import') }}">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Nhập hàng</span></a>
             </li>
-            @if (Session::get('admins')->role == 1)
+            @if (Session::get('admins')->role == 2)
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('admin.staff') }}">
                         <i class="fas fa-fw fa-table"></i>
@@ -83,13 +83,7 @@
                     <i class="fas fa-fw fa-table"></i>
                     <span>Bài viết</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Mã giảm giá</span></a>
-            </li>
             <hr class="sidebar-divider d-none d-md-block">
-
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
@@ -253,12 +247,18 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span
                                     class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Session::get('admins')->name }}</span>
-                                <img class="img-profile rounded-circle"
-                                    src="{{ asset('./uploads/avatar/' . Session::get('admins')->avatar) }}">
+                                @if (Session::get('admins')->avatar != null)
+                                    <img class="img-profile rounded-circle"
+                                        src="{{ asset('./uploads/avatar/' . Session::get('admins')->avatar) }}">
+                                @else
+                                    <img class="img-profile rounded-circle"
+                                        src="{{ asset('./uploads/avatar/default.png')}}">
+                                @endif
                             </a>
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item"
+                                    href="{{ route('admin.change_profile', Session::get('admins')->id) }}">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
@@ -324,6 +324,7 @@
     <script src="{{ asset('backend/ckeditor/ckeditor.js') }}"></script>
     <script>
         CKEDITOR.replace('editor1');
+        CKEDITOR.replace('editor2');
     </script>
     <script>
         $(document).ready(function() {

@@ -41,7 +41,7 @@ class HomeController extends Controller
         $password = $request->password;
         $admins = admins::where('email', $email)->first();
         if ($admins) {
-            if ($admins->password == $password) {
+            if ($admins->password == md5($password)) {
                 Session()->put('admins', $admins);
                 return redirect()->route('admin.home');
             } else {
@@ -55,5 +55,38 @@ class HomeController extends Controller
     {
         Session()->forget('admins');
         return redirect()->route('admin.login');
+    }
+    public function change_profile($id)
+    {
+        $this->AuthLogin();
+        $admin = admins::find($id);
+        return view('backend.home.profile', compact('admin'));
+    }
+    public function post_change_profile(Request $request, $id)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|email',
+        ], [
+            'name.required' => 'Bạn chưa nhập tên',
+            'email.required' => 'Bạn chưa nhập email',
+            'email.email' => 'Email không đúng định dạng',
+        ]);
+        $admin = admins::find($id);
+        $admin->name = $request->name;
+        $admin->email = $request->email;
+        $admin->birthday = $request->birthday;
+        $admin->phone = $request->phone;
+        $admin->address = $request->address;
+        $admin->save();
+
+        if($avatar  = $request->file('avatar')){
+            $file_name = $avatar->getClientOriginalName();
+            $avatar->move('uploads/avatar', $file_name);
+            $admin->avatar = $file_name;
+            $admin->save();
+        }
+
+        return redirect()->back()->with('success', 'Cập nhật thành công');
     }
 }
