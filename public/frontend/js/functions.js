@@ -19,7 +19,7 @@
     		this.mercado_toggle_slide_menu();
     		this.mercado_price_range();
     		this.mercado_price_quantity();
-    		this.mercado_remove_product_in_cart();
+    		// this.mercado_remove_product_in_cart();
     		this.mercado_product_slider();
     		this.mercado_toggle_vertical_main_menu();
             this.mercado_sticky_menu();

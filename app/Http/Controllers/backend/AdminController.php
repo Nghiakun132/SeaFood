@@ -5,6 +5,7 @@ namespace App\Http\Controllers\backend;
 use App\Http\Controllers\Controller;
 use App\Models\admins;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Session;
 
 class AdminController extends Controller
@@ -69,5 +70,21 @@ class AdminController extends Controller
             $this->admins->where('id', $id)->update(['role' => 1]);
             return redirect()->back()->with('success', 'Cấp quyền thành công');
         }
+    }
+
+    public function Notification(){
+        $this->AuthLogin();
+        $noti = DB::table('notifications')->get();
+        return view('backend.home.notification', compact('noti'));
+    }
+    public function destroyNotification($id){
+        $this->AuthLogin();
+        DB::table('notifications')->where('id', $id)->delete();
+        return redirect()->back()->with('success', 'Xóa thành công');
+    }
+    public function readNotification($id){
+        $this->AuthLogin();
+        DB::table('notifications')->where('id', $id)->update(['read' => 1]);
+        return redirect()->route('admin.order');
     }
 }

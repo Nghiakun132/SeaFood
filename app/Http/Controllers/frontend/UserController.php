@@ -117,4 +117,8 @@ class UserController extends Controller
         Session::forget('user');
         return redirect()->route('home');
     }
+
+
+
+
 }

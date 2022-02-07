@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\cart;
 use App\Models\categories;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Session;
 
 class AppServiceProvider extends ServiceProvider
 {

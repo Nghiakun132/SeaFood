@@ -1,6 +1,6 @@
 @extends('layouts.frontend')
 @section('content')
-@section('title',$product->pro_name)
+@section('title', $product->pro_name)
 <main id="main" class="main-site">
 
     <div class="container">
@@ -8,7 +8,7 @@
         <div class="wrap-breadcrumb">
             <ul>
                 <li class="item-link"><a href="#" class="link">home</a></li>
-                <li class="item-link"><span>{{$product->pro_name}}</span></li>
+                <li class="item-link"><span>{{ $product->pro_name }}</span></li>
             </ul>
         </div>
         <div class="row">
@@ -17,61 +17,66 @@
                 <div class="wrap-product-detail">
                     <div class="detail-media">
                         <div class="product-gallery">
-                          <ul class="slides">
-                            @foreach ($images as $image)
-                            <li data-thumb="{{asset('uploads/products/'.$image->img_name)}}">
-                                <img src="{{asset('uploads/products/'.$image->img_name)}}" alt="{{$image->img_name}}" />
-                            </li>
-                            @endforeach
-                          </ul>
+                            <ul class="slides">
+                                @foreach ($images as $image)
+                                    <li data-thumb="{{ asset('uploads/products/' . $image->img_name) }}">
+                                        <img src="{{ asset('uploads/products/' . $image->img_name) }}"
+                                            alt="{{ $image->img_name }}" />
+                                    </li>
+                                @endforeach
+                            </ul>
                         </div>
                     </div>
-                    <form action="{{route('addCart')}}" method="post">
+                    <form action="{{ route('addCart') }}" method="post">
                         @csrf
-                    <div class="detail-info">
-                        <div class="product-rating">
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                            <a href="#" class="count-review">(05 review)</a>
-                        </div>
-                        <h2 class="product-name">{{$product->pro_name}}</h2>
-                        <div class="short-desc">
-                            <?php echo $product->pro_content; ?>
-                        </div>
-                        <div class="wrap-social">
-                            <a class="link-socail" href="#"><img src="../frontend/images/social-list.png" alt=""></a>
-                        </div>
-                        <div class="wrap-price"><span class="product-price">{{number_format(($product->pro_price),0,',',',') . ' VND'}}</span><span class="product-price"> / {{$product->pro_unit}}</span></div>
-                        <div class="stock-info in-stock">
-                            @if ($product->pro_qty > 0)
-                            <p class="availability">Availability: <b>In Stock</b></p>
-                            @else
-                            <p class="availability">Availability: <b>Out of Stock</b></p>
-                            @endif
-                        </div>
-                        <div class="quantity">
-                            <span>Quantity:</span>
-                            <div class="quantity-input">
-                                <input type="text" name="product_quatity" value="1" data-max="{{$product->pro_qty}}" pattern="[0-9]*" >
-                                <a class="btn btn-reduce" href="#"></a>
-                                <a class="btn btn-increase" href="#"></a>
+                        <div class="detail-info">
+                            <div class="product-rating">
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <a href="#" class="count-review">(05 review)</a>
+                            </div>
+                            <h2 class="product-name">{{ $product->pro_name }}</h2>
+                            <div class="short-desc">
+                                <?php echo $product->pro_content; ?>
+                            </div>
+                            <div class="wrap-social">
+                                <a class="link-socail" href="#"><img src="../frontend/images/social-list.png"
+                                        alt=""></a>
+                            </div>
+                            <div class="wrap-price"><span
+                                    class="product-price">{{ number_format($product->pro_price, 0, ',', ',') . ' VND' }}</span><span
+                                    class="product-price"> / {{ $product->pro_unit }}</span></div>
+                            <div class="stock-info in-stock">
+                                @if ($product->pro_qty > 0)
+                                    <p class="availability">Availability: <b>In Stock</b></p>
+                                @else
+                                    <p class="availability">Availability: <b>Out of Stock</b></p>
+                                @endif
+                            </div>
+                            <div class="quantity">
+                                <span>Quantity:</span>
+                                <div class="quantity-input">
+                                    <input type="text" name="product_quatity" value="1"
+                                        data-max="{{ $product->pro_qty }}" pattern="[0-9]*">
+                                    <a class="btn btn-reduce" href="#"></a>
+                                    <a class="btn btn-increase" href="#"></a>
+                                </div>
+                            </div>
+                            <input type="hidden" name="pro_name" value="{{ $product->pro_name }}">
+                            <input type="hidden" name="pro_price" value="{{ $product->pro_price }}">
+                            <input type="hidden" name="pro_avatar" value="{{ $product->pro_avatar }}">
+                            <div class="wrap-butons">
+                                <button class="btn add-to-cart">Add to Cart</button>
+                                <div class="wrap-btn">
+                                    <a href="#" class="btn btn-compare">Add Compare</a>
+                                    <a href="#" class="btn btn-wishlist">Add Wishlist</a>
+                                </div>
                             </div>
                         </div>
-                        <input type="hidden" name="pro_name" value="{{$product->pro_name}}">
-                        <input type="hidden" name="pro_price" value="{{$product->pro_price}}">
-                        <input type="hidden" name="pro_avatar" value="{{$product->pro_avatar}}">
-                        <div class="wrap-butons">
-                            <button class="btn add-to-cart">Add to Cart</button>
-                            <div class="wrap-btn">
-                                <a href="#" class="btn btn-compare">Add Compare</a>
-                                <a href="#" class="btn btn-wishlist">Add Wishlist</a>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                    </form>
                     <div class="advance-info">
                         <div class="tab-control normal">
                             <a href="#description" class="tab-control-item active">description</a>
@@ -80,13 +85,14 @@
                         </div>
                         <div class="tab-contents">
                             <div class="tab-content-item active" id="description">
-                                <?php echo $product->pro_description;?>
+                                <?php echo $product->pro_description; ?>
                             </div>
                             <div class="tab-content-item " id="add_infomation">
                                 <table class="shop_attributes">
                                     <tbody>
                                         <tr>
-                                            <th>Weight</th><td class="product_weight">1 kg</td>
+                                            <th>Weight</th>
+                                            <td class="product_weight">1 kg</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -96,22 +102,28 @@
                                 <div class="wrap-review-form">
 
                                     <div id="comments">
-                                        <h2 class="woocommerce-Reviews-title">01 review for <span>Radiant-360 R6 Chainsaw Omnidirectional [Orage]</span></h2>
+                                        <h2 class="woocommerce-Reviews-title">01 review for <span>Radiant-360 R6
+                                                Chainsaw Omnidirectional [Orage]</span></h2>
                                         <ol class="commentlist">
-                                            <li class="comment byuser comment-author-admin bypostauthor even thread-even depth-1" id="li-comment-20">
+                                            <li class="comment byuser comment-author-admin bypostauthor even thread-even depth-1"
+                                                id="li-comment-20">
                                                 <div id="comment-20" class="comment_container">
-                                                    <img alt="" src="assets/images/author-avata.jpg" height="80" width="80">
+                                                    <img alt="" src="assets/images/author-avata.jpg" height="80"
+                                                        width="80">
                                                     <div class="comment-text">
                                                         <div class="star-rating">
-                                                            <span class="width-80-percent">Rated <strong class="rating">5</strong> out of 5</span>
+                                                            <span class="width-80-percent">Rated <strong
+                                                                    class="rating">5</strong> out of 5</span>
                                                         </div>
                                                         <p class="meta">
                                                             <strong class="woocommerce-review__author">admin</strong>
                                                             <span class="woocommerce-review__dash">–</span>
-                                                            <time class="woocommerce-review__published-date" datetime="2008-02-14 20:00" >Tue, Aug 15,  2017</time>
+                                                            <time class="woocommerce-review__published-date"
+                                                                datetime="2008-02-14 20:00">Tue, Aug 15, 2017</time>
                                                         </p>
                                                         <div class="description">
-                                                            <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+                                                            <p>Pellentesque habitant morbi tristique senectus et netus
+                                                                et malesuada fames ac turpis egestas.</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -123,9 +135,12 @@
                                         <div id="review_form">
                                             <div id="respond" class="comment-respond">
 
-                                                <form action="#" method="post" id="commentform" class="comment-form" novalidate="">
+                                                <form action="#" method="post" id="commentform" class="comment-form"
+                                                    novalidate="">
                                                     <p class="comment-notes">
-                                                        <span id="email-notes">Your email address will not be published.</span> Required fields are marked <span class="required">*</span>
+                                                        <span id="email-notes">Your email address will not be
+                                                            published.</span> Required fields are marked <span
+                                                            class="required">*</span>
                                                     </p>
                                                     <div class="comment-form-rating">
                                                         <span>Your rating</span>
@@ -140,24 +155,30 @@
                                                             <label for="rated-4"></label>
                                                             <input type="radio" id="rated-4" name="rating" value="4">
                                                             <label for="rated-5"></label>
-                                                            <input type="radio" id="rated-5" name="rating" value="5" checked="checked">
+                                                            <input type="radio" id="rated-5" name="rating" value="5"
+                                                                checked="checked">
                                                         </p>
                                                     </div>
                                                     <p class="comment-form-author">
-                                                        <label for="author">Name <span class="required">*</span></label>
+                                                        <label for="author">Name <span
+                                                                class="required">*</span></label>
                                                         <input id="author" name="author" type="text" value="">
                                                     </p>
                                                     <p class="comment-form-email">
-                                                        <label for="email">Email <span class="required">*</span></label>
-                                                        <input id="email" name="email" type="email" value="" >
+                                                        <label for="email">Email <span
+                                                                class="required">*</span></label>
+                                                        <input id="email" name="email" type="email" value="">
                                                     </p>
                                                     <p class="comment-form-comment">
-                                                        <label for="comment">Your review <span class="required">*</span>
+                                                        <label for="comment">Your review <span
+                                                                class="required">*</span>
                                                         </label>
-                                                        <textarea id="comment" name="comment" cols="45" rows="8"></textarea>
+                                                        <textarea id="comment" name="comment" cols="45"
+                                                            rows="8"></textarea>
                                                     </p>
                                                     <p class="form-submit">
-                                                        <input name="submit" type="submit" id="submit" class="submit" value="Submit">
+                                                        <input name="submit" type="submit" id="submit"
+                                                            class="submit" value="Submit">
                                                     </p>
                                                 </form>
 
@@ -170,7 +191,8 @@
                         </div>
                     </div>
                 </div>
-            </div><!--end main products area-->
+            </div>
+            <!--end main products area-->
 
             <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 sitebar">
                 <div class="widget widget-our-services ">
@@ -183,7 +205,8 @@
                                     <div class="right-content">
                                         <b class="title">Free Shipping</b>
                                         <span class="subtitle">On Oder Over $99</span>
-                                        <p class="desc">Lorem Ipsum is simply dummy text of the printing...</p>
+                                        <p class="desc">Lorem Ipsum is simply dummy text of the printing...
+                                        </p>
                                     </div>
                                 </a>
                             </li>
@@ -194,7 +217,8 @@
                                     <div class="right-content">
                                         <b class="title">Special Offer</b>
                                         <span class="subtitle">Get a gift!</span>
-                                        <p class="desc">Lorem Ipsum is simply dummy text of the printing...</p>
+                                        <p class="desc">Lorem Ipsum is simply dummy text of the printing...
+                                        </p>
                                     </div>
                                 </a>
                             </li>
@@ -205,7 +229,8 @@
                                     <div class="right-content">
                                         <b class="title">Order Return</b>
                                         <span class="subtitle">Return within 7 days</span>
-                                        <p class="desc">Lorem Ipsum is simply dummy text of the printing...</p>
+                                        <p class="desc">Lorem Ipsum is simply dummy text of the printing...
+                                        </p>
                                     </div>
                                 </a>
                             </li>
@@ -220,12 +245,14 @@
                             <li class="product-item">
                                 <div class="product product-widget-style">
                                     <div class="thumbnnail">
-                                        <a href="detail.html" title="Radiant-360 R6 Wireless Omnidirectional Speaker [White]">
+                                        <a href="detail.html"
+                                            title="Radiant-360 R6 Wireless Omnidirectional Speaker [White]">
                                             <figure><img src="assets/images/products/digital_01.jpg" alt=""></figure>
                                         </a>
                                     </div>
                                     <div class="product-info">
-                                        <a href="#" class="product-name"><span>Radiant-360 R6 Wireless Omnidirectional Speaker...</span></a>
+                                        <a href="#" class="product-name"><span>Radiant-360 R6 Wireless
+                                                Omnidirectional Speaker...</span></a>
                                         <div class="wrap-price"><span class="product-price">$168.00</span></div>
                                     </div>
                                 </div>
@@ -234,12 +261,14 @@
                             <li class="product-item">
                                 <div class="product product-widget-style">
                                     <div class="thumbnnail">
-                                        <a href="detail.html" title="Radiant-360 R6 Wireless Omnidirectional Speaker [White]">
+                                        <a href="detail.html"
+                                            title="Radiant-360 R6 Wireless Omnidirectional Speaker [White]">
                                             <figure><img src="assets/images/products/digital_17.jpg" alt=""></figure>
                                         </a>
                                     </div>
                                     <div class="product-info">
-                                        <a href="#" class="product-name"><span>Radiant-360 R6 Wireless Omnidirectional Speaker...</span></a>
+                                        <a href="#" class="product-name"><span>Radiant-360 R6 Wireless
+                                                Omnidirectional Speaker...</span></a>
                                         <div class="wrap-price"><span class="product-price">$168.00</span></div>
                                     </div>
                                 </div>
@@ -248,12 +277,14 @@
                             <li class="product-item">
                                 <div class="product product-widget-style">
                                     <div class="thumbnnail">
-                                        <a href="detail.html" title="Radiant-360 R6 Wireless Omnidirectional Speaker [White]">
+                                        <a href="detail.html"
+                                            title="Radiant-360 R6 Wireless Omnidirectional Speaker [White]">
                                             <figure><img src="assets/images/products/digital_18.jpg" alt=""></figure>
                                         </a>
                                     </div>
                                     <div class="product-info">
-                                        <a href="#" class="product-name"><span>Radiant-360 R6 Wireless Omnidirectional Speaker...</span></a>
+                                        <a href="#" class="product-name"><span>Radiant-360 R6 Wireless
+                                                Omnidirectional Speaker...</span></a>
                                         <div class="wrap-price"><span class="product-price">$168.00</span></div>
                                     </div>
                                 </div>
@@ -262,12 +293,14 @@
                             <li class="product-item">
                                 <div class="product product-widget-style">
                                     <div class="thumbnnail">
-                                        <a href="detail.html" title="Radiant-360 R6 Wireless Omnidirectional Speaker [White]">
+                                        <a href="detail.html"
+                                            title="Radiant-360 R6 Wireless Omnidirectional Speaker [White]">
                                             <figure><img src="assets/images/products/digital_20.jpg" alt=""></figure>
                                         </a>
                                     </div>
                                     <div class="product-info">
-                                        <a href="#" class="product-name"><span>Radiant-360 R6 Wireless Omnidirectional Speaker...</span></a>
+                                        <a href="#" class="product-name"><span>Radiant-360 R6 Wireless
+                                                Omnidirectional Speaker...</span></a>
                                         <div class="wrap-price"><span class="product-price">$168.00</span></div>
                                     </div>
                                 </div>
@@ -277,18 +310,23 @@
                     </div>
                 </div>
 
-            </div><!--end sitebar-->
+            </div>
+            <!--end sitebar-->
 
             <div class="single-advance-box col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="wrap-show-advance-info-box style-1 box-in-site">
                     <h3 class="title-box">Related Products</h3>
                     <div class="wrap-products">
-                        <div class="products slide-carousel owl-carousel style-nav-1 equal-container" data-items="5" data-loop="false" data-nav="true" data-dots="false" data-responsive='{"0":{"items":"1"},"480":{"items":"2"},"768":{"items":"3"},"992":{"items":"3"},"1200":{"items":"5"}}' >
-
+                        <div class="products slide-carousel owl-carousel style-nav-1 equal-container" data-items="5"
+                            data-loop="false" data-nav="true" data-dots="false"
+                            data-responsive='{"0":{"items":"1"},"480":{"items":"2"},"768":{"items":"3"},"992":{"items":"3"},"1200":{"items":"5"}}'>
+                            @foreach ($productRelated as $related)
                             <div class="product product-style-2 equal-elem ">
                                 <div class="product-thumnail">
-                                    <a href="detail.html" title="T-Shirt Raw Hem Organic Boro Constrast Denim">
-                                        <figure><img src="assets/images/products/digital_04.jpg" width="214" height="214" alt="T-Shirt Raw Hem Organic Boro Constrast Denim"></figure>
+                                    <a href="{{route('detail',$related->pro_slug)}}" title="{{$related->pro_name}}">
+                                        <figure><img src="{{asset('uploads/products/'.$related->pro_avatar)}}" width="214"
+                                                height="214" alt="{{$related->pro_name}}">
+                                        </figure>
                                     </a>
                                     <div class="group-flash">
                                         <span class="flash-item new-label">new</span>
@@ -298,154 +336,34 @@
                                     </div>
                                 </div>
                                 <div class="product-info">
-                                    <a href="#" class="product-name"><span>Radiant-360 R6 Wireless Omnidirectional Speaker [White]</span></a>
-                                    <div class="wrap-price"><span class="product-price">$250.00</span></div>
+                                    <a href="#" class="product-name"><span>{{$related->pro_name}}</span></a>
+                                    <div class="wrap-price"><span class="product-price">{{number_format(($related->pro_price),0,',',','). ' VND'}}</span></div>
                                 </div>
                             </div>
-
-                            <div class="product product-style-2 equal-elem ">
-                                <div class="product-thumnail">
-                                    <a href="detail.html" title="T-Shirt Raw Hem Organic Boro Constrast Denim">
-                                        <figure><img src="assets/images/products/digital_17.jpg" width="214" height="214" alt="T-Shirt Raw Hem Organic Boro Constrast Denim"></figure>
-                                    </a>
-                                    <div class="group-flash">
-                                        <span class="flash-item sale-label">sale</span>
-                                    </div>
-                                    <div class="wrap-btn">
-                                        <a href="#" class="function-link">quick view</a>
-                                    </div>
-                                </div>
-                                <div class="product-info">
-                                    <a href="#" class="product-name"><span>Radiant-360 R6 Wireless Omnidirectional Speaker [White]</span></a>
-                                    <div class="wrap-price"><ins><p class="product-price">$168.00</p></ins> <del><p class="product-price">$250.00</p></del></div>
-                                </div>
-                            </div>
-
-                            <div class="product product-style-2 equal-elem ">
-                                <div class="product-thumnail">
-                                    <a href="detail.html" title="T-Shirt Raw Hem Organic Boro Constrast Denim">
-                                        <figure><img src="assets/images/products/digital_15.jpg" width="214" height="214" alt="T-Shirt Raw Hem Organic Boro Constrast Denim"></figure>
-                                    </a>
-                                    <div class="group-flash">
-                                        <span class="flash-item new-label">new</span>
-                                        <span class="flash-item sale-label">sale</span>
-                                    </div>
-                                    <div class="wrap-btn">
-                                        <a href="#" class="function-link">quick view</a>
-                                    </div>
-                                </div>
-                                <div class="product-info">
-                                    <a href="#" class="product-name"><span>Radiant-360 R6 Wireless Omnidirectional Speaker [White]</span></a>
-                                    <div class="wrap-price"><ins><p class="product-price">$168.00</p></ins> <del><p class="product-price">$250.00</p></del></div>
-                                </div>
-                            </div>
-
-                            <div class="product product-style-2 equal-elem ">
-                                <div class="product-thumnail">
-                                    <a href="detail.html" title="T-Shirt Raw Hem Organic Boro Constrast Denim">
-                                        <figure><img src="assets/images/products/digital_01.jpg" width="214" height="214" alt="T-Shirt Raw Hem Organic Boro Constrast Denim"></figure>
-                                    </a>
-                                    <div class="group-flash">
-                                        <span class="flash-item bestseller-label">Bestseller</span>
-                                    </div>
-                                    <div class="wrap-btn">
-                                        <a href="#" class="function-link">quick view</a>
-                                    </div>
-                                </div>
-                                <div class="product-info">
-                                    <a href="#" class="product-name"><span>Radiant-360 R6 Wireless Omnidirectional Speaker [White]</span></a>
-                                    <div class="wrap-price"><span class="product-price">$250.00</span></div>
-                                </div>
-                            </div>
-
-                            <div class="product product-style-2 equal-elem ">
-                                <div class="product-thumnail">
-                                    <a href="detail.html" title="T-Shirt Raw Hem Organic Boro Constrast Denim">
-                                        <figure><img src="assets/images/products/digital_21.jpg" width="214" height="214" alt="T-Shirt Raw Hem Organic Boro Constrast Denim"></figure>
-                                    </a>
-                                    <div class="wrap-btn">
-                                        <a href="#" class="function-link">quick view</a>
-                                    </div>
-                                </div>
-                                <div class="product-info">
-                                    <a href="#" class="product-name"><span>Radiant-360 R6 Wireless Omnidirectional Speaker [White]</span></a>
-                                    <div class="wrap-price"><span class="product-price">$250.00</span></div>
-                                </div>
-                            </div>
-
-                            <div class="product product-style-2 equal-elem ">
-                                <div class="product-thumnail">
-                                    <a href="detail.html" title="T-Shirt Raw Hem Organic Boro Constrast Denim">
-                                        <figure><img src="assets/images/products/digital_03.jpg" width="214" height="214" alt="T-Shirt Raw Hem Organic Boro Constrast Denim"></figure>
-                                    </a>
-                                    <div class="group-flash">
-                                        <span class="flash-item sale-label">sale</span>
-                                    </div>
-                                    <div class="wrap-btn">
-                                        <a href="#" class="function-link">quick view</a>
-                                    </div>
-                                </div>
-                                <div class="product-info">
-                                    <a href="#" class="product-name"><span>Radiant-360 R6 Wireless Omnidirectional Speaker [White]</span></a>
-                                    <div class="wrap-price"><ins><p class="product-price">$168.00</p></ins> <del><p class="product-price">$250.00</p></del></div>
-                                </div>
-                            </div>
-
-                            <div class="product product-style-2 equal-elem ">
-                                <div class="product-thumnail">
-                                    <a href="detail.html" title="T-Shirt Raw Hem Organic Boro Constrast Denim">
-                                        <figure><img src="assets/images/products/digital_04.jpg" width="214" height="214" alt="T-Shirt Raw Hem Organic Boro Constrast Denim"></figure>
-                                    </a>
-                                    <div class="group-flash">
-                                        <span class="flash-item new-label">new</span>
-                                    </div>
-                                    <div class="wrap-btn">
-                                        <a href="#" class="function-link">quick view</a>
-                                    </div>
-                                </div>
-                                <div class="product-info">
-                                    <a href="#" class="product-name"><span>Radiant-360 R6 Wireless Omnidirectional Speaker [White]</span></a>
-                                    <div class="wrap-price"><span class="product-price">$250.00</span></div>
-                                </div>
-                            </div>
-
-                            <div class="product product-style-2 equal-elem ">
-                                <div class="product-thumnail">
-                                    <a href="detail.html" title="T-Shirt Raw Hem Organic Boro Constrast Denim">
-                                        <figure><img src="assets/images/products/digital_05.jpg" width="214" height="214" alt="T-Shirt Raw Hem Organic Boro Constrast Denim"></figure>
-                                    </a>
-                                    <div class="group-flash">
-                                        <span class="flash-item bestseller-label">Bestseller</span>
-                                    </div>
-                                    <div class="wrap-btn">
-                                        <a href="#" class="function-link">quick view</a>
-                                    </div>
-                                </div>
-                                <div class="product-info">
-                                    <a href="#" class="product-name"><span>Radiant-360 R6 Wireless Omnidirectional Speaker [White]</span></a>
-                                    <div class="wrap-price"><span class="product-price">$250.00</span></div>
-                                </div>
-                            </div>
+                            @endforeach
 
                         </div>
-                    </div><!--End wrap-products-->
+                    </div>
+                    <!--End wrap-products-->
                 </div>
             </div>
 
-        </div><!--end row-->
+        </div>
+        <!--end row-->
 
-    </div><!--end container-->
+    </div>
+    <!--end container-->
 
 </main>
 <?php
-    $success = Session::get('success');
-    $error = Session::get('error');
-    if($success){
-        echo '<script>alert("'.$success.'")</script>';
-        Session::forget('success');
-    }elseif ($error) {
-        echo '<script>alert("'.$error.'")</script>';
-        Session::forget('error');
-    }
+$success = Session::get('success');
+$error = Session::get('error');
+if ($success) {
+    echo '<script>alert("' . $success . '")</script>';
+    Session::forget('success');
+} elseif ($error) {
+    echo '<script>alert("' . $error . '")</script>';
+    Session::forget('error');
+}
 ?>
 @stop

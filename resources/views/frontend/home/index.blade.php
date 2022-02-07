@@ -8,32 +8,32 @@
             <div class="slide-carousel owl-carousel style-nav-1" data-items="1" data-loop="1" data-nav="true"
                 data-dots="false">
                 <div class="item-slide">
-                    <img src="{{ asset('frontend/images/cua3.png') }}" alt="" class="img-slide">
-                    <div class="slide-info slide-1">
+                    <img src="{{ asset('frontend/images/slide_5.jpg') }}" alt="" class="img-slide">
+                    {{-- <div class="slide-info slide-1">
                         <h2 class="f-title">Kid Smart <b>Watches</b></h2>
                         <span class="subtitle">Compra todos tus productos Smart por internet.</span>
                         <p class="sale-info">Only price: <span class="price">$59.99</span></p>
                         <a href="#" class="btn-link">Shop Now</a>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="item-slide">
-                    <img src="{{ asset('frontend/images/cua4.png') }}" alt="" class="img-slide">
-                    <div class="slide-info slide-2">
+                    <img src="{{ asset('frontend/images/slide_4.jpg') }}" alt="" class="img-slide">
+                    {{-- <div class="slide-info slide-2">
                         <h2 class="f-title">Extra 25% Off</h2>
                         <span class="f-subtitle">On online payments</span>
                         <p class="discount-code">Use Code: #FA6868</p>
                         <h4 class="s-title">Get Free</h4>
                         <p class="s-subtitle">TRansparent Bra Straps</p>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="item-slide">
-                    <img src="{{ asset('frontend/images/cua2.png') }}" alt="" class="img-slide">
-                    <div class="slide-info slide-3">
+                    <img src="{{ asset('frontend/images/slide_3.jpg') }}" alt="" class="img-slide">
+                    {{-- <div class="slide-info slide-3">
                         <h2 class="f-title">Great Range of <b>Exclusive Furniture Packages</b></h2>
                         <span class="f-subtitle">Exclusive Furniture Packages to Suit every need.</span>
                         <p class="sale-info">Stating at: <b class="price">$225.00</b></p>
                         <a href="#" class="btn-link">Shop Now</a>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
@@ -42,13 +42,13 @@
         <div class="wrap-banner style-twin-default">
             <div class="banner-item">
                 <a href="#" class="link-banner banner-effect-1">
-                    <figure><img src="{{ asset('frontend/images/tomhum.png') }}" alt="" width="580" height="190">
+                    <figure><img src="{{ asset('frontend/images/banner_1.jpg') }}" alt="" width="580" height="190">
                     </figure>
                 </a>
             </div>
             <div class="banner-item">
                 <a href="#" class="link-banner banner-effect-1">
-                    <figure><img src="{{ asset('frontend/images/cahoi.png') }}" alt="" width="580" height="190">
+                    <figure><img src="{{ asset('frontend/images/banner_2.jpg') }}" alt="" width="580" height="190">
                     </figure>
                 </a>
             </div>

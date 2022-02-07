@@ -39,7 +39,15 @@ Route::group(['namespace' => 'backend', 'prefix' => 'admin'], function () {
         Route::get('/xoa/{id}', 'ProductController@destroy')->name('admin.product.destroy');
         Route::get('/thay-doi-trang-thai/{id}', 'ProductController@changeStatus')->name('admin.product.changeStatus');
     });
-    Route::group(['prefix' => 'nhap-hang'], function (){
-        Route::get('/','ProductController@import')->name('admin.import');
+    Route::group(['prefix' => 'nhap-hang'], function () {
+        Route::get('/', 'ProductController@import')->name('admin.import');
+    });
+    Route::group(['prefix' => 'don-hang'], function () {
+        Route::get('/', 'OrderController@index')->name('admin.order');
+    });
+    Route::group(['prefix' => 'thong-bao'], function () {
+        Route::get('/', 'AdminController@Notification')->name('admin.notification');
+        Route::get('/xoa/{id}', 'AdminController@destroyNotification')->name('admin.notification.destroy');
+        Route::get('/doc/{id}', 'AdminController@readNotification')->name('admin.notification.read');
     });
 });

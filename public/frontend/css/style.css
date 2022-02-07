@@ -357,7 +357,7 @@ input,textarea{
 	display: block;
 	width: 100%;
 	background: #f9f9f9;
-	border-bottom: 1px solid #f2f2f2;
+	border-bottom: 1px solid rgb(130, 214, 231);
 }
 .topbar-menu-area .topbar-menu{
 	display: block;
@@ -641,6 +641,7 @@ header.fill-color .main-info-area .right-section .wrap-icon-section .link-direct
 }
 .header-nav-section{
 	border-top: 1px solid #e5e5e5;
+    background-color:antiquewhite;
 }
 .header-nav-section .menu-nav{
 	display: block;
@@ -2294,7 +2295,7 @@ li.menu-item .nav-label.sale-label::before{
 }
 .wrap-shop-control .sort-item.orderby{
     margin-right: 10px;
-    margin-top: 2.5px;
+    margin-top: 7px;
 }
 .wrap-shop-control .sort-item.product-per-page{
     margin-right: 59px;
@@ -4240,7 +4241,7 @@ article.single-post blockquote p:last-child::after{
 .box-in-site.wrap-show-advance-info-box .wrap-products{
     border: 1px solid #e6e6e6;
     margin-top: 10px;
-    padding-top: 39px;
+    /* padding-top: 39px; */
 }
 .box-in-site.wrap-show-advance-info-box .title-box{
     float: initial;

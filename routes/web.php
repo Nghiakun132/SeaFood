@@ -24,7 +24,9 @@ Route::group(['namespace'=>'frontend'],function(){
     //login google
     Route::get('dang-nhap/google','UserController@loginGG')->name('login.google');
     Route::get('dang-nhap/google/callback','UserController@loginGGCallback')->name('login.google.callback');
-
+    //danh mục
+    Route::get('/danh-muc/{slug}','CategoryController@index')->name('category');
+    Route::get('/tim','CategoryController@search')->name('search');
     Route::group(['prefix' =>'chi-tiet-san-pham'], function(){
         Route::get('/{slug}','ProductController@index')->name('detail');
     });
@@ -36,6 +38,10 @@ Route::group(['namespace'=>'frontend'],function(){
         Route::get('/xoa/{id}','CartController@deleteCart')->name('deleteCart');
         Route::get('/xoa-gio-hang','CartController@clearCart')->name('clearCart');
     });
+    Route::get('/thanh-toan','CartController@checkout')->name('checkout');
+    Route::post('/thanh-toan','CartController@postCheckout')->name('postCheckout');
+    Route::post('/ma-giam-gia','CartController@postCoupon')->name('postCoupon');
+    Route::get('/xoa-ma-giam-gia','CartController@deleteCoupon')->name('deleteCoupon');
 });
 
 
