@@ -22,6 +22,9 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/color-01.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <style>
     .list_hover:hover {
@@ -149,12 +152,13 @@
                                         src="{{ asset('backend/img/2.png') }}" alt="mercado"></a>
                             </div>
                             <div class="wrap-search center-section">
-                                <div class="wrap-search-form" style="border-color:rgb(13, 186, 230)">
-                                    <form action="#" id="form-search-top" name="form-search-top">
-                                        <input type="text" name="search" class="search_input" value=""
+                                <div class="wrap-search-form" style="border-color:#2e9ed5">
+                                    <form action="{{ route('search') }}" method="post">
+                                        @csrf
+                                        <input type="text" name="search" class="search_input"
                                             placeholder="Search here...">
-                                        <button form="form-search-top" style="background:rgb(241, 13, 5)"
-                                            type="button"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                        <button type="submit" style="background:rgb(241, 13, 5)"><i
+                                                class="fa fa-search" aria-hidden="true"></i></button>
                                     </form>
                                 </div>
                             </div>
@@ -177,6 +181,17 @@
                                             <span class="index">{{ $count }} item</span>
                                             <span class="title" style="color:rgb(247, 247, 247)">CART</span>
                                         </div>
+                                    </a>
+                                </div>
+                                <div class="wrap-icon-section minicart">
+                                    <a href="#" class="link-direction">
+                                        <i class="fa fa-gift" style="color:rgb(183, 247, 7)" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                                <div class="wrap-icon-section minicart">
+                                    <a href="{{ route('order') }}" class="link-direction">
+                                        <i class="fas fa-receipt" aria-hidden="true"
+                                            style="color: rgb(29, 14, 241)"></i>
                                     </a>
                                 </div>
                                 <div class="wrap-icon-section show-up-after-1024">

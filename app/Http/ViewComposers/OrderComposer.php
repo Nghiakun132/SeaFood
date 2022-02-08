@@ -10,7 +10,7 @@ class OrderComposer
 {
     public function compose(View $view)
     {
-        $noti = DB::table('notifications')->orderBy('id','desc')->get();
+        $noti = DB::table('notifications')->orderBy('id','desc')->where('role',1)->get();
         $count = count(DB::table('notifications')->where('read',0)->get());
 
         $view->with('countNoti', $count);

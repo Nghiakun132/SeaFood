@@ -2,7 +2,6 @@
 @section('content')
 @section('title', 'Sản phẩm')
 <div class="container-fluid">
-
     <h1 class="h3 mb-2 text-gray-800">Sản phẩm</h1>
     <div class="card shadow mb-4">
         <div class="card-body">
@@ -27,9 +26,9 @@
                                 <td>{{ $order->created_at }}</td>
                                 <td>
                                     @if ($order->order_status == 0)
-                                        <span class="badge badge-warning">Đang chờ</span>
+                                        <a href="{{route('admin.order.changeStatus',$order->order_id)}}"><span class="badge badge-warning">Đang chờ</span></a>
                                     @elseif ($order->order_status == 1)
-                                        <span class="badge badge-success">Đã xác nhận</span>
+                                        <a href="{{route('admin.order.changeStatus',$order->order_id)}}"><span class="badge badge-success">Đã xác nhận</span></a>
                                     @elseif ($order->order_status == 2)
                                         <span class="badge badge-danger">Đã hủy</span>
                                     @elseif ($order->order_status == 3)

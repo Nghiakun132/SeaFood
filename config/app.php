@@ -177,6 +177,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\ViewProvider::class,
         App\Providers\OrderProvider::class,
+        App\Providers\SearchProvider::class,
 
     ],
 

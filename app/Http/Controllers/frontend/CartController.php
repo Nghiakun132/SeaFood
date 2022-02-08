@@ -52,6 +52,30 @@ class CartController extends Controller
             return redirect()->route('cart')->with('success', 'Thêm giỏ hàng thành công');
         }
     }
+    public function quickAddCart($pro_id)
+    {
+        $this->AuthLogin();
+        $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $productAdd = products::where('pro_slug',$pro_id)->first();
+        $product = cart::where('cart_product_name', $productAdd->pro_name)->where('cart_user_id', Session::get('user')->id)->first();
+        if ($product) {
+            $product->cart_product_quantity = $product->cart_product_quantity + 1;
+            $product->cart_product_total =  $product->cart_product_total + (1 * $product->cart_product_price);
+            $product->save();
+            return redirect()->route('cart')->with('success', 'Thêm sản phẩm thành công');
+        } else {
+            $cart = new cart();
+            $cart->cart_id = substr(str_shuffle($permitted_chars), 0, 16);
+            $cart->cart_user_id = Session::get('user')->id;
+            $cart->cart_product_name = $productAdd->pro_name;
+            $cart->cart_product_image = $productAdd->pro_avatar;
+            $cart->cart_product_price = $productAdd->pro_price;
+            $cart->cart_product_total = $productAdd->pro_price * 1;
+            $cart->cart_product_quantity = 1;
+            $cart->save();
+            return redirect()->route('cart')->with('success', 'Thêm giỏ hàng thành công');
+        }
+    }
     public function updateCart(Request $request, $cart_id)
     {
         $this->AuthLogin();
@@ -149,6 +173,7 @@ class CartController extends Controller
             //thong bao don hang moi
             DB::table('notifications')->insert([
                 'type' => 'Đơn hàng mới',
+                'role' => 1,
                 'notification' => 'Có đơn hàng mới từ ' . Session::get('user')->name . ' với mã đơn hàng #' . $order_id,
                 'created_at' => Carbon::now('Asia/Ho_Chi_Minh')
             ]);

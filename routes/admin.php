@@ -44,6 +44,7 @@ Route::group(['namespace' => 'backend', 'prefix' => 'admin'], function () {
     });
     Route::group(['prefix' => 'don-hang'], function () {
         Route::get('/', 'OrderController@index')->name('admin.order');
+        Route::get('/thay-doi-trang-thai/{id}', 'OrderController@changeStatus')->name('admin.order.changeStatus');
     });
     Route::group(['prefix' => 'thong-bao'], function () {
         Route::get('/', 'AdminController@Notification')->name('admin.notification');

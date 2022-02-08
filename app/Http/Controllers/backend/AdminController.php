@@ -74,7 +74,7 @@ class AdminController extends Controller
 
     public function Notification(){
         $this->AuthLogin();
-        $noti = DB::table('notifications')->get();
+        $noti = DB::table('notifications')->where('role',1)->get();
         return view('backend.home.notification', compact('noti'));
     }
     public function destroyNotification($id){
