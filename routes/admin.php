@@ -44,11 +44,20 @@ Route::group(['namespace' => 'backend', 'prefix' => 'admin'], function () {
     });
     Route::group(['prefix' => 'don-hang'], function () {
         Route::get('/', 'OrderController@index')->name('admin.order');
+        Route::get('/xem-chi-tiet/{id}', 'OrderController@show')->name('admin.order.show');
+        Route::get('/xoa/{id}', 'OrderController@destroy')->name('admin.order.destroy');
         Route::get('/thay-doi-trang-thai/{id}', 'OrderController@changeStatus')->name('admin.order.changeStatus');
     });
     Route::group(['prefix' => 'thong-bao'], function () {
         Route::get('/', 'AdminController@Notification')->name('admin.notification');
         Route::get('/xoa/{id}', 'AdminController@destroyNotification')->name('admin.notification.destroy');
         Route::get('/doc/{id}', 'AdminController@readNotification')->name('admin.notification.read');
+    });
+    Route::group(['prefix' => 'ma-giam-gia'],function(){
+        Route::get('/', 'CouponController@index')->name('admin.coupon');
+        Route::post('/', 'CouponController@store')->name('admin.coupon.store');
+        Route::post('/sua/{id}', 'CouponController@update')->name('admin.coupon.update');
+        Route::get('/xoa/{id}', 'CouponController@destroy')->name('admin.coupon.destroy');
+        Route::get('/thay-doi-trang-thai/{id}', 'CouponController@changeStatus')->name('admin.coupon.changeStatus');
     });
 });

@@ -31,11 +31,17 @@ class OrderController extends Controller
         $order = DB::table('orders')->where('order_id', $id)->first();
         if ($order->order_status == 0) {
             DB::table('orders')->where('order_id', $id)->update(['order_status' => 1]);
-            DB::table('notifications')->insert(['notification' => 'Đơn hàng của bạn đã được xác nhận', 'role' => 0, 'type' => 'Xác nhận Đơn hàng', 'created_at' => Carbon::now('Asia/Ho_Chi_Minh')]);
+            DB::table('notifications')->insert(['notification' => 'Đơn hàng #' . $order->order_id . ' của bạn đã được xác nhận', 'role' => 0, 'user_id' => $order->user_id, 'type' => 'Xác nhận Đơn hàng', 'created_at' => Carbon::now('Asia/Ho_Chi_Minh')]);
         } elseif ($order->order_status == 1) {
             DB::table('orders')->where('order_id', $id)->update(['order_status' => 3]);
-            DB::table('notifications')->insert(['notification' => 'Đơn hàng của bạn đã được giao', 'role' => 0, 'type' => 'Xác nhận Đơn hàng', 'created_at' => Carbon::now('Asia/Ho_Chi_Minh')]);
+            DB::table('notifications')->insert(['notification' => 'Đơn hàng #' . $order->order_id . ' của bạn đã được giao', 'role' => 0, 'user_id' => $order->user_id, 'type' => 'Xác nhận Đơn hàng', 'created_at' => Carbon::now('Asia/Ho_Chi_Minh')]);
         }
+        return redirect()->back();
+    }
+    public function destroy($id)
+    {
+        $this->AuthLogin();
+        DB::table('orders')->where('order_id', $id)->delete();
         return redirect()->back();
     }
 }

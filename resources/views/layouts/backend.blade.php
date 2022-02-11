@@ -72,12 +72,13 @@
                         <i class="fas fa-fw fa-table"></i>
                         <span>Nhân viên</span></a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('admin.coupon') }}">
+                        <i class="fas fa-fw fa-table"></i>
+                        <span>Mã giảm giá</span></a>
+                </li>
             @endif
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Mã giảm giá</span></a>
-            </li>
+
             <li class="nav-item">
                 <a class="nav-link" href="#">
                     <i class="fas fa-fw fa-table"></i>

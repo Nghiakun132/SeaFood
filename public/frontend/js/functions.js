@@ -49,7 +49,7 @@
 					nav 	: true,
 					dots 	: false,
 					loop	: false,
-					navText	: ['<i class="fa fa-angle-left " aria-hidden="true"></i>','<i class="fa fa-angle-right " aria-hidden="true"></i>'],
+					navText	: ['<i class="fa-solid fa-angle-left"></i>','<i class="fa-solid fa-angle-right"></i>'],
 				};
 				config.responsive = { 0	:{items:"2"}, 370	:{items:"3"}, 480	:{items:"4"}, 768	:{items:"4"}, 992	:{items:"3"}, 1200:{items:"4"} };
 				$(".flex-control-thumbs").owlCarousel(config);

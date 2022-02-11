@@ -22,7 +22,7 @@
                         @foreach ($orders as $order)
                             <tr>
                                 <td>{{ $order->order_id }}</td>
-                                <td>{{ $order->price_total }}</td>
+                                <td>{{ number_format(($order->price_total),0,',',','). ' VND'}}</td>
                                 <td>{{ $order->created_at }}</td>
                                 <td>
                                     @if ($order->order_status == 0)
@@ -45,6 +45,7 @@
                                 <td>{{ $order->order_type }}</td>
                                 <td>
                                     <a href="#" class="btn btn-primary">Chi tiết</a>
+                                    <a href="{{route('admin.order.destroy',$order->order_id)}}" class="btn btn-danger" onclick="return confirm('Ban co chac muon xoa don hang nay ?')">Xoa</a>
                                 </td>
                             </tr>
                         @endforeach

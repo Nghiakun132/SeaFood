@@ -62,6 +62,10 @@
         background: rgb(130, 214, 231)
     }
 
+    .alert {
+        margin-bottom: 0;
+    }
+
 </style>
 
 <body class="home-page home-01 ">
@@ -96,7 +100,6 @@
                                     <li class="menu-item"><a title="Register or Login"
                                             href="{{ route('logout') }}">Dang
                                             xuat:{{ Session::get('user')->name }}</a></li>
-
                                 @endif
                                 <li class="menu-item lang-menu menu-item-has-children parent">
                                     <a title="English" href="#"><span class="img label-before"><img
@@ -126,12 +129,6 @@
                                     <a title="Thong tin ca nhan" href="#">Thong tin ca nhan<i class="fa fa-angle-down"
                                             aria-hidden="true"></i></a>
                                     <ul class="submenu curency">
-                                        <li class="menu-item list_hover">
-                                            <a title="Don hang" href="#">Don hang</a>
-                                        </li>
-                                        {{-- <li class="menu-item">
-                                            <a title="Danh sach yeu thich" href="#">Danh sach yeu thich</a>
-                                        </li> --}}
                                         <li class="menu-item list_hover">
                                             <a title="Ma giam gia" href="#">Ma giam gia</a>
                                         </li>
@@ -183,9 +180,55 @@
                                         </div>
                                     </a>
                                 </div>
-                                <div class="wrap-icon-section minicart">
-                                    <a href="#" class="link-direction">
-                                        <i class="fa fa-gift" style="color:rgb(183, 247, 7)" aria-hidden="true"></i>
+                                <div class="wrap-icon-section minicart dropdown">
+                                    <a href="#" class="link-direction dropdown-toggle" data-toggle="dropdown">
+                                        <i class="fa-solid fa-bell" style="color:yellow"></i>
+                                        <div class="left-info">
+                                            <span class="index">{{ $countNotification }}</span>
+                                        </div>
+                                        <ul class="dropdown-menu">
+                                            @if ($countNotification > 3)
+                                                @foreach ($notification as $notification)
+                                                    <li>
+                                                        <a class="" href="{{route('order')}}">
+                                                            @if ($notification->read == 0)
+                                                                <div class="alert alert-danger">
+                                                                    <strong>{{ $notification->notification }}</strong>
+                                                                    <p>{{ $notification->created_at }}</p>
+                                                                </div>
+                                                            @else
+                                                                <div class="alert alert-default">
+                                                                    <strong>{{ $notification->notification }}</strong>
+                                                                    <p>{{ $notification->created_at }}</p>
+                                                                </div>
+                                                            @endif
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                                <div class="readAll" style="text-align: center">
+                                                    <a href="">Xem
+                                                        tat ca</a>
+                                                </div>
+                                            @else
+                                                @foreach ($notification as $notification)
+                                                    <li>
+                                                        <a class="" href="{{route('order')}}">
+                                                            @if ($notification->read == 0)
+                                                                <div class="alert alert-danger">
+                                                                    <strong>{{ $notification->notification }}</strong>
+                                                                    <p>{{ $notification->created_at }}</p>
+                                                                </div>
+                                                            @else
+                                                                <div class="alert alert-default">
+                                                                    <strong>{{ $notification->notification }}</strong>
+                                                                    <p>{{ $notification->created_at }}</p>
+                                                                </div>
+                                                            @endif
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            @endif
+                                        </ul>
                                     </a>
                                 </div>
                                 <div class="wrap-icon-section minicart">

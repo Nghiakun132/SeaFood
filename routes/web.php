@@ -50,6 +50,7 @@ Route::group(['namespace'=>'frontend'],function(){
     Route::post('/thanh-toan','CartController@postCheckout')->name('postCheckout');
     Route::post('/ma-giam-gia','CartController@postCoupon')->name('postCoupon');
     Route::get('/xoa-ma-giam-gia','CartController@deleteCoupon')->name('deleteCoupon');
+    Route::get('/test','HomeController@test')->name('test');
 });
 
 

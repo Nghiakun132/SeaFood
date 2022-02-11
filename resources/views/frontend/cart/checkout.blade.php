@@ -69,20 +69,23 @@
                         <p class="summary-info"><span class="title">Credit Cart (saved)</span></p>
                         <div class="choose-payment-methods">
                             <label class="payment-method">
-                                <input name="payment_method" id="payment-method-bank" value="bank" type="radio" required>
+                                <input name="payment_method" id="payment-method-bank" value="bank" type="radio"
+                                    required>
                                 <span>Direct Bank Transder</span>
                                 <span class="payment-desc">But the majority have suffered alteration in some form, by
                                     injected humour, or randomised words which don't look even slightly
                                     believable</span>
                             </label>
                             <label class="payment-method">
-                                <input name="payment_method" id="payment-method-visa" value="visa" type="radio" required>
+                                <input name="payment_method" id="payment-method-visa" value="visa" type="radio"
+                                    required>
                                 <span>visa</span>
                                 <span class="payment-desc">There are many variations of passages of Lorem Ipsum
                                     available</span>
                             </label>
                             <label class="payment-method">
-                                <input name="payment_method" id="payment-method-paypal" value="paypal" type="radio" required>
+                                <input name="payment_method" id="payment-method-paypal" value="paypal" type="radio"
+                                    required>
                                 <span>Paypal</span>
                                 <span class="payment-desc">You can pay with your credit</span>
                                 <span class="payment-desc">card if you don't have a paypal account</span>
@@ -103,8 +106,14 @@
                         @csrf
                         <p class="row-in-form">
                             <label for="coupon-code">Enter Your Coupon code:</label>
-                            <input id="coupon-code" type="text" name="coupon_code"
-                                placeholder="{{ Session::get('cou_code') ? Session::get('cou_code') : 'Nhap ma giam gia' }} ">
+                            @if (Session::get('cou_code'))
+                                <input id="coupon-code" type="text" name="coupon_code"
+                                    placeholder="{{  Session::get('cou_code') }} " disabled>
+                            @else
+                                <input id="coupon-code" type="text" name="coupon_code"
+                                    placeholder="Nhap ma giam gia ">
+                            @endif
+
                             <button type="submit" class="btn btn-small">Apply</button>
                         </p>
                         <a href="{{ route('deleteCoupon') }}" class="btn btn-small">Cancel</a>
