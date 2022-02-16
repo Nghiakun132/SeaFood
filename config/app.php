@@ -178,7 +178,7 @@ return [
         App\Providers\ViewProvider::class,
         App\Providers\OrderProvider::class,
         App\Providers\SearchProvider::class,
-
+        App\Providers\StaffProvider::class,
     ],
 
     /*

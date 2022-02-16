@@ -5,6 +5,7 @@ namespace App\Http\Controllers\backend;
 use App\Http\Controllers\Controller;
 use App\Models\admins;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Session;
 
 class HomeController extends Controller
@@ -43,6 +44,7 @@ class HomeController extends Controller
         if ($admins) {
             if ($admins->password == md5($password)) {
                 Session()->put('admins', $admins);
+                DB::table('admins')->where('id', $admins->id)->update(['status' => 1]);
                 return redirect()->route('admin.home');
             } else {
                 return redirect()->back()->with('error', 'Mật khẩu không đúng');
@@ -53,6 +55,7 @@ class HomeController extends Controller
     }
     public function Logout()
     {
+        DB::table('admins')->where('id', Session::get('admins')->id)->update(['status' => 0]);
         Session()->forget('admins');
         return redirect()->route('admin.login');
     }
@@ -80,7 +83,7 @@ class HomeController extends Controller
         $admin->address = $request->address;
         $admin->save();
 
-        if($avatar  = $request->file('avatar')){
+        if ($avatar  = $request->file('avatar')) {
             $file_name = $avatar->getClientOriginalName();
             $avatar->move('uploads/avatar', $file_name);
             $admin->avatar = $file_name;

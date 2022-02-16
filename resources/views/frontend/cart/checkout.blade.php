@@ -1,17 +1,17 @@
 @extends('layouts.frontend')
 @section('content')
-@section('title', 'Checkout')
+@section('title', 'Thanh toán')
 <main id="main" class="main-site">
     <div class="container">
         <div class="wrap-breadcrumb">
             <ul>
-                <li class="item-link"><a href="{{ route('home') }}" class="link">Home</a></li>
-                <li class="item-link"><span>Checkout</span></li>
+                <li class="item-link"><a href="{{ route('home') }}" class="link">Trang chủ</a></li>
+                <li class="item-link"><span>Thanh toán</span></li>
             </ul>
         </div>
         <div class=" main-content-area">
             <div class="wrap-iten-in-cart">
-                <h3 class="box-title">Products Name</h3>
+                <h3 class="box-title">Tên sản phẩm</h3>
                 <ul class="products-cart">
                     @foreach ($cart as $cart)
                         <form action="{{ route('updateCart', $cart->cart_id) }}" method="post">
@@ -64,54 +64,82 @@
                 <form action="{{ route('postCheckout') }}" method="post">
                     @csrf
                     <div class="summary-item payment-method">
-                        <h4 class="title-box">Payment Method</h4>
-                        <p class="summary-info"><span class="title">Check / Money order</span></p>
-                        <p class="summary-info"><span class="title">Credit Cart (saved)</span></p>
+                        <h4 class="title-box">Phương thức thanh toán</h4>
                         <div class="choose-payment-methods">
                             <label class="payment-method">
-                                <input name="payment_method" id="payment-method-bank" value="bank" type="radio"
+                                <input name="payment_method" id="payment-method-bank" value="Chuyển khoản" type="radio"
                                     required>
-                                <span>Direct Bank Transder</span>
-                                <span class="payment-desc">But the majority have suffered alteration in some form, by
+                                <span>Chuyển khoản</span>
+                                {{-- <span class="payment-desc">But the majority have suffered alteration in some form, by
                                     injected humour, or randomised words which don't look even slightly
-                                    believable</span>
+                                    believable</span> --}}
                             </label>
                             <label class="payment-method">
-                                <input name="payment_method" id="payment-method-visa" value="visa" type="radio"
-                                    required>
-                                <span>visa</span>
-                                <span class="payment-desc">There are many variations of passages of Lorem Ipsum
-                                    available</span>
+                                <input name="payment_method" id="payment-method-visa" value="COD" type="radio" required>
+                                <span>Thanh toán khi nhận hàng</span>
+                                {{-- <span class="payment-desc">There are many variations of passages of Lorem Ipsum
+                                    available</span> --}}
                             </label>
                             <label class="payment-method">
-                                <input name="payment_method" id="payment-method-paypal" value="paypal" type="radio"
+                                <input name="payment_method" id="payment-method-paypal" value="Paypal" type="radio"
                                     required>
-                                <span>Paypal</span>
-                                <span class="payment-desc">You can pay with your credit</span>
-                                <span class="payment-desc">card if you don't have a paypal account</span>
+                                <span>Thanh toán qua Paypal</span>
+                                {{-- <span class="payment-desc">You can pay with your credit</span>
+                                <span class="payment-desc">card if you don't have a paypal account</span> --}}
                             </label>
                         </div>
-                        <p class="summary-info grand-total"><span>Grand Total</span> <span
+                        <p class="summary-info grand-total"><span>Thành tiền</span> <span
                                 class="grand-total-price">{{ number_format($total, 0, ',', ',') . ' VND' }}</span>
                         </p>
-                        <button class="btn btn-medium">Place order now</button>
+                        <button class="btn btn-medium">Đặt hàng ngay</button>
+                    </div>
+                    <div class="summary-item shipping-method">
+                        <h4 class="title-box f-title">Thông tin người nhận</h4>
+                        <table class="table table-striped">
+                            <tr>
+                                <th>
+                                    Họ tên :
+                                </th>
+                                <td>
+                                    <b>{{ Session::get('user')->name }}</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Địa chỉ :
+                                </th>
+                                <td>
+                                    <Select class="form-control select_add" name="address_user">
+                                        @foreach ($address as $address)
+                                            <option value="{{ $address->address }}">{{ $address->address }}
+                                            </option>
+                                        @endforeach
+                                    </Select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    SĐT :
+                                </th>
+                                <td>
+                                    <b>{{ Session::get('user')->phone }}</b>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </form>
+                <br>
                 <div class="summary-item shipping-method">
-                    <h4 class="title-box f-title">Shipping method</h4>
-                    <p class="summary-info"><span class="title">Flat Rate</span></p>
-                    <p class="summary-info"><span class="title">Fixed $50.00</span></p>
-                    <h4 class="title-box">Discount Codes</h4>
+                    <h4 class="title-box">Mã giảm giá</h4>
                     <form action="{{ route('postCoupon') }}" method="post">
                         @csrf
                         <p class="row-in-form">
                             <label for="coupon-code">Enter Your Coupon code:</label>
                             @if (Session::get('cou_code'))
                                 <input id="coupon-code" type="text" name="coupon_code"
-                                    placeholder="{{  Session::get('cou_code') }} " disabled>
+                                    placeholder="{{ Session::get('cou_code') }} " disabled>
                             @else
-                                <input id="coupon-code" type="text" name="coupon_code"
-                                    placeholder="Nhap ma giam gia ">
+                                <input id="coupon-code" type="text" name="coupon_code" placeholder="Nhap ma giam gia ">
                             @endif
 
                             <button type="submit" class="btn btn-small">Apply</button>

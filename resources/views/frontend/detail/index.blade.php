@@ -7,7 +7,9 @@
 
         <div class="wrap-breadcrumb">
             <ul>
-                <li class="item-link"><a href="#" class="link">home</a></li>
+                <li class="item-link"><a href="{{ route('home') }}" class="link">Trang chủ</a></li>
+                <li class="item-link"><a href="{{ route('category', $cate->c_slug) }}"
+                        class="link">{{ $cate->c_name }}</a></li>
                 <li class="item-link"><span>{{ $product->pro_name }}</span></li>
             </ul>
         </div>
@@ -42,18 +44,18 @@
                             <div class="short-desc">
                                 <?php echo $product->pro_content; ?>
                             </div>
-                            <div class="wrap-social">
+                            {{-- <div class="wrap-social">
                                 <a class="link-socail" href="#"><img src="../frontend/images/social-list.png"
                                         alt=""></a>
-                            </div>
+                            </div> --}}
                             <div class="wrap-price"><span
-                                    class="product-price">{{ number_format($product->pro_price, 0, ',', ',') . ' VND' }}</span><span
+                                    class="product-price">{{ number_format($product->pro_price - $product->pro_price * $product->pro_sale, 0, ',', ',') . ' đồng' }}</span><span
                                     class="product-price"> / {{ $product->pro_unit }}</span></div>
                             <div class="stock-info in-stock">
                                 @if ($product->pro_qty > 0)
-                                    <p class="availability">Availability: <b>In Stock</b></p>
+                                    <p class="availability">Số lượng có sẵn: <b>{{ $product->pro_qty }}</b></p>
                                 @else
-                                    <p class="availability">Availability: <b>Out of Stock</b></p>
+                                    <p class="availability">Số lượng có sẵn: <b>Hết hàng</b></p>
                                 @endif
                             </div>
                             <div class="quantity">
@@ -66,22 +68,27 @@
                                 </div>
                             </div>
                             <input type="hidden" name="pro_name" value="{{ $product->pro_name }}">
-                            <input type="hidden" name="pro_price" value="{{ $product->pro_price }}">
+                            <input type="hidden" name="pro_price"
+                                value="{{ $product->pro_price - $product->pro_price * $product->pro_sale }}">
                             <input type="hidden" name="pro_avatar" value="{{ $product->pro_avatar }}">
                             <div class="wrap-butons">
-                                <button class="btn add-to-cart">Add to Cart</button>
+                                @if ($product->pro_qty < 0)
+                                    <button class="btn add-to-cart" disabled>Thêm vào giỏ hàng</button>
+                                @else
+                                    <button class="btn add-to-cart">Thêm vào giỏ hàng</button>
+                                @endif
                                 <div class="wrap-btn">
                                     <a href="#" class="btn btn-compare">Add Compare</a>
-                                    <a href="#" class="btn btn-wishlist">Add Wishlist</a>
+                                    <a href="{{route('addWishlist',$product->pro_id)}}" class="btn btn-wishlist">Thêm vào Wishlist</a>
                                 </div>
                             </div>
                         </div>
                     </form>
                     <div class="advance-info">
                         <div class="tab-control normal">
-                            <a href="#description" class="tab-control-item active">description</a>
-                            <a href="#add_infomation" class="tab-control-item">Addtional Infomation</a>
-                            <a href="#review" class="tab-control-item">Reviews</a>
+                            <a href="#description" class="tab-control-item active">Mô tả</a>
+                            <a href="#add_infomation" class="tab-control-item">Thông tin thêm</a>
+                            <a href="#review" class="tab-control-item">Bình luận</a>
                         </div>
                         <div class="tab-contents">
                             <div class="tab-content-item active" id="description">
@@ -198,39 +205,32 @@
                 <div class="widget widget-our-services ">
                     <div class="widget-content">
                         <ul class="our-services">
-
                             <li class="service">
                                 <a class="link-to-service" href="#">
                                     <i class="fa fa-truck" aria-hidden="true"></i>
                                     <div class="right-content">
-                                        <b class="title">Free Shipping</b>
-                                        <span class="subtitle">On Oder Over $99</span>
-                                        <p class="desc">Lorem Ipsum is simply dummy text of the printing...
-                                        </p>
+                                        <b class="title">Miễn phí vận chuyển</b>
+                                        <span class="subtitle">Cho toàn bộ đơn hàng</span>
                                     </div>
                                 </a>
                             </li>
-
                             <li class="service">
                                 <a class="link-to-service" href="#">
                                     <i class="fa fa-gift" aria-hidden="true"></i>
                                     <div class="right-content">
-                                        <b class="title">Special Offer</b>
-                                        <span class="subtitle">Get a gift!</span>
-                                        <p class="desc">Lorem Ipsum is simply dummy text of the printing...
+                                        <b class="title">Quà tặng</b>
+                                        <span class="subtitle">Mã giảm giá</span>
+                                        <p class="desc">Khi mua đơn hàng trên 1.000.000đ</p>
                                         </p>
                                     </div>
                                 </a>
                             </li>
-
                             <li class="service">
                                 <a class="link-to-service" href="#">
                                     <i class="fa fa-reply" aria-hidden="true"></i>
                                     <div class="right-content">
-                                        <b class="title">Order Return</b>
-                                        <span class="subtitle">Return within 7 days</span>
-                                        <p class="desc">Lorem Ipsum is simply dummy text of the printing...
-                                        </p>
+                                        <b class="title">Hoàn trả</b>
+                                        <span class="subtitle">Trả hàng nếu không đúng mô tả</span>
                                     </div>
                                 </a>
                             </li>
@@ -239,73 +239,30 @@
                 </div><!-- Categories widget-->
 
                 <div class="widget mercado-widget widget-product">
-                    <h2 class="widget-title">Popular Products</h2>
+                    <h2 class="widget-title">Sản phẩm phổ biến</h2>
                     <div class="widget-content">
                         <ul class="products">
-                            <li class="product-item">
-                                <div class="product product-widget-style">
-                                    <div class="thumbnnail">
-                                        <a href="detail.html"
-                                            title="Radiant-360 R6 Wireless Omnidirectional Speaker [White]">
-                                            <figure><img src="assets/images/products/digital_01.jpg" alt=""></figure>
-                                        </a>
+                            @foreach ($popularProducts as $popularProducts)
+                                <li class="product-item">
+                                    <div class="product product-widget-style">
+                                        <div class="thumbnnail">
+                                            <a href="{{ route('detail', $popularProducts->pro_slug) }}"
+                                                title="{{ $popularProducts->pro_name }}">
+                                                <figure><img
+                                                        src="{{ asset('uploads/products/' . $popularProducts->pro_avatar) }}"
+                                                        alt=""></figure>
+                                            </a>
+                                        </div>
+                                        <div class="product-info">
+                                            <a href="{{ route('detail', $popularProducts->pro_slug) }}"
+                                                class="product-name"><span>{{ $popularProducts->pro_name }}</span></a>
+                                            <div class="wrap-price"><span
+                                                    class="product-price">{{ number_format($popularProducts->pro_price - $popularProducts->pro_price * $popularProducts->pro_sale,0,',',',') . ' VND' }}</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="product-info">
-                                        <a href="#" class="product-name"><span>Radiant-360 R6 Wireless
-                                                Omnidirectional Speaker...</span></a>
-                                        <div class="wrap-price"><span class="product-price">$168.00</span></div>
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li class="product-item">
-                                <div class="product product-widget-style">
-                                    <div class="thumbnnail">
-                                        <a href="detail.html"
-                                            title="Radiant-360 R6 Wireless Omnidirectional Speaker [White]">
-                                            <figure><img src="assets/images/products/digital_17.jpg" alt=""></figure>
-                                        </a>
-                                    </div>
-                                    <div class="product-info">
-                                        <a href="#" class="product-name"><span>Radiant-360 R6 Wireless
-                                                Omnidirectional Speaker...</span></a>
-                                        <div class="wrap-price"><span class="product-price">$168.00</span></div>
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li class="product-item">
-                                <div class="product product-widget-style">
-                                    <div class="thumbnnail">
-                                        <a href="detail.html"
-                                            title="Radiant-360 R6 Wireless Omnidirectional Speaker [White]">
-                                            <figure><img src="assets/images/products/digital_18.jpg" alt=""></figure>
-                                        </a>
-                                    </div>
-                                    <div class="product-info">
-                                        <a href="#" class="product-name"><span>Radiant-360 R6 Wireless
-                                                Omnidirectional Speaker...</span></a>
-                                        <div class="wrap-price"><span class="product-price">$168.00</span></div>
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li class="product-item">
-                                <div class="product product-widget-style">
-                                    <div class="thumbnnail">
-                                        <a href="detail.html"
-                                            title="Radiant-360 R6 Wireless Omnidirectional Speaker [White]">
-                                            <figure><img src="assets/images/products/digital_20.jpg" alt=""></figure>
-                                        </a>
-                                    </div>
-                                    <div class="product-info">
-                                        <a href="#" class="product-name"><span>Radiant-360 R6 Wireless
-                                                Omnidirectional Speaker...</span></a>
-                                        <div class="wrap-price"><span class="product-price">$168.00</span></div>
-                                    </div>
-                                </div>
-                            </li>
-
+                                </li>
+                            @endforeach
                         </ul>
                     </div>
                 </div>
@@ -321,25 +278,29 @@
                             data-loop="false" data-nav="true" data-dots="false"
                             data-responsive='{"0":{"items":"1"},"480":{"items":"2"},"768":{"items":"3"},"992":{"items":"3"},"1200":{"items":"5"}}'>
                             @foreach ($productRelated as $related)
-                            <div class="product product-style-2 equal-elem ">
-                                <div class="product-thumnail">
-                                    <a href="{{route('detail',$related->pro_slug)}}" title="{{$related->pro_name}}">
-                                        <figure><img src="{{asset('uploads/products/'.$related->pro_avatar)}}" width="214"
-                                                height="214" alt="{{$related->pro_name}}">
-                                        </figure>
-                                    </a>
-                                    <div class="group-flash">
-                                        <span class="flash-item new-label">new</span>
+                                <div class="product product-style-2 equal-elem ">
+                                    <div class="product-thumnail">
+                                        <a href="{{ route('detail', $related->pro_slug) }}"
+                                            title="{{ $related->pro_name }}">
+                                            <figure><img
+                                                    src="{{ asset('uploads/products/' . $related->pro_avatar) }}"
+                                                    width="214" height="214" alt="{{ $related->pro_name }}">
+                                            </figure>
+                                        </a>
+                                        <div class="group-flash">
+                                            <span class="flash-item new-label">new</span>
+                                        </div>
+                                        <div class="wrap-btn">
+                                            <a href="#" class="function-link">quick view</a>
+                                        </div>
                                     </div>
-                                    <div class="wrap-btn">
-                                        <a href="#" class="function-link">quick view</a>
+                                    <div class="product-info">
+                                        <a href="#" class="product-name"><span>{{ $related->pro_name }}</span></a>
+                                        <div class="wrap-price"><span
+                                                class="product-price">{{ number_format($related->pro_price, 0, ',', ',') . ' VND' }}</span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="product-info">
-                                    <a href="#" class="product-name"><span>{{$related->pro_name}}</span></a>
-                                    <div class="wrap-price"><span class="product-price">{{number_format(($related->pro_price),0,',',','). ' VND'}}</span></div>
-                                </div>
-                            </div>
                             @endforeach
 
                         </div>

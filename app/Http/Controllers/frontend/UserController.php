@@ -7,6 +7,7 @@ use App\Models\address;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Laravel\Socialite\Facades\Socialite;
 use Session;
 
@@ -118,7 +119,32 @@ class UserController extends Controller
         return redirect()->route('home');
     }
 
+    public function notifications()
+    {
+        $user = Session::get('user')->id;
+        $notifications = DB::table('notifications')->where('user_id', $user)->orderBy('id', 'desc')->get();
+        return view('frontend.notification.index', compact('notifications'));
+    }
+    public function readNotifications($id)
+    {
+        DB::table('notifications')->where('id', $id)->update(['read' => 1]);
+        return redirect()->route('notifications')->with('success', 'Đã đọc thông báo');
+    }
+    public function deleteNotifications($id)
+    {
+        DB::table('notifications')->where('id', $id)->delete();
+        return redirect()->route('notifications')->with('success', 'Đã xóa thông báo');
+    }
+    public function deleteAllNotifications()
+    {
+        DB::table('notifications')->where('user_id', Session::get('user')->id)->delete();
+        return redirect()->route('notifications')->with('success', 'Đã xóa tất cả thông báo');
+    }
 
-
-
+    public function profile()
+    {
+        $id = Session::get('user')->id;
+        $user = User::find($id);
+        return view('frontend.user.index', compact('user'));
+    }
 }

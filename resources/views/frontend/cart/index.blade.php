@@ -15,7 +15,7 @@
                 <h3 class="box-title">Products Name</h3>
                 <ul class="products-cart">
                     @foreach ($cart as $cart)
-                        <form action="{{route('updateCart',$cart->cart_id)}}" method="post">
+                        <form action="{{ route('updateCart', $cart->cart_id) }}" method="post">
                             @csrf
                             <li class="pr-cart-item">
                                 <div class="product-image">
@@ -27,7 +27,8 @@
                                         href="{{ route('detail', Str::slug($cart->cart_product_name)) }}">{{ $cart->cart_product_name }}</a>
                                 </div>
                                 <div class="price-field produtc-price">
-                                    <p class="price">{{number_format(($cart->cart_product_price),0,',',','). ' VND'}}</p>
+                                    <p class="price">
+                                        {{ number_format($cart->cart_product_price, 0, ',', ',') . ' VND' }}</p>
                                 </div>
                                 <div class="quantity">
                                     <div class="quantity-input">
@@ -41,7 +42,7 @@
                                 <input type="hidden" value="{{ $cart->cart_id }}" name="cart_id">
                                 <div class="price-field sub-total">
                                     <p class="price">
-                                        {{number_format(($cart->cart_product_total),0,',',','). ' VND'}}
+                                        {{ number_format($cart->cart_product_total, 0, ',', ',') . ' VND' }}
                                 </div>
 
                                 <div class="delete">
@@ -52,7 +53,8 @@
                                 </div>
 
                                 <div class="delete">
-                                    <a href="{{Route('deleteCart',$cart->cart_id)}}" class="btn btn-delete2" title="">
+                                    <a href="{{ Route('deleteCart', $cart->cart_id) }}" class="btn btn-delete2"
+                                        title="">
                                         <span>Delete from your cart</span>
                                         <i class="fa fa-times-circle" aria-hidden="true"></i>
                                     </a>
@@ -66,24 +68,20 @@
                 <div class="order-summary">
                     <h4 class="title-box">Order Summary</h4>
                     <p class="summary-info"><span class="title">Subtotal</span><b
-                            class="index">{{number_format(($total),0,',',','). ' VND'}}</b></p>
+                            class="index">{{ number_format($total, 0, ',', ',') . ' VND' }}</b></p>
                     <p class="summary-info"><span class="title">Shipping</span><b class="index">Free
                             Shipping</b></p>
                     <p class="summary-info total-info "><span class="title">Total</span><b
-                            class="index">{{number_format(($total),0,',',','). ' VND'}}</b></p>
+                            class="index">{{ number_format($total, 0, ',', ',') . ' VND' }}</b></p>
                 </div>
                 <div class="checkout-info">
-                    <label class="checkbox-field">
-                        <input class="frm-input " name="have-code" id="have-code" value="" type="checkbox"><span>I
-                            have promo code</span>
-                    </label>
-                    <a class="btn btn-checkout" href="{{route('checkout')}}">Check out</a>
-                    <a class="link-to-shop" href="shop.html">Continue Shopping<i class="fa fa-arrow-circle-right"
-                            aria-hidden="true"></i></a>
+                    <a class="btn btn-checkout" href="{{ route('checkout') }}">Check out</a>
+
                 </div>
                 <div class="update-clear">
-                    <a class="btn btn-clear" href="{{route('clearCart')}}">Clear Shopping Cart</a>
-                    <a class="btn btn-update" href="#">Update Shopping Cart</a>
+                    <a class="btn btn-clear" href="{{ route('home') }}" >Continue Shopping<i
+                            class="fa fa-arrow-circle-right" aria-hidden="true"></i></a>
+                    <a class="btn btn-clear"  href="{{ route('clearCart') }}">Clear Shopping Cart</a>
                 </div>
             </div>
 

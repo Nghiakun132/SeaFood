@@ -4965,7 +4965,7 @@ table.shop_attributes tbody{
 .summary-item .summary-info.grand-total span{
     font-size: 16px;
     line-height: 24px;
-    font-weight: 600;
+    font-weight: bold;
     color: #333333;
 }
 .summary-item .summary-info.grand-total span.grand-total-price{

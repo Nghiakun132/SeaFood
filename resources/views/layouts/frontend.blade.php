@@ -20,6 +20,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/chosen.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/flexslider.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/test.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/color-01.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -93,50 +94,38 @@
                             <ul>
                                 @if (Session::get('user') == null)
                                     <li class="menu-item"><a title="Register or Login"
-                                            href="{{ route('login') }}">Login</a></li>
+                                            href="{{ route('login') }}">Đăng nhập</a></li>
                                     <li class="menu-item"><a title="Register or Login"
-                                            href="{{ route('register') }}">Register</a></li>
+                                            href="{{ route('register') }}">Đăng ký</a></li>
                                 @else
-                                    <li class="menu-item"><a title="Register or Login"
-                                            href="{{ route('logout') }}">Dang
-                                            xuat:{{ Session::get('user')->name }}</a></li>
+                                    <li class="menu-item">Chào : {{ Session::get('user')->name }}</li>
+                                    <li class="menu-item menu-item-has-children parent">
+                                        <a title="Tài khoản" href="#">Tài khoản<i class="fa fa-angle-down"
+                                                aria-hidden="true"></i></a>
+                                        <ul class="submenu curency">
+                                            <li class="menu-item list_hover">
+                                                <a title="Tài khoản của tôi" href="{{route('profile')}}">Tài khoản của tôi</a>
+                                            </li>
+                                            <li class="menu-item list_hover">
+                                                <a title="Đơn hàng" href="{{route('order')}}">Đơn hàng</a>
+                                            </li>
+                                            <li class="menu-item list_hover">
+                                                <a title="Danh sách yêu thích" href="{{route('wishlist')}}">Danh sách yêu thích</a>
+                                            </li>
+                                            <li class="menu-item list_hover">
+                                                <a title="Mã giảm giá" href="#">Mã giảm giá</a>
+                                            </li>
+                                            <li class="menu-item list_hover">
+                                                <a title="Danh sách địa chỉ" href="#">Danh sách địa chỉ</a>
+                                            </li>
+
+                                            <li class="menu-item list_hover">
+                                                <a href="{{ route('logout') }}">Đăng xuất</a>
+                                            </li>
+                                        </ul>
+                                    </li>
                                 @endif
-                                <li class="menu-item lang-menu menu-item-has-children parent">
-                                    <a title="English" href="#"><span class="img label-before"><img
-                                                src="{{ asset('frontend/images/lang-en.png') }}"
-                                                alt="lang-en"></span>English<i class="fa fa-angle-down"
-                                            aria-hidden="true"></i></a>
-                                    <ul class="submenu lang">
-                                        <li class="menu-item list_hover"><a title="hungary" href="#"><span
-                                                    class="img label-before"><img
-                                                        src="{{ asset('frontend/images/lang-hun.png') }}"
-                                                        alt="lang-hun"></span>Hungary</a></li>
-                                        <li class="menu-item list_hover"><a title="german" href="#"><span
-                                                    class="img label-before"><img
-                                                        src="{{ asset('frontend/images/lang-ger.png') }}"
-                                                        alt="lang-ger"></span>German</a></li>
-                                        <li class="menu-item list_hover"><a title="french" href="#"><span
-                                                    class="img label-before"><img
-                                                        src="{{ asset('frontend/images/lang-fra.png') }}"
-                                                        alt="lang-fre"></span>French</a></li>
-                                        <li class="menu-item list_hover"><a title="canada" href="#"><span
-                                                    class="img label-before"><img
-                                                        src="{{ asset('frontend/images/lang-can.png') }}"
-                                                        alt="lang-can"></span>Canada</a></li>
-                                    </ul>
-                                </li>
-                                <li class="menu-item menu-item-has-children parent">
-                                    <a title="Thong tin ca nhan" href="#">Thong tin ca nhan<i class="fa fa-angle-down"
-                                            aria-hidden="true"></i></a>
-                                    <ul class="submenu curency">
-                                        <li class="menu-item list_hover">
-                                            <a title="Ma giam gia" href="#">Ma giam gia</a>
-                                        </li>
-                                        <li class="menu-item list_hover">
-                                            <a title="Chinh sua thong tin" href="#">Chinh sua thong tin</a>
-                                        </li>
-                                    </ul>
-                                </li>
+
                             </ul>
                         </div>
                     </div>
@@ -160,23 +149,14 @@
                                 </div>
                             </div>
                             <div class="wrap-icon right-section">
-                                <div class="wrap-icon-section wishlist">
-                                    <a href="#" class="link-direction">
-                                        <i class="fa fa-heart" aria-hidden="true" style="color:red"></i>
-                                        <div class="left-info">
-                                            <span class="index">{{ $view }} item</span>
-                                            <span class="title"
-                                                style="color:rgb(247, 247, 247)">Wishlist</span>
-                                        </div>
-                                    </a>
-                                </div>
+
                                 <div class="wrap-icon-section minicart">
                                     <a href="{{ route('cart') }}" class="link-direction">
                                         <i class="fa fa-shopping-basket" aria-hidden="true"
                                             style="color:rgb(18, 238, 18)"></i>
                                         <div class="left-info">
                                             <span class="index">{{ $count }} item</span>
-                                            <span class="title" style="color:rgb(247, 247, 247)">CART</span>
+                                            <span class="title" style="color:rgb(247, 247, 247)">GIỎ Hàng</span>
                                         </div>
                                     </a>
                                 </div>
@@ -184,57 +164,56 @@
                                     <a href="#" class="link-direction dropdown-toggle" data-toggle="dropdown">
                                         <i class="fa-solid fa-bell" style="color:yellow"></i>
                                         <div class="left-info">
-                                            <span class="index">{{ $countNotification }}</span>
+                                            <span class="index">{{ $countNotification }} thông báo mới</span>
+                                            <span class="title" style="color:rgb(247, 247, 247)">Thông báo</span>
                                         </div>
                                         <ul class="dropdown-menu">
                                             @if ($countNotification > 3)
                                                 @foreach ($notification as $notification)
                                                     <li>
-                                                        <a class="" href="{{route('order')}}">
-                                                            @if ($notification->read == 0)
+                                                        @if ($notification->read == 0)
+                                                        <a class="" href="{{ route('readNotifications', $notification->id) }}">
                                                                 <div class="alert alert-danger">
                                                                     <strong>{{ $notification->notification }}</strong>
                                                                     <p>{{ $notification->created_at }}</p>
                                                                 </div>
+                                                        </a>
                                                             @else
-                                                                <div class="alert alert-default">
+                                                        <a class="" href="{{ route('notifications') }}">
+                                                            <div class="alert alert-default">
                                                                     <strong>{{ $notification->notification }}</strong>
                                                                     <p>{{ $notification->created_at }}</p>
                                                                 </div>
+                                                            </a>
                                                             @endif
-                                                        </a>
                                                     </li>
                                                 @endforeach
                                                 <div class="readAll" style="text-align: center">
-                                                    <a href="">Xem
-                                                        tat ca</a>
+                                                    <a href="">Xem tất cả</a>
                                                 </div>
                                             @else
                                                 @foreach ($notification as $notification)
                                                     <li>
-                                                        <a class="" href="{{route('order')}}">
-                                                            @if ($notification->read == 0)
+                                                        @if ($notification->read == 0)
+                                                        <a class="" href="{{ route('readNotifications', $notification->id) }}">
                                                                 <div class="alert alert-danger">
                                                                     <strong>{{ $notification->notification }}</strong>
                                                                     <p>{{ $notification->created_at }}</p>
                                                                 </div>
+                                                        </a>
                                                             @else
-                                                                <div class="alert alert-default">
+                                                        <a class="" href="{{ route('notifications') }}">
+                                                            <div class="alert alert-default">
                                                                     <strong>{{ $notification->notification }}</strong>
                                                                     <p>{{ $notification->created_at }}</p>
                                                                 </div>
+                                                            </a>
                                                             @endif
                                                         </a>
                                                     </li>
                                                 @endforeach
                                             @endif
                                         </ul>
-                                    </a>
-                                </div>
-                                <div class="wrap-icon-section minicart">
-                                    <a href="{{ route('order') }}" class="link-direction">
-                                        <i class="fas fa-receipt" aria-hidden="true"
-                                            style="color: rgb(29, 14, 241)"></i>
                                     </a>
                                 </div>
                                 <div class="wrap-icon-section show-up-after-1024">
@@ -248,7 +227,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="nav-section header-sticky">
+                {{-- <div class="nav-section header-sticky">
                     <div class="header-nav-section">
                         <div class="container">
                             <ul class="nav menu-nav clone-main-menu" id="mercado_haead_menu" data-menuname="Sale Info">
@@ -265,7 +244,7 @@
                             </ul>
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <div class="primary-nav-section">
                     <div class="container">
                         <ul class="nav primary clone-main-menu" id="mercado_main" data-menuname="Main menu">
@@ -294,64 +273,58 @@
                         <li class="fc-info-item">
                             <i class="fa fa-truck" aria-hidden="true"></i>
                             <div class="wrap-left-info">
-                                <h4 class="fc-name">Free Shipping</h4>
-                                <p class="fc-desc">Free On Oder Over $99</p>
+                                <h4 class="fc-name">Miễn phí vận chuyển</h4>
+                                <p class="fc-desc">Cho toàn bộ đơn hàng</p>
                             </div>
 
                         </li>
                         <li class="fc-info-item">
                             <i class="fa fa-recycle" aria-hidden="true"></i>
                             <div class="wrap-left-info">
-                                <h4 class="fc-name">Guarantee</h4>
-                                <p class="fc-desc">30 Days Money Back</p>
+                                <h4 class="fc-name">Đổi trả</h4>
+                                <p class="fc-desc">Nếu hàng không đúng mô tả</p>
                             </div>
 
                         </li>
                         <li class="fc-info-item">
                             <i class="fa fa-credit-card-alt" aria-hidden="true"></i>
                             <div class="wrap-left-info">
-                                <h4 class="fc-name">Safe Payment</h4>
-                                <p class="fc-desc">Safe your online payment</p>
+                                <h4 class="fc-name">Thanh toán</h4>
+                                <p class="fc-desc">Nhiều hình thức thanh toán</p>
                             </div>
 
                         </li>
                         <li class="fc-info-item">
                             <i class="fa fa-life-ring" aria-hidden="true"></i>
                             <div class="wrap-left-info">
-                                <h4 class="fc-name">Online Suport</h4>
-                                <p class="fc-desc">We Have Support 24/7</p>
+                                <h4 class="fc-name">Hỗ trợ online</h4>
+                                <p class="fc-desc">Chúng tôi hỗ trợ 24/7</p>
                             </div>
 
                         </li>
                     </ul>
                 </div>
             </div>
-            <!--End function info-->
-
             <div class="main-footer-content">
-
                 <div class="container">
-
                     <div class="row">
-
                         <div class="col-lg-4 col-sm-4 col-md-4 col-xs-12">
                             <div class="wrap-footer-item">
-                                <h3 class="item-header">Contact Details</h3>
+                                <h3 class="item-header">Liên hệ</h3>
                                 <div class="item-content">
                                     <div class="wrap-contact-detail">
                                         <ul>
                                             <li>
                                                 <i class="fa fa-map-marker" aria-hidden="true"></i>
-                                                <p class="contact-txt">45 Grand Central Terminal New York,NY 1017
-                                                    United State USA</p>
+                                                <p class="contact-txt">Hưng Lợi, Tân Hưng, Bình Tân, Vĩnh Long</p>
                                             </li>
                                             <li>
                                                 <i class="fa fa-phone" aria-hidden="true"></i>
-                                                <p class="contact-txt">(+123) 456 789 - (+123) 666 888</p>
+                                                <p class="contact-txt">0776585055</p>
                                             </li>
                                             <li>
                                                 <i class="fa fa-envelope" aria-hidden="true"></i>
-                                                <p class="contact-txt">Contact@yourcompany.com</p>
+                                                <p class="contact-txt">Nghiab1809377@student.ctu.edu.vn</p>
                                             </li>
                                         </ul>
                                     </div>
@@ -365,20 +338,20 @@
                                 <h3 class="item-header">Hot Line</h3>
                                 <div class="item-content">
                                     <div class="wrap-hotline-footer">
-                                        <span class="desc">Call Us toll Free</span>
-                                        <b class="phone-number">(+123) 456 789 - (+123) 666 888</b>
+                                        <span class="desc">Gọi cho tôi</span>
+                                        <b class="phone-number">0776585055</b>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="wrap-footer-item footer-item-second">
-                                <h3 class="item-header">Sign up for newsletter</h3>
+                                <h3 class="item-header">Đăng ký nhận khuyến mãi</h3>
                                 <div class="item-content">
                                     <div class="wrap-newletter-footer">
                                         <form action="#" class="frm-newletter" id="frm-newletter">
                                             <input type="email" class="input-email" name="email" value=""
-                                                placeholder="Enter your email address">
-                                            <button class="btn-submit">Subscribe</button>
+                                                placeholder="Nhập email của bạn">
+                                            <button class="btn-submit">Đăng ký</button>
                                         </form>
                                     </div>
                                 </div>
@@ -389,39 +362,39 @@
                         <div class="col-lg-4 col-sm-4 col-md-4 col-xs-12 box-twin-content ">
                             <div class="row">
                                 <div class="wrap-footer-item twin-item">
-                                    <h3 class="item-header">My Account</h3>
+                                    <h3 class="item-header">Tài khoản</h3>
                                     <div class="item-content">
                                         <div class="wrap-vertical-nav">
                                             <ul>
-                                                <li class="menu-item"><a href="#" class="link-term">My
-                                                        Account</a></li>
-                                                <li class="menu-item"><a href="#"
-                                                        class="link-term">Brands</a></li>
-                                                <li class="menu-item"><a href="#" class="link-term">Gift
-                                                        Certificates</a></li>
-                                                <li class="menu-item"><a href="#"
-                                                        class="link-term">Affiliates</a></li>
-                                                <li class="menu-item"><a href="#" class="link-term">Wish
-                                                        list</a></li>
+                                                <li class="menu-item"><a href="#" class="link-term">Tài
+                                                        khoản của tôi</a></li>
+                                                <li class="menu-item"><a href="#" class="link-term">Giỏ
+                                                        hàng</a></li>
+                                                <li class="menu-item"><a href="#" class="link-term">Mã giảm
+                                                        giá hiện có</a></li>
+                                                <li class="menu-item"><a href="#" class="link-term">Thông
+                                                        báo</a></li>
+                                                <li class="menu-item"><a href="#" class="link-term">Danh
+                                                        sách yêu thích</a></li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="wrap-footer-item twin-item">
-                                    <h3 class="item-header">Infomation</h3>
+                                    <h3 class="item-header">Thông tin </h3>
                                     <div class="item-content">
                                         <div class="wrap-vertical-nav">
                                             <ul>
-                                                <li class="menu-item"><a href="#" class="link-term">Contact
-                                                        Us</a></li>
+                                                <li class="menu-item"><a href="#" class="link-term">Liên hệ
+                                                        chúng tôi</a></li>
                                                 <li class="menu-item"><a href="#"
                                                         class="link-term">Returns</a></li>
-                                                <li class="menu-item"><a href="#" class="link-term">Site
-                                                        Map</a></li>
+                                                <li class="menu-item"><a href="#" class="link-term">Bản
+                                                        đồ</a></li>
                                                 <li class="menu-item"><a href="#"
                                                         class="link-term">Specials</a></li>
-                                                <li class="menu-item"><a href="#" class="link-term">Order
-                                                        History</a></li>
+                                                <li class="menu-item"><a href="#" class="link-term">Lịch sử
+                                                        mua hàng</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -452,15 +425,16 @@
                                     <div class="wrap-list-item social-network">
                                         <ul>
                                             <li><a href="#" class="link-to-item" title="twitter"><i
-                                                        class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                                            <li><a href="#" class="link-to-item" title="facebook"><i
-                                                        class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                                        class="fa-brands fa-twitter"></i></a></li>
+                                            <li><a href="https://facebook.com/nghiakun132" target="_blank"
+                                                    class="link-to-item" title="facebook"><i
+                                                        class="fa-brands fa-facebook"></i></a></li>
                                             <li><a href="#" class="link-to-item" title="pinterest"><i
-                                                        class="fa fa-pinterest" aria-hidden="true"></i></a></li>
+                                                        class="fa-brands fa-pinterest"></i></a></li>
                                             <li><a href="#" class="link-to-item" title="instagram"><i
-                                                        class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                                                        class="fa-brands fa-instagram"></i></a></li>
                                             <li><a href="#" class="link-to-item" title="vimeo"><i
-                                                        class="fa fa-vimeo" aria-hidden="true"></i></a></li>
+                                                        class="fa-brands fa-vimeo"></i></a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -493,79 +467,6 @@
 
                     </div>
                 </div>
-                <div class="wrap-back-link">
-                    <div class="container">
-                        <div class="back-link-box">
-                            <h3 class="backlink-title">Quick Links</h3>
-                            <div class="back-link-row">
-                                <ul class="list-back-link">
-                                    <li><span class="row-title">Mobiles:</span></li>
-                                    <li><a href="#" class="redirect-back-link" title="mobile">Mobiles</a></li>
-                                    <li><a href="#" class="redirect-back-link" title="yphones">YPhones</a></li>
-                                    <li><a href="#" class="redirect-back-link" title="Gianee Mobiles GL">Gianee Mobiles
-                                            GL</a></li>
-                                    <li><a href="#" class="redirect-back-link" title="Mobiles Karbonn">Mobiles
-                                            Karbonn</a></li>
-                                    <li><a href="#" class="redirect-back-link" title="Mobiles Viva">Mobiles Viva</a>
-                                    </li>
-                                    <li><a href="#" class="redirect-back-link" title="Mobiles Intex">Mobiles Intex</a>
-                                    </li>
-                                    <li><a href="#" class="redirect-back-link" title="Mobiles Micrumex">Mobiles
-                                            Micrumex</a></li>
-                                    <li><a href="#" class="redirect-back-link" title="Mobiles Bsus">Mobiles Bsus</a>
-                                    </li>
-                                    <li><a href="#" class="redirect-back-link" title="Mobiles Samsyng">Mobiles
-                                            Samsyng</a></li>
-                                    <li><a href="#" class="redirect-back-link" title="Mobiles Lenova">Mobiles
-                                            Lenova</a></li>
-                                </ul>
-
-                                <ul class="list-back-link">
-                                    <li><span class="row-title">Tablets:</span></li>
-                                    <li><a href="#" class="redirect-back-link" title="Plesc YPads">Plesc YPads</a></li>
-                                    <li><a href="#" class="redirect-back-link" title="Samsyng Tablets">Samsyng
-                                            Tablets</a></li>
-                                    <li><a href="#" class="redirect-back-link" title="Qindows Tablets">Qindows
-                                            Tablets</a></li>
-                                    <li><a href="#" class="redirect-back-link" title="Calling Tablets">Calling
-                                            Tablets</a></li>
-                                    <li><a href="#" class="redirect-back-link" title="Micrumex Tablets">Micrumex
-                                            Tablets</a></li>
-                                    <li><a href="#" class="redirect-back-link" title="Lenova Tablets Bsus">Lenova
-                                            Tablets Bsus</a></li>
-                                    <li><a href="#" class="redirect-back-link" title="Tablets iBall">Tablets iBall</a>
-                                    </li>
-                                    <li><a href="#" class="redirect-back-link" title="Tablets Swipe">Tablets Swipe</a>
-                                    </li>
-                                    <li><a href="#" class="redirect-back-link" title="Tablets TVs, Audio">Tablets TVs,
-                                            Audio</a></li>
-                                </ul>
-                                <ul class="list-back-link">
-                                    <li><span class="row-title">Fashion:</span></li>
-                                    <li><a href="#" class="redirect-back-link" title="Sarees Silk">Sarees Silk</a></li>
-                                    <li><a href="#" class="redirect-back-link" title="sarees Salwar">sarees Salwar</a>
-                                    </li>
-                                    <li><a href="#" class="redirect-back-link" title="Suits Lehengas">Suits
-                                            Lehengas</a></li>
-                                    <li><a href="#" class="redirect-back-link" title="Biba Jewellery">Biba
-                                            Jewellery</a></li>
-                                    <li><a href="#" class="redirect-back-link" title="Rings Earrings">Rings
-                                            Earrings</a></li>
-                                    <li><a href="#" class="redirect-back-link" title="Diamond Rings">Diamond Rings</a>
-                                    </li>
-                                    <li><a href="#" class="redirect-back-link" title="Loose Diamond Shoes">Loose
-                                            Diamond Shoes</a></li>
-                                    <li><a href="#" class="redirect-back-link" title="BootsMen Watches">BootsMen
-                                            Watches</a></li>
-                                    <li><a href="#" class="redirect-back-link" title="Women Watches">Women Watches</a>
-                                    </li>
-                                </ul>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
 
             <div class="coppy-right-box">
@@ -592,7 +493,6 @@
             </div>
         </div>
     </footer>
-
     <script src="{{ asset('frontend/js/jquery-1.12.4.minb8ff.js') }}"></script>
     <script src="{{ asset('frontend/js/jquery-ui-1.12.4.minb8ff.js') }}"></script>
     <script src="{{ asset('frontend/js/bootstrap.min.js') }}"></script>
@@ -602,6 +502,7 @@
     <script src="{{ asset('frontend/js/jquery.countdown.min.js') }}"></script>
     <script src="{{ asset('frontend/js/jquery.sticky.js') }}"></script>
     <script src="{{ asset('frontend/js/functions.js') }}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 </body>
 
 </html>

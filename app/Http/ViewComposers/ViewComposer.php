@@ -29,7 +29,8 @@ class ViewComposer
             $count = count($this->cart->where('cart_user_id', Session::get('user')->id)->get());
             $notification = DB::table('notifications')->where('user_id', Session::get('user')->id)->orderby('id','desc')->limit(3)->get();
             $countNotification = count(DB::table('notifications')->where('user_id', Session::get('user')->id)->where('read',0)->get());
-            $view->with('view', 999);
+            // $wishlist = DB::table('wishlist')->where('w_user_id', Session::get('user')->id)->get();
+            // $view->with('view', count($wishlist));
             $view->with('count', $count);
             $view->with('notification', $notification);
             $view->with('countNotification', $countNotification);
