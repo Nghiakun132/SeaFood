@@ -33,12 +33,10 @@
                         @csrf
                         <div class="detail-info">
                             <div class="product-rating">
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <a href="#" class="count-review">(05 review)</a>
+                                @for ($i = 1; $i <= $star; $i++)
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                @endfor
+                                <a href="#" class="count-review">({{ $countComments }} đánh giá)</a>
                             </div>
                             <h2 class="product-name">{{ $product->pro_name }}</h2>
                             <div class="short-desc">
@@ -67,19 +65,21 @@
                                     <a class="btn btn-increase" href="#"></a>
                                 </div>
                             </div>
-                            <input type="hidden" name="pro_name" value="{{ $product->pro_name }}">
+                            <input type="hidden" name="pro_id" value="{{ $product->pro_id }}">
                             <input type="hidden" name="pro_price"
                                 value="{{ $product->pro_price - $product->pro_price * $product->pro_sale }}">
                             <input type="hidden" name="pro_avatar" value="{{ $product->pro_avatar }}">
                             <div class="wrap-butons">
-                                @if ($product->pro_qty < 0)
-                                    <button class="btn add-to-cart" disabled>Thêm vào giỏ hàng</button>
-                                @else
+                                @if ($product->pro_qty > 0)
                                     <button class="btn add-to-cart">Thêm vào giỏ hàng</button>
+                                @else
+                                    <button class="btn add-to-cart" disabled>Hết hàng</button>
                                 @endif
                                 <div class="wrap-btn">
                                     <a href="#" class="btn btn-compare">Add Compare</a>
-                                    <a href="{{route('addWishlist',$product->pro_id)}}" class="btn btn-wishlist">Thêm vào Wishlist</a>
+                                    <a href="{{ route('addWishlist', $product->pro_id) }}"
+                                        class="btn btn-wishlist">Thêm
+                                        vào Wishlist</a>
                                 </div>
                             </div>
                         </div>
@@ -88,7 +88,7 @@
                         <div class="tab-control normal">
                             <a href="#description" class="tab-control-item active">Mô tả</a>
                             <a href="#add_infomation" class="tab-control-item">Thông tin thêm</a>
-                            <a href="#review" class="tab-control-item">Bình luận</a>
+                            <a href="#review" class="tab-control-item">Bình luận && Đánh giá</a>
                         </div>
                         <div class="tab-contents">
                             <div class="tab-content-item active" id="description">
@@ -105,54 +105,73 @@
                                 </table>
                             </div>
                             <div class="tab-content-item " id="review">
-
                                 <div class="wrap-review-form">
-
                                     <div id="comments">
-                                        <h2 class="woocommerce-Reviews-title">01 review for <span>Radiant-360 R6
-                                                Chainsaw Omnidirectional [Orage]</span></h2>
+                                        <h2 class="woocommerce-Reviews-title">{{ $countComments }} đánh giá cho
+                                            <span>{{ $product->pro_name }}</span>
+                                        </h2>
                                         <ol class="commentlist">
-                                            <li class="comment byuser comment-author-admin bypostauthor even thread-even depth-1"
-                                                id="li-comment-20">
-                                                <div id="comment-20" class="comment_container">
-                                                    <img alt="" src="assets/images/author-avata.jpg" height="80"
-                                                        width="80">
-                                                    <div class="comment-text">
-                                                        <div class="star-rating">
-                                                            <span class="width-80-percent">Rated <strong
-                                                                    class="rating">5</strong> out of 5</span>
-                                                        </div>
-                                                        <p class="meta">
-                                                            <strong class="woocommerce-review__author">admin</strong>
-                                                            <span class="woocommerce-review__dash">–</span>
-                                                            <time class="woocommerce-review__published-date"
-                                                                datetime="2008-02-14 20:00">Tue, Aug 15, 2017</time>
-                                                        </p>
-                                                        <div class="description">
-                                                            <p>Pellentesque habitant morbi tristique senectus et netus
-                                                                et malesuada fames ac turpis egestas.</p>
+                                            @foreach ($comments as $cm)
+                                                <li class="comment byuser comment-author-admin bypostauthor even thread-even depth-1"
+                                                    id="li-comment-20">
+                                                    <div id="comment-20" class="comment_container">
+                                                        @if ($cm->type == 'Google')
+                                                            <img alt="" src="{{ $cm->avatar }}" height="80"
+                                                                width="80">
+                                                        @else
+                                                            @if ($cm->avatar == null)
+                                                                <img alt=""
+                                                                    src="{{ asset('uploads/avatar/default.png') }}"
+                                                                    height="80">
+                                                            @else
+                                                                <img alt=""
+                                                                    src="{{ asset('uploads/avatar/' . $cm->avatar) }}"
+                                                                    height="80" width="80">
+                                                            @endif
+                                                        @endif
+                                                        <div class="comment-text">
+                                                            <div class="star-rating">
+                                                                <span
+                                                                    class="width-{{ $cm->cm_star * 20 }}-percent">Rated
+                                                                    <strong class="rating">5</strong> out of
+                                                                    5</span>
+                                                            </div>
+                                                            <p class="meta">
+                                                                <strong
+                                                                    class="woocommerce-review__author">{{ $cm->name }}</strong>
+                                                                <span class="woocommerce-review__dash">–</span>
+                                                                <time class="woocommerce-review__published-date"
+                                                                    datetime="2008-02-14 20:00">{{ $cm->created_at }}</time>
+                                                            </p>
+                                                            <div class="description">
+                                                                <p>{{ $cm->cm_content }}</p>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </li>
+                                                </li>
+                                            @endforeach
                                         </ol>
-                                    </div><!-- #comments -->
+                                        <div>
+                                            <div class="woocommerce-pagination">
+                                                {{ $comments->links() }}
+                                            </div>
+                                        </div>
+                                    </div>
 
+                                    <br>
                                     <div id="review_form_wrapper">
                                         <div id="review_form">
                                             <div id="respond" class="comment-respond">
-
-                                                <form action="#" method="post" id="commentform" class="comment-form"
-                                                    novalidate="">
-                                                    <p class="comment-notes">
-                                                        <span id="email-notes">Your email address will not be
-                                                            published.</span> Required fields are marked <span
-                                                            class="required">*</span>
-                                                    </p>
+                                                <form action="{{ route('comments', $product->pro_id) }}"
+                                                    method="post" id="commentform" class="comment-form" novalidate="">
+                                                    @csrf
+                                                    <h4 class="comment-notes">
+                                                        Để lại đánh giá của bạn, vui lòng điền đầy đủ thông tin bên
+                                                        dưới.
+                                                    </h4>
                                                     <div class="comment-form-rating">
-                                                        <span>Your rating</span>
+                                                        <span>Đánh giá của bạn: </span>
                                                         <p class="stars">
-
                                                             <label for="rated-1"></label>
                                                             <input type="radio" id="rated-1" name="rating" value="1">
                                                             <label for="rated-2"></label>
@@ -166,18 +185,8 @@
                                                                 checked="checked">
                                                         </p>
                                                     </div>
-                                                    <p class="comment-form-author">
-                                                        <label for="author">Name <span
-                                                                class="required">*</span></label>
-                                                        <input id="author" name="author" type="text" value="">
-                                                    </p>
-                                                    <p class="comment-form-email">
-                                                        <label for="email">Email <span
-                                                                class="required">*</span></label>
-                                                        <input id="email" name="email" type="email" value="">
-                                                    </p>
                                                     <p class="comment-form-comment">
-                                                        <label for="comment">Your review <span
+                                                        <label for="comment">Bình luận của bạn <span
                                                                 class="required">*</span>
                                                         </label>
                                                         <textarea id="comment" name="comment" cols="45"
@@ -327,4 +336,16 @@ if ($success) {
     Session::forget('error');
 }
 ?>
+<script>
+    var qty = document.querySelector('.availability b');
+    var btn = document.querySelector('.add-to-cart');
+    var qty_input = document.querySelector('input[name="product_quatity"]');
+    var checkCart = {{ $checkValue }};
+    btn.addEventListener('click', function(e) {
+        if (parseInt(checkCart) + parseInt(qty_input.value) > qty.innerHTML) {
+            alert('Số lượng sản phẩm không đủ');
+            e.preventDefault();
+        }
+    });
+</script>
 @stop

@@ -33,7 +33,9 @@ class OrderController extends Controller
     public function detail($id)
     {
         $this->AuthLogin();
-        $order_detail = DB::table('order_details')->where('order_id', $id)->get();
+        $order_detail = DB::table('order_details')
+        ->join('products', 'products.pro_id', '=', 'order_details.product_id')
+        ->where('order_id', $id)->get();
         return view('frontend.order.detail', compact('order_detail'));
     }
     public function cancel($id)
@@ -49,8 +51,8 @@ class OrderController extends Controller
         $order_id = $request->order_id;
         $product = DB::table('order_details')->where('order_id', $order_id)->get();
         foreach ($product as $key => $value) {
-            $product_name = $value->product_name;
-            $product = products::where('pro_name', $product_name)->first();
+            $product_id = $value->product_id;
+            $product = products::where('pro_id', $product_id)->first();
             $product->pro_qty = $product->pro_qty + $value->product_quantity;
             $product->save();
         }

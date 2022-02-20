@@ -12,7 +12,7 @@
         </div>
         <div class=" main-content-area">
             <div class="wrap-iten-in-cart">
-                <h3 class="box-title">Products Name</h3>
+                <h3 class="box-title">Tên</h3>
                 <ul class="products-cart">
                     @foreach ($cart as $cart)
                         <form action="{{ route('updateCart', $cart->cart_id) }}" method="post">
@@ -24,7 +24,7 @@
                                 </div>
                                 <div class="product-name">
                                     <a class="link-to-product"
-                                        href="{{ route('detail', Str::slug($cart->cart_product_name)) }}">{{ $cart->cart_product_name }}</a>
+                                        href="{{ route('detail', Str::slug($cart->pro_name)) }}">{{ $cart->pro_name }}</a>
                                 </div>
                                 <div class="price-field produtc-price">
                                     <p class="price">
@@ -47,7 +47,7 @@
 
                                 <div class="delete">
                                     <button class="btn btn-delete2" title="">
-                                        <span>Update</span>
+                                        <span>Cập nhật</span>
                                         <i class="fa fa-edit"></i>
                                     </button>
                                 </div>
@@ -55,7 +55,7 @@
                                 <div class="delete">
                                     <a href="{{ Route('deleteCart', $cart->cart_id) }}" class="btn btn-delete2"
                                         title="">
-                                        <span>Delete from your cart</span>
+                                        <span>Xóa</span>
                                         <i class="fa fa-times-circle" aria-hidden="true"></i>
                                     </a>
                                 </div>
@@ -66,17 +66,19 @@
             </div>
             <div class="summary">
                 <div class="order-summary">
-                    <h4 class="title-box">Order Summary</h4>
-                    <p class="summary-info"><span class="title">Subtotal</span><b
+                    <h4 class="title-box">Đơn hàng</h4>
+                    <p class="summary-info"><span class="title">Tạm tính</span><b
                             class="index">{{ number_format($total, 0, ',', ',') . ' VND' }}</b></p>
-                    <p class="summary-info"><span class="title">Shipping</span><b class="index">Free
-                            Shipping</b></p>
-                    <p class="summary-info total-info "><span class="title">Total</span><b
+                    <p class="summary-info"><span class="title">Phí vận chuyển</span><b class="index">Miễn phí</b></p>
+                    <p class="summary-info total-info "><span class="title">Thành tiền</span><b
                             class="index">{{ number_format($total, 0, ',', ',') . ' VND' }}</b></p>
                 </div>
                 <div class="checkout-info">
+                    @if ($countCart > 0)
                     <a class="btn btn-checkout" href="{{ route('checkout') }}">Check out</a>
-
+                    @else
+                    <a class="btn btn-checkout" id="disabled_btn" disabled href="#" onclick="return alert('Giỏ hàng đang rỗng, Hãy thêm gì đó vào giỏ hang !!!')">Check out</a>
+                    @endif
                 </div>
                 <div class="update-clear">
                     <a class="btn btn-clear" href="{{ route('home') }}" >Continue Shopping<i
@@ -289,4 +291,5 @@ if ($success) {
     Session::forget('error');
 }
 ?>
+
 @stop

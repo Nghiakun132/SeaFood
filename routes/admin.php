@@ -60,4 +60,7 @@ Route::group(['namespace' => 'backend', 'prefix' => 'admin'], function () {
         Route::get('/xoa/{id}', 'CouponController@destroy')->name('admin.coupon.destroy');
         Route::get('/thay-doi-trang-thai/{id}', 'CouponController@changeStatus')->name('admin.coupon.changeStatus');
     });
+    Route::group(['prefix' => 'khach-hang'], function () {
+        Route::get('/', 'UserController@index')->name('admin.user');
+    });
 });

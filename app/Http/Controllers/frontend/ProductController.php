@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\categories;
 use App\Models\image_products;
 use App\Models\products;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -32,7 +33,21 @@ class ProductController extends Controller
         $productRelated = products::where('pro_status', 0)->where('pro_category_id', $product->pro_category_id)->where('pro_id', '<>', $product->pro_id)->get();
         $images = image_products::where('img_product_id', $product->pro_id)->get();
         $popularProducts = products::where('pro_status', 0)->orderBy('pro_view', 'desc')->limit(6)->get();
-        return view('frontend.detail.index', compact('product', 'images', 'productRelated', 'cate', 'popularProducts'));
+        $comments = products::join('comments', 'products.pro_id', '=', 'comments.cm_product_id')
+            ->join('users', 'users.id', '=', 'comments.cm_user_id')
+            ->select('comments.*', 'users.name','users.avatar','users.type')
+            ->where('products.pro_id', $product->pro_id)
+            ->paginate(10);
+        $countComments = count($comments);
+        $star = DB::table('comments')->where('cm_product_id', $product->pro_id)->avg('cm_star');
+        $checkCart = DB::table('cart')->where('cart_product_id', $product->pro_id)
+        ->where('cart_user_id', Session::get('user')->id)->first();
+        if ($checkCart==null) {
+            $checkValue = 0;
+        } else {
+            $checkValue = $checkCart->cart_product_quantity;
+        }
+        return view('frontend.detail.index', compact('product', 'images', 'productRelated', 'cate', 'popularProducts', 'comments', 'countComments', 'star', 'checkValue'));
     }
 
     public function wishList()
@@ -69,4 +84,20 @@ class ProductController extends Controller
         DB::table('wishlist')->where('w_user_id', Session::get('user')->id)->delete();
         return Redirect()->back()->with('success', 'Xóa tất cả sản phẩm khỏi danh sách yêu thích thành công');
     }
+
+    public function comments(Request $request,$id)
+    {
+        $this->AuthLogin();
+        $product = products::where('pro_id', $id)->first();
+        $data = array();
+        $data['cm_product_id'] = $id;
+        $data['cm_user_id'] = Session::get('user')->id;
+        $data['cm_star'] = $request->rating;
+        $data['cm_content'] = $request->comment;
+        $data['created_at'] = Carbon::now('Asia/Ho_Chi_Minh');
+        DB::table('comments')->insert($data);
+        return Redirect()->back();
+    }
+
+
 }

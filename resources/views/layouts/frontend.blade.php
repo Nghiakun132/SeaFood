@@ -113,10 +113,10 @@
                                                 <a title="Danh sách yêu thích" href="{{route('wishlist')}}">Danh sách yêu thích</a>
                                             </li>
                                             <li class="menu-item list_hover">
-                                                <a title="Mã giảm giá" href="#">Mã giảm giá</a>
+                                                <a title="Mã giảm giá" href="{{route('coupon')}}">Mã giảm giá</a>
                                             </li>
                                             <li class="menu-item list_hover">
-                                                <a title="Danh sách địa chỉ" href="#">Danh sách địa chỉ</a>
+                                                <a title="Danh sách địa chỉ" href="{{route('address')}}">Danh sách địa chỉ</a>
                                             </li>
 
                                             <li class="menu-item list_hover">
@@ -164,7 +164,7 @@
                                     <a href="#" class="link-direction dropdown-toggle" data-toggle="dropdown">
                                         <i class="fa-solid fa-bell" style="color:yellow"></i>
                                         <div class="left-info">
-                                            <span class="index">{{ $countNotification }} thông báo mới</span>
+                                            <span class="index">{{ $countNotification }} mới</span>
                                             <span class="title" style="color:rgb(247, 247, 247)">Thông báo</span>
                                         </div>
                                         <ul class="dropdown-menu">

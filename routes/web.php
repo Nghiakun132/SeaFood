@@ -63,6 +63,16 @@ Route::group(['namespace' => 'frontend'], function () {
     Route::get('/xoa-thong-bao/{id}','UserController@deleteNotifications')->name('deleteNotifications');
     Route::get('/xoa-tat-ca-thong-bao','UserController@deleteAllNotifications')->name('deleteAllNotifications');
     Route::get('/thong-tin-ca-nhan','UserController@profile')->name('profile');
+    Route::post('/thong-tin-ca-nhan','UserController@postProfile')->name('postProfile');
+    Route::post('/doi-mat-khau','UserController@changePassword')->name('changePassword');
+    Route::get('/dia-chi','UserController@address')->name('address');
+    Route::post('/dia-chi','UserController@addAddress')->name('addAddress');
+    Route::get('/xoa-dia-chi/{id}','UserController@deleteAddress')->name('deleteAddress');
+    Route::get('/dia-chi-mac-dinh/{id}','UserController@setDefault')->name('setDefault');
+    Route::get('sua-dia-chi/{id}','UserController@editAddress')->name('editAddress');
+    Route::post('/sua-dia-chi/{id}','UserController@updateAddress')->name('updateAddress');
+    Route::get('/ma-giam-gia-hien-co','UserController@coupon')->name('coupon');
+    Route::post('/nhan-xet/{id}','ProductController@comments')->name('comments');
 });
 
 

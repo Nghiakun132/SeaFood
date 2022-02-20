@@ -56,11 +56,7 @@
                     <span>Đơn hàng</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Khách hàng</span></a>
-            </li>
+
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('admin.import') }}">
                     <i class="fas fa-fw fa-table"></i>
@@ -76,6 +72,11 @@
                     <a class="nav-link" href="{{ route('admin.coupon') }}">
                         <i class="fas fa-fw fa-table"></i>
                         <span>Mã giảm giá</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('admin.user') }}">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Khách hàng</span></a>
                 </li>
             @endif
 
@@ -180,7 +181,6 @@
                                             </div>
                                         </a>
                                     @endif
-
                                 @endforeach
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                             </div>

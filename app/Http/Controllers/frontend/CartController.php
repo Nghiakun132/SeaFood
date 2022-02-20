@@ -27,16 +27,19 @@ class CartController extends Controller
     public function index()
     {
         $this->AuthLogin();
-        $cart = DB::table('cart')->where('cart_user_id', Session::get('user')->id)->get();
+        $cart = DB::table('cart')->where('cart_user_id', Session::get('user')->id)
+            ->join('products', 'products.pro_id', '=', 'cart.cart_product_id')
+            ->get();
         $total = DB::table('cart')->where('cart_user_id', Session::get('user')->id)->sum('cart_product_total');
-        return view('frontend.cart.index', compact('cart', 'total'));
+        $countCart = count($cart);
+        return view('frontend.cart.index', compact('cart', 'total', 'countCart'));
     }
     //them vao gio hang
     public function addCart(Request $request)
     {
         $this->AuthLogin();
         $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $product = cart::where('cart_product_name', $request->pro_name)->where('cart_user_id', Session::get('user')->id)->first();
+        $product = cart::where('cart_product_id', $request->pro_id)->where('cart_user_id', Session::get('user')->id)->first();
         //ktra co ton tai chua ?
         if ($product) {
             $product->cart_product_quantity = $product->cart_product_quantity + $request->product_quatity;
@@ -47,7 +50,7 @@ class CartController extends Controller
             $cart = new cart();
             $cart->cart_id = substr(str_shuffle($permitted_chars), 0, 16);
             $cart->cart_user_id = Session::get('user')->id;
-            $cart->cart_product_name = $request->pro_name;
+            $cart->cart_product_id = $request->pro_id;
             $cart->cart_product_image = $request->pro_avatar;
             $cart->cart_product_price = $request->pro_price;
             $cart->cart_product_total = $request->pro_price * $request->product_quatity;
@@ -62,7 +65,7 @@ class CartController extends Controller
         $this->AuthLogin();
         $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $productAdd = products::where('pro_slug', $pro_id)->first();
-        $product = cart::where('cart_product_name', $productAdd->pro_name)->where('cart_user_id', Session::get('user')->id)->first();
+        $product = cart::where('cart_product_id', $productAdd->pro_id)->where('cart_user_id', Session::get('user')->id)->first();
         if ($product) {
             $product->cart_product_quantity = $product->cart_product_quantity + 1;
             $product->cart_product_total =  $product->cart_product_total + (1 * $product->cart_product_price);
@@ -72,7 +75,7 @@ class CartController extends Controller
             $cart = new cart();
             $cart->cart_id = substr(str_shuffle($permitted_chars), 0, 16);
             $cart->cart_user_id = Session::get('user')->id;
-            $cart->cart_product_name = $productAdd->pro_name;
+            $cart->cart_product_id = $productAdd->pro_id;
             $cart->cart_product_image = $productAdd->pro_avatar;
             $cart->cart_product_price = $productAdd->pro_price;
             $cart->cart_product_total = $productAdd->pro_price * 1;
@@ -112,33 +115,38 @@ class CartController extends Controller
     public function checkout()
     {
         $this->AuthLogin();
-        $cart = DB::table('cart')->where('cart_user_id', Session::get('user')->id)->get();
+        $cart = DB::table('cart')->where('cart_user_id', Session::get('user')->id)
+            ->join('products', 'products.pro_id', '=', 'cart.cart_product_id')
+            ->get();
         $total = DB::table('cart')->where('cart_user_id', Session::get('user')->id)->sum('cart_product_total');
         if (Session::get('cou_value')) {
             $total = $total - (Session::get('cou_value') * $total);
         }
         $address = DB::table('address')->where('user_id', Session::get('user')->id)->get();
-        return view('frontend.cart.checkout', compact('cart', 'total', 'address'));
+        $countCart = count($cart);
+        return view('frontend.cart.checkout', compact('cart', 'total', 'address', 'countCart'));
     }
 
     // them voucher
     public function postCoupon(Request $request)
     {
         $this->AuthLogin();
-        $checkCoupon = DB::table('coupons')->where('cou_code', $request->coupon_code)->first();
-        $checkCouponUsed = DB::table('coupons_user')->where('code', $request->coupon_code)->where('user_id', Session::get('user')->id)->where('status', 1)->first();
-        //ktra cac dk cua voucher
+        $checkCoupon = DB::table('coupons')
+            ->join('coupons_user', 'coupons.cou_id', '=', 'coupons_user.cou_id')
+            ->where('coupons_user.user_id', Session::get('user')->id)
+            ->where('coupons.cou_code', $request->coupon_code)
+            ->first();
         if ($checkCoupon) {
-            $expired_date = $checkCoupon->cou_expired_date;
-            $now = Carbon::now('Asia/Ho_Chi_Minh');
-            if ($checkCouponUsed) {
-                return redirect()->back()->with('error', 'Bạn đã sử dụng mã giảm giá này rồi');
-            } elseif ($expired_date < $now) {
+            if ($checkCoupon->cou_expired_date  < Carbon::now()) {
                 return redirect()->back()->with('error', 'Mã giảm giá đã hết hạn');
+            } else if ($checkCoupon->cou_status == 1) {
+                return redirect()->back()->with('error', 'Mã giảm giá không tồn tại');
+            } else if ($checkCoupon->cou_number == 0) {
+                return redirect()->back()->with('error', 'Mã giảm giá đã hết số lượng');
             } else {
-                Session::put('cou_code', $checkCoupon->cou_code);
                 Session::put('cou_value', $checkCoupon->cou_value);
-                return redirect()->back()->with('success', 'Mã giảm giá đã được áp dụng');
+                Session::put('cou_code', $checkCoupon->cou_code);
+                return redirect()->back()->with('success', 'Nhập mã giảm giá thành công');
             }
         } else {
             return redirect()->back()->with('error', 'Mã giảm giá không tồn tại');
@@ -157,7 +165,7 @@ class CartController extends Controller
         }
     }
     //ham chuyen tien tu VND sang USD de thanh toan paypal
-    static function getMoney($type)
+    public function getMoney($type)
     {
         $link = "http://api.exchangeratesapi.io/v1/latest?access_key=aa5b1ceed726ddb9fdecf80d6d3b6306&format=1";
         $json = file_get_contents($link);
@@ -184,10 +192,9 @@ class CartController extends Controller
             ->where('user_id', Session::get('user')->id)->update([
                 'isDefault' => 0
             ]);
-
-        $total = DB::table('cart')->where('cart_user_id', Session::get('user')->id)->sum('cart_product_total');
-        $value = floor($total / ($this->getMoney("VND") / $this->getMoney("USD")));
         if ($request->payment_method == 'Paypal') {
+            $total = DB::table('cart')->where('cart_user_id', Session::get('user')->id)->sum('cart_product_total');
+            $value = floor($total / 22850);
             $provider = new PayPalClient;
             $provider->setApiCredentials(config('paypal'));
             $paypalToken = $provider->getAccessToken();
@@ -221,7 +228,10 @@ class CartController extends Controller
                     ->with('error', $response['message'] ?? 'Something went wrong.');
             }
         } else {
-            $cart = DB::table('cart')->where('cart_user_id', Session::get('user')->id)->get();
+            $cart = DB::table('cart')
+                ->join('products', 'products.pro_id', '=', 'cart.cart_product_id')
+                ->where('cart_user_id', Session::get('user')->id)
+                ->get();
             $total = DB::table('cart')->where('cart_user_id', Session::get('user')->id)->sum('cart_product_total');
             $data = array();
             //check co ma giam gia ko?
@@ -238,17 +248,19 @@ class CartController extends Controller
                 foreach ($cart as $key => $value) {
                     $data_detail = array();
                     $data_detail['order_id'] = $order_id;
-                    $data_detail['product_name'] = $value->cart_product_name;
+                    $data_detail['product_id'] = $value->cart_product_id;
                     $data_detail['product_price'] = $value->cart_product_price;
                     $data_detail['product_quantity'] = $value->cart_product_quantity;
                     DB::table('order_details')->insert($data_detail);
                 }
                 //giam so luong trong kho
-                foreach ($cart as $key => $value) {
-                    $product = DB::table('products')->where('pro_name', $value->cart_product_name)->first();
-                    DB::table('products')->where('pro_id', $product->pro_id)
-                        ->update(['pro_qty' => $product->pro_qty - $value->cart_product_quantity]);
-                }
+
+                // foreach ($cart as $key => $value) {
+                //     $product = DB::table('products')->where('pro_id', $value->cart_product_id)->first();
+                //     DB::table('products')->where('pro_id', $product->pro_id)
+                //         ->update(['pro_qty' => $product->pro_qty - $value->cart_product_quantity]);
+                // }
+
                 //thong bao don hang moi
                 DB::table('notifications')->insert([
                     'type' => 'Đơn hàng mới',
@@ -262,26 +274,27 @@ class CartController extends Controller
                 DB::table('coupons')->where('cou_code', Session::get('cou_code'))
                     ->update(['cou_number' => DB::table('coupons')
                         ->where('cou_code', Session::get('cou_code'))->first()->cou_number - 1]);
-                DB::table('coupons_user')->where('code', Session::get('cou_code'))->where('user_id', Session::get('user')->id)->update([
-                    'status' => 1,
-                ]);
                 if (($total - (Session::get('cou_value') * $total))  >= 1000000) {
-                    DB::table('notifications')->insert([
-                        'type' => 'Mã khuyến mãi',
-                        'role' => 0,
-                        'user_id' => Session::get('user')->id,
-                        'notification' => 'Bạn đã được nhận mã giảm giá',
-                        'created_at' => Carbon::now('Asia/Ho_Chi_Minh')
-                    ]);
-                    DB::table('coupons_user')
-                        ->where('code', Session::get('cou_code'))
-                        ->where('user_id', Session::get('user')->id)
-                        ->insert([
+                    $checkCoupon2 = DB::table('coupons')->where('cou_status', 0)->get();
+                    if (count($checkCoupon2) > 0) {
+                        DB::table('notifications')->insert([
+                            'type' => 'Mã khuyến mãi',
+                            'role' => 0,
                             'user_id' => Session::get('user')->id,
-                            'code' => DB::table('coupons')->where('cou_status', 0)->inRandomOrder()->first()->cou_code,
-                            'status' => 0,
+                            'notification' => 'Bạn đã được nhận mã giảm giá',
                             'created_at' => Carbon::now('Asia/Ho_Chi_Minh')
                         ]);
+                        //tặng mã giảm giá
+                        DB::table('coupons_user')
+                            // ->where('code', Session::get('cou_code'))
+                            // ->where('user_id', Session::get('user')->id)
+                            ->insert([
+                                'user_id' => Session::get('user')->id,
+                                'cou_id' => DB::table('coupons')->where('cou_status', 0)->inRandomOrder()->first()->cou_id,
+                                'status' => 0,
+                                'created_at' => Carbon::now('Asia/Ho_Chi_Minh')
+                            ]);
+                    }
                 }
                 // xoa session
                 Session::forget('cou_code');
@@ -300,17 +313,22 @@ class CartController extends Controller
                 foreach ($cart as $key => $value) {
                     $data_detail = array();
                     $data_detail['order_id'] = $order_id;
-                    $data_detail['product_name'] = $value->cart_product_name;
+                    $data_detail['product_id'] = $value->cart_product_id;
                     $data_detail['product_price'] = $value->cart_product_price;
                     $data_detail['product_quantity'] = $value->cart_product_quantity;
                     DB::table('order_details')->insert($data_detail);
                 }
                 //giam so luong trong kho
-                foreach ($cart as $key => $value) {
-                    $product = DB::table('products')->where('pro_name', $value->cart_product_name)->first();
-                    DB::table('products')->where('pro_id', $product->pro_id)
-                        ->update(['pro_qty' => $product->pro_qty - $value->cart_product_quantity]);
-                }
+                // foreach ($cart as $key => $value) {
+                //     $product = DB::table('products')
+                //         ->where('pro_id', $value->cart_product_id)->first();
+
+                //     DB::table('products')
+                //         ->where('pro_id', $product->pro_id)
+                //         ->update([
+                //             'pro_qty' => $product->pro_qty - $value->cart_product_quantity
+                //         ]);
+                // }
                 //thong bao don hang moi
                 DB::table('notifications')->insert([
                     'type' => 'Đơn hàng mới',
@@ -318,20 +336,26 @@ class CartController extends Controller
                     'created_at' => Carbon::now('Asia/Ho_Chi_Minh')
                 ]);
                 if ($total  >= 1000000) {
-                    DB::table('notifications')->insert([
-                        'type' => 'Mã khuyến mãi',
-                        'role' => 0,
-                        'user_id' => Session::get('user')->id,
-                        'notification' => 'Bạn đã được nhận mã giảm giá cho mọi đơn hàng khi mua hàng trên 1.000.000đ',
-                        'created_at' => Carbon::now('Asia/Ho_Chi_Minh')
-                    ]);
-                    DB::table('coupons_user')
-                        ->insert([
+                    $checkCoupon2 = DB::table('coupons')->where('cou_status', 0)->get();
+                    if (count($checkCoupon2) > 0) {
+                        DB::table('notifications')->insert([
+                            'type' => 'Mã khuyến mãi',
+                            'role' => 0,
                             'user_id' => Session::get('user')->id,
-                            'code' => DB::table('coupons')->where('cou_status', 0)->inRandomOrder()->first()->cou_code,
-                            'status' => 0,
+                            'notification' => 'Bạn đã được nhận mã giảm giá',
                             'created_at' => Carbon::now('Asia/Ho_Chi_Minh')
                         ]);
+                        //tặng mã giảm giá
+                        DB::table('coupons_user')
+                            // ->where('code', Session::get('cou_code'))
+                            // ->where('user_id', Session::get('user')->id)
+                            ->insert([
+                                'user_id' => Session::get('user')->id,
+                                'cou_id' => DB::table('coupons')->where('cou_status', 0)->inRandomOrder()->first()->cou_id,
+                                'status' => 0,
+                                'created_at' => Carbon::now('Asia/Ho_Chi_Minh')
+                            ]);
+                    }
                 }
                 //xoa gio hang
                 DB::table('cart')->where('cart_user_id', Session::get('user')->id)->delete();
@@ -347,7 +371,10 @@ class CartController extends Controller
         $response = $provider->capturePaymentOrder($request['token']);
 
         if (isset($response['status']) && $response['status'] == 'COMPLETED') {
-            $cart = DB::table('cart')->where('cart_user_id', Session::get('user')->id)->get();
+            $cart = DB::table('cart')
+                ->join('products', 'products.pro_id', '=', 'cart.cart_product_id')
+                ->where('cart_user_id', Session::get('user')->id)
+                ->get();
             $total = DB::table('cart')->where('cart_user_id', Session::get('user')->id)->sum('cart_product_total');
             $data = array();
             //check co ma giam gia ko?
@@ -364,17 +391,17 @@ class CartController extends Controller
                 foreach ($cart as $key => $value) {
                     $data_detail = array();
                     $data_detail['order_id'] = $order_id;
-                    $data_detail['product_name'] = $value->cart_product_name;
+                    $data_detail['product_id'] = $value->cart_product_id;
                     $data_detail['product_price'] = $value->cart_product_price;
                     $data_detail['product_quantity'] = $value->cart_product_quantity;
                     DB::table('order_details')->insert($data_detail);
                 }
                 //giam so luong trong kho
-                foreach ($cart as $key => $value) {
-                    $product = DB::table('products')->where('pro_name', $value->cart_product_name)->first();
-                    DB::table('products')->where('pro_id', $product->pro_id)
-                        ->update(['pro_qty' => $product->pro_qty - $value->cart_product_quantity]);
-                }
+                // foreach ($cart as $key => $value) {
+                //     $product = DB::table('products')->where('pro_id', $value->cart_product_id)->first();
+                //     DB::table('products')->where('pro_id', $product->pro_id)
+                //         ->update(['pro_qty' => $product->pro_qty - $value->cart_product_quantity]);
+                // }
                 //thong bao don hang moi
                 DB::table('notifications')->insert([
                     'type' => 'Đơn hàng mới',
@@ -388,26 +415,27 @@ class CartController extends Controller
                 DB::table('coupons')->where('cou_code', Session::get('cou_code'))
                     ->update(['cou_number' => DB::table('coupons')
                         ->where('cou_code', Session::get('cou_code'))->first()->cou_number - 1]);
-                DB::table('coupons_user')->where('code', Session::get('cou_code'))->where('user_id', Session::get('user')->id)->update([
-                    'status' => 1,
-                ]);
                 if (($total - (Session::get('cou_value') * $total))  >= 1000000) {
-                    DB::table('notifications')->insert([
-                        'type' => 'Mã khuyến mãi',
-                        'role' => 0,
-                        'user_id' => Session::get('user')->id,
-                        'notification' => 'Bạn đã được nhận mã giảm giá',
-                        'created_at' => Carbon::now('Asia/Ho_Chi_Minh')
-                    ]);
-                    DB::table('coupons_user')
-                        ->where('code', Session::get('cou_code'))
-                        ->where('user_id', Session::get('user')->id)
-                        ->insert([
+                    $checkCoupon2 = DB::table('coupons')->where('cou_status', 0)->get();
+                    if (count($checkCoupon2) > 0) {
+                        DB::table('notifications')->insert([
+                            'type' => 'Mã khuyến mãi',
+                            'role' => 0,
                             'user_id' => Session::get('user')->id,
-                            'code' => DB::table('coupons')->where('cou_status', 0)->inRandomOrder()->first()->cou_code,
-                            'status' => 0,
+                            'notification' => 'Bạn đã được nhận mã giảm giá',
                             'created_at' => Carbon::now('Asia/Ho_Chi_Minh')
                         ]);
+                        //tặng mã giảm giá
+                        DB::table('coupons_user')
+                            // ->where('code', Session::get('cou_code'))
+                            // ->where('user_id', Session::get('user')->id)
+                            ->insert([
+                                'user_id' => Session::get('user')->id,
+                                'cou_id' => DB::table('coupons')->where('cou_status', 0)->inRandomOrder()->first()->cou_id,
+                                'status' => 0,
+                                'created_at' => Carbon::now('Asia/Ho_Chi_Minh')
+                            ]);
+                    }
                 }
                 // xoa session
                 Session::forget('cou_code');
@@ -426,17 +454,17 @@ class CartController extends Controller
                 foreach ($cart as $key => $value) {
                     $data_detail = array();
                     $data_detail['order_id'] = $order_id;
-                    $data_detail['product_name'] = $value->cart_product_name;
+                    $data_detail['product_id'] = $value->cart_product_id;
                     $data_detail['product_price'] = $value->cart_product_price;
                     $data_detail['product_quantity'] = $value->cart_product_quantity;
                     DB::table('order_details')->insert($data_detail);
                 }
                 //giam so luong trong kho
-                foreach ($cart as $key => $value) {
-                    $product = DB::table('products')->where('pro_name', $value->cart_product_name)->first();
-                    DB::table('products')->where('pro_id', $product->pro_id)
-                        ->update(['pro_qty' => $product->pro_qty - $value->cart_product_quantity]);
-                }
+                // foreach ($cart as $key => $value) {
+                //     $product = DB::table('products')->where('pro_id', $value->cart_product_id)->first();
+                //     DB::table('products')->where('pro_id', $product->pro_id)
+                //         ->update(['pro_qty' => $product->pro_qty - $value->cart_product_quantity]);
+                // }
                 //thong bao don hang moi
                 DB::table('notifications')->insert([
                     'type' => 'Đơn hàng mới',
@@ -445,24 +473,29 @@ class CartController extends Controller
                     'created_at' => Carbon::now('Asia/Ho_Chi_Minh')
                 ]);
                 if ($total  >= 1000000) {
-                    DB::table('notifications')->insert([
-                        'type' => 'Mã khuyến mãi',
-                        'role' => 0,
-                        'user_id' => Session::get('user')->id,
-                        'notification' => 'Bạn đã được nhận mã giảm giá cho mọi đơn hàng khi mua hàng trên 1.000.000đ',
-                        'created_at' => Carbon::now('Asia/Ho_Chi_Minh')
-                    ]);
-                    DB::table('coupons_user')
-                        ->insert([
+                    $checkCoupon2 = DB::table('coupons')->where('cou_status', 0)->get();
+                    if (count($checkCoupon2) > 0) {
+                        DB::table('notifications')->insert([
+                            'type' => 'Mã khuyến mãi',
+                            'role' => 0,
                             'user_id' => Session::get('user')->id,
-                            'code' => DB::table('coupons')->where('cou_status', 0)->inRandomOrder()->first()->cou_code,
-                            'status' => 0,
+                            'notification' => 'Bạn đã được nhận mã giảm giá',
                             'created_at' => Carbon::now('Asia/Ho_Chi_Minh')
                         ]);
+                        //tặng mã giảm giá
+                        DB::table('coupons_user')
+                            // ->where('code', Session::get('cou_code'))
+                            // ->where('user_id', Session::get('user')->id)
+                            ->insert([
+                                'user_id' => Session::get('user')->id,
+                                'cou_id' => DB::table('coupons')->where('cou_status', 0)->inRandomOrder()->first()->cou_id,
+                                'status' => 0,
+                                'created_at' => Carbon::now('Asia/Ho_Chi_Minh')
+                            ]);
+                    }
                 }
                 //xoa gio hang
                 DB::table('cart')->where('cart_user_id', Session::get('user')->id)->delete();
-
                 return view('frontend.cart.success');
             }
             return redirect()

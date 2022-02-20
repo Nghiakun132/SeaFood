@@ -21,12 +21,12 @@
                             <div class="sort-item orderby">
                                 <a href="{{ Request::URL() }}" style="margin:8px"><label>Mac
                                         dinh</label></a>
-                                <a href="{{ Request::URL() }}?sort_by=gia-giam-dan"
-                                    style="margin:8px"><label>Gia giam dan</label></a>
-                                <a href="{{ Request::URL() }}?sort_by=gia-tang-dan"
-                                    style="margin:8px"><label>Gia tang dan</label></a>
-                                <a href="{{ Request::URL() }}?sort_by=moi-nhat"
-                                    style="margin:8px"><label>Moi nhat</label></a>
+                                <a href="{{ Request::URL() }}?sort_by=gia-giam-dan" style="margin:8px"><label>Gia giam
+                                        dan</label></a>
+                                <a href="{{ Request::URL() }}?sort_by=gia-tang-dan" style="margin:8px"><label>Gia tang
+                                        dan</label></a>
+                                <a href="{{ Request::URL() }}?sort_by=moi-nhat" style="margin:8px"><label>Moi
+                                        nhat</label></a>
                             </div>
                             <div class="change-display-mode">
                                 <a href="#" class="grid-mode display-mode active"><i class="fa fa-th"></i>Grid</a>
@@ -39,18 +39,24 @@
                                 <li class="col-lg-4 col-md-6 col-sm-6 col-xs-6 ">
                                     <div class="product product-style-3 equal-elem ">
                                         <div class="product-thumnail">
-                                            <a href="{{route('detail',$value->pro_slug)}}" title="T-Shirt Raw Hem Organic Boro Constrast Denim">
+                                            <a href="{{ route('detail', $value->pro_slug) }}"
+                                                title="T-Shirt Raw Hem Organic Boro Constrast Denim">
                                                 <figure><img src="{{ asset('./uploads/products/' . $value->pro_avatar) }}"
                                                         alt=""></figure>
                                             </a>
                                         </div>
                                         <div class="product-info">
-                                            <a href="{{route('detail',$value->pro_slug)}}" class="product-name"><span>{{ $value->pro_name }}</span></a>
+                                            <a href="{{ route('detail', $value->pro_slug) }}"
+                                                class="product-name"><span>{{ $value->pro_name }}</span></a>
                                             <div class="wrap-price"><span
-                                                    class="product-price">{{ $value->pro_price }}</span></div>
-                                            <a href="{{ route('quickAddCart', $value->pro_slug) }}"
-                                                class="btn add-to-cart">Add
-                                                To Cart</a>
+                                                    class="product-price">{{ number_format($value->pro_price, 0, ',', ',') . ' VND' }}</span>
+                                            </div>
+                                            @if ($value->pro_qty > 0)
+                                                <a href="{{ route('quickAddCart', $value->pro_slug) }}"
+                                                    class="btn add-to-cart">Thêm vào giỏ hàng</a>
+                                            @else
+                                                <a href="#" class="btn add-to-cart">Hết hàng</a>
+                                            @endif
                                         </div>
                                     </div>
                                 </li>

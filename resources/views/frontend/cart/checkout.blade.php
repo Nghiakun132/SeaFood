@@ -23,7 +23,7 @@
                                 </div>
                                 <div class="product-name">
                                     <a class="link-to-product"
-                                        href="{{ route('detail', Str::slug($cart->cart_product_name)) }}">{{ $cart->cart_product_name }}</a>
+                                        href="{{ route('detail', Str::slug($cart->pro_name)) }}">{{ $cart->pro_name }}</a>
                                 </div>
                                 <div class="price-field produtc-price">
                                     <p class="price">
@@ -91,7 +91,11 @@
                         <p class="summary-info grand-total"><span>Thành tiền</span> <span
                                 class="grand-total-price">{{ number_format($total, 0, ',', ',') . ' VND' }}</span>
                         </p>
+                        @if ($countCart > 0)
                         <button class="btn btn-medium">Đặt hàng ngay</button>
+                        @else
+                        <button class="btn btn-medium" disabled onclick="return alert('Thêm gì đó vào giỏ hàng đi!!!!!!!')">Đặt hàng ngay</button>
+                        @endif
                     </div>
                     <div class="summary-item shipping-method">
                         <h4 class="title-box f-title">Thông tin người nhận</h4>

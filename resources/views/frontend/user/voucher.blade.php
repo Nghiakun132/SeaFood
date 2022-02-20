@@ -1,13 +1,13 @@
 @extends('layouts.frontend')
 @section('content')
-@section('title', 'Chi tiết đơn hàng')
+@section('title', 'Tài khoản')
 <main id="main" class="main-site left-sidebar">
     <div class="container">
         <div class="background">
             <div class="wrap-breadcrumb">
                 <ul>
                     <li class="item-link"><a href="#" class="link">Trang chủ</a></li>
-                    <li class="item-link"><span>Hủy đơn hàng</span></li>
+                    <li class="item-link"><span>Tài khoản của tôi</span></li>
                 </ul>
             </div>
             <div class="row">
@@ -23,6 +23,7 @@
                                 <img src="{{ asset('uploads/avatar/' . Session::get('user')->avatar) }}" alt="">
                             @endif
                         @endif
+
                         <div class="info">
                             Tài khoản của <br>
                             <strong>{{ Session::get('user')->name }}</strong>
@@ -36,7 +37,7 @@
                                     <span>Thông tin tài khoản</span>
                                 </a>
                             </li>
-                            <li style="background-color: #ccc">
+                            <li>
                                 <a href="{{ route('order') }}" class="account-link">
                                     <i class="fa-solid fa-certificate" style="color: rgb(241, 151, 16)"></i>
                                     <span>Quản lý đơn hàng</span>
@@ -48,7 +49,7 @@
                                     <span>Sổ địa chỉ</span>
                                 </a>
                             </li>
-                            <li>
+                            <li style="background-color: #ccc">
                                 <a href="{{route('coupon')}}" class="account-link">
                                     <i class="fa-solid fa-gift" style="color: red"></i>
                                     <span>Mã giảm giá </span>
@@ -59,22 +60,48 @@
                 </div>
                 <div class="col-lg-10 col-md-9 col-sm-8 col-xs-12 main-content-area">
                     <div class="Account__StyleInfo account">
-                        <h1>Lý do hủy đơn hàng</h1>
+                        <h1>Đơn hàng của tôi</h1>
                     </div>
-                    <div class="panel panel-primary">
-                        <div class="panel-body">
-                            <div class="wrap-product-detail">
-                                <form action="" method="post">
-                                    @csrf
-                                    <input type="text" class="form-control " placeholder="Nhập lý do hủy đơn hàng"
-                                        name="reason">
-                                    <input type="hidden" class="form-control " value="{{ $order->order_id }}"
-                                        name="order_id">
-                                    <button type="submit" class="btn btn-danger" style="margin-top:8px">Hủy đơn
-                                        hàng</button>
-                                </form>
+                    <div class="card-body">
+                        <div class="wrap-product-detail">
+                            <div class="advance-info khong-cach">
+                                <div class="tab-control normal">
+                                    <a href="#orders" class="tab-control-item active">Tất cả mã giảm giá</a>
+                                </div>
+                                <div class="tab-contents">
+                                    <div class="tab-content-item active" id="orders">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="vidu" width="100%" cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>STT</th>
+                                                        <th>Mã</th>
+                                                        <th>Giảm</th>
+                                                        <th>Ngày hết hạn</th>
+                                                        {{-- <th>Trạng thái</th> --}}
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php $i = 1; ?>
+                                                    @foreach ($vc as $vc)
+                                                        <tr>
+                                                            <td>{{$i++ }}</td>
+                                                            <td>{{$vc->cou_value * 100 . '%' }}</td>
+                                                            <td>{{ $vc->cou_code }}</td>
+                                                            <td>{{ $vc->cou_expired_date }}</td>
+                                                            {{-- <td>
+                                                                {{ $vc->cou_status == 1 ? 'Đã sử dụng' : 'Chưa sử dụng' }}
+                                                            </td> --}}
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
 
