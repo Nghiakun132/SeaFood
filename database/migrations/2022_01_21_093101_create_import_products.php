@@ -16,9 +16,7 @@ class CreateImportProducts extends Migration
         Schema::create('import_products', function (Blueprint $table) {
             $table->increments('ip_id');
             $table->integer('ip_admin_id');
-            $table->integer('ip_product_id');
-            $table->integer('ip_qty');
-            $table->integer('ip_price');
+            $table->decimal('ip_total', 12, 2);
             $table->timestamps();
         });
     }

@@ -22,7 +22,12 @@ class HomeController extends Controller
     public function index()
     {
         $this->AuthLogin();
-        return view('backend.home.index');
+        $revenue = DB::table('orders')->select(DB::raw('sum(price_total) as total'))->where('order_status','<>',2)->first();
+        $user = DB::table('users')->count();
+        $comments = DB::table('comments')->count();
+        $orders = DB::table('orders')->count();
+        $products = DB::table('products')->get();
+        return view('backend.home.index', compact('revenue','user','comments','orders','products'));
     }
     public function Login()
     {

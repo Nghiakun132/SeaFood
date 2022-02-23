@@ -15,12 +15,22 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'frontend'], function () {
     Route::get('/', 'HomeController@index')->name('home');
-
+    //đăng ký
     Route::get('/dang-ky', 'UserController@register')->name('register');
     Route::post('/dang-ky', 'UserController@postRegister')->name('postRegister');
+    //đăng nhập
     Route::get('/dang-nhap', 'UserController@login')->name('login');
     Route::post('/dang-nhap', 'UserController@postLogin')->name('postLogin');
+    //đăng xuất
     Route::get('/dang-xuat', 'UserController@logout')->name('logout');
+    //quên mật khẩu
+
+    Route::get('/quen-mat-khau', 'UserController@forgotPassword')->name('forgotPassword');
+    Route::post('/quen-mat-khau', 'UserController@postForgotPassword')->name('postForgotPassword');
+    //thay đổi mật khẩu
+    Route::get('/thay-doi-mat-khau/{token}', 'UserController@resetPassword')->name('resetPassword');
+    Route::post('/thay-doi-mat-khau{token}', 'UserController@postResetPassword')->name('postResetPassword');
+
     //login google
     Route::get('dang-nhap/google', 'UserController@loginGG')->name('login.google');
     Route::get('dang-nhap/google/callback', 'UserController@loginGGCallback')->name('login.google.callback');

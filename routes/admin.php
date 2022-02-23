@@ -41,6 +41,7 @@ Route::group(['namespace' => 'backend', 'prefix' => 'admin'], function () {
     });
     Route::group(['prefix' => 'nhap-hang'], function () {
         Route::get('/', 'ProductController@import')->name('admin.import');
+        Route::get('/chi-tiet/{id}', 'ProductController@import_detail')->name('admin.import.detail');
     });
     Route::group(['prefix' => 'don-hang'], function () {
         Route::get('/', 'OrderController@index')->name('admin.order');
@@ -62,5 +63,8 @@ Route::group(['namespace' => 'backend', 'prefix' => 'admin'], function () {
     });
     Route::group(['prefix' => 'khach-hang'], function () {
         Route::get('/', 'UserController@index')->name('admin.user');
+    });
+    Route::group(['prefix' =>'thong-ke'],function(){
+        Route::get('/', 'AdminController@statistic')->name('admin.statistic');
     });
 });

@@ -11,22 +11,24 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Admin</th>
-                            <th>Ten sp</th>
-                            <th>Giá</th>
-                            <th>Số lượng</th>
+                            <th>Người nhập</th>
+                            <th>Tổng tiền</th>
                             <th>Trạng thái</th>
+                            <th>Ngày nhập</th>
+                            <th>Chi tiết</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($import as $value)
                         <tr>
                             <td>{{$value->ip_id}}</td>
-                            <td>{{$value->ip_admin_id}}</td>
-                            <td>{{$value->ip_product_name}}</td>
-                            <td>{{$value->ip_price}}</td>
-                            <td>{{$value->ip_qty}}</td>
+                            <td>{{$value->name}}</td>
+                            <td>{{number_format(($value->ip_total),0,',',','). ' VND'}}</td>
                             <td>{{$value->ip_status}}</td>
+                            <td>{{$value->created_at}}</td>
+                            <td>
+                                <a href="{{route('admin.import.detail',$value->ip_id)}}" class="btn btn-primary">Chi tiết</a>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>

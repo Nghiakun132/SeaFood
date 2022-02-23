@@ -96,14 +96,20 @@ class ProductController extends Controller
             $img->img_name = $name;
             $img->save();
         }
-        $import = new import_product();
-        $import->ip_admin_id = session()->get('admins')->id;
-        $import->ip_product_name = $productLatest->pro_name;
-        $import->ip_qty = $request->pro_qty;
-        $import->ip_status = "Thêm mới";
-        $import->ip_price = $request->pro_price;
-        $import->created_at = Carbon::now('Asia/Ho_Chi_Minh');
-        $import->save();
+
+        $ip = DB::table('import_products')->insertGetId([
+            'ip_admin_id' => Session('admins')->id,
+            'ip_total' => $request->pro_price * $request->pro_qty,
+            'ip_status' => "Thêm mới",
+            'created_at' => Carbon::now('Asia/Ho_Chi_Minh'),
+        ]);
+        DB::table('import_product_details')->insert([
+            'ipd_import_product_id' => $ip,
+            'ipd_product_id' => $productLatest->pro_id,
+            'ipd_quantity' =>   $request->pro_qty,
+            'ipd_price' =>  $request->pro_price,
+            'created_at' => Carbon::now('Asia/Ho_Chi_Minh'),
+        ]);
         return redirect()->route('admin.product')->with('success', 'Thêm sản phẩm thành công');
     }
     public function edit($id)
@@ -121,7 +127,7 @@ class ProductController extends Controller
             $this->validate(
                 $request,
                 [
-                    'pro_name' => 'required|unique:products,pro_name,' . $qty->pro_id.',pro_id',
+                    'pro_name' => 'required|unique:products,pro_name,' . $qty->pro_id . ',pro_id',
                     'pro_price' => 'required',
                     'pro_sale' => 'required',
                     'pro_description' => 'required',
@@ -165,7 +171,7 @@ class ProductController extends Controller
             $this->validate(
                 $request,
                 [
-                    'pro_name' => 'required|unique:products,pro_name,' . $qty->pro_id.',pro_id',
+                    'pro_name' => 'required|unique:products,pro_name,' . $qty->pro_id . ',pro_id',
                     'pro_price' => 'required',
                     'pro_sale' => 'required',
                     'pro_description' => 'required',
@@ -228,7 +234,21 @@ class ProductController extends Controller
     public function import()
     {
         $this->AuthLogin();
-        $import = import_product::orderBy('ip_id', 'DESC')->get();
+        $import = DB::table('import_products')
+        ->join('admins', 'import_products.ip_admin_id', '=', 'admins.id')
+        ->select('import_products.*', 'admins.name')
+        ->orderBy('ip_id', 'desc')->get();
         return view('backend.import.index', compact('import'));
+    }
+    public function import_detail($id)
+    {
+        $this->AuthLogin();
+        $import = DB::table('import_products')
+        ->join('admins', 'import_products.ip_admin_id', '=', 'admins.id')
+        ->join('import_product_details', 'import_products.ip_id', '=', 'import_product_details.ipd_import_product_id')
+        ->join('products', 'import_product_details.ipd_product_id', '=', 'products.pro_id')
+        ->select('import_products.*', 'admins.name', 'import_product_details.*', 'products.pro_name')
+        ->where('ipd_import_product_id', $id)->first();
+        return view('backend.import.detail', compact('import'));
     }
 }

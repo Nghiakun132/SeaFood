@@ -16,16 +16,22 @@ class HomeController extends Controller
         $productsLatest = products::orderBy('pro_id', 'desc')->take(8)->get();
         $products = products::orderBy('pro_name', 'desc')->take(8)->get();
         //san pham ban chay nhat
-        $bestSeller = products::join('import_products', 'import_products.ip_product_name', '=', 'products.pro_name')
-            ->select('import_products.ip_product_name', DB::raw('sum(import_products.ip_qty) as total'))
-            ->groupBy('import_products.ip_product_name')
-            ->orderBy('import_products.ip_product_name', 'desc')
+        // $bestSeller = products::join('import_products', 'import_products.ip_product_name', '=', 'products.pro_name')
+        //     ->select('import_products.ip_product_name', DB::raw('sum(import_products.ip_qty) as total'))
+        //     ->groupBy('import_products.ip_product_name')
+        //     ->orderBy('import_products.ip_product_name', 'desc')
+        //     ->take(8)->get();
+        $bestSeller= products::join('import_product_details', 'import_product_details.ipd_product_id', '=', 'products.pro_id')
+            ->join('import_products', 'import_products.ip_id', '=', 'import_product_details.ipd_import_product_id')
+            ->select('import_product_details.ipd_product_id', DB::raw('sum(import_product_details.ipd_quantity) as total'))
+            ->groupBy('import_product_details.ipd_product_id')
+            ->orderBy('total', 'desc')
             ->take(8)->get();
         $arr = $products->toArray();
         $arr2 = $bestSeller->toArray();
         foreach ($arr as $key => $value) {
             foreach ($arr2 as $key2 => $value2) {
-                if ($value['pro_name'] == $value2['ip_product_name']) {
+                if ($value['pro_id'] == $value2['ipd_product_id']) {
                     $arr[$key]['total'] = $value2['total'];
                 }
             }

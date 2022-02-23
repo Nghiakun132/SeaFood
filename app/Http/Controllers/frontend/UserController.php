@@ -8,6 +8,8 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use Session;
 
@@ -190,8 +192,6 @@ class UserController extends Controller
     public function changePassword(Request $request)
     {
         $this->AuthLogin();
-
-
         $this->validate($request, [
             'old' => 'required',
             'new' => 'required|min:8',
@@ -234,14 +234,15 @@ class UserController extends Controller
             [
                 'address.required' => 'Bạn chưa nhập địa chỉ',
                 'address.unique' => 'Địa chỉ đã tồn tại',
-            ]);
+            ]
+        );
         $id = Session::get('user')->id;
-            DB::table('address')->insert([
-                'user_id' => $id,
-                'address' => $request->address,
-                'isDefault' => 0,
-            ]);
-            return redirect()->back()->with('success', 'Thêm địa chỉ thành công');
+        DB::table('address')->insert([
+            'user_id' => $id,
+            'address' => $request->address,
+            'isDefault' => 0,
+        ]);
+        return redirect()->back()->with('success', 'Thêm địa chỉ thành công');
     }
     public function deleteAddress($id)
     {
@@ -253,27 +254,30 @@ class UserController extends Controller
     {
         $this->AuthLogin();
         DB::table('address')->where('user_id', Session::get('user')->id)
-        ->update(['isDefault' => 0]);
+            ->update(['isDefault' => 0]);
         DB::table('address')->where('user_id', Session::get('user')->id)
-        ->where('id', $id)->update(['isDefault' => 1]);
+            ->where('id', $id)->update(['isDefault' => 1]);
         return redirect()->back()->with('success', 'Đã thiết lập làm địa chỉ mặc định');
     }
-    public function editAddress($id){
+    public function editAddress($id)
+    {
         $this->AuthLogin();
         $address = DB::table('address')->where('id', $id)->first();
         return view('frontend.user.updateAddress', compact('address'));
     }
-    public function updateAddress(Request $request,$id) {
+    public function updateAddress(Request $request, $id)
+    {
         $this->AuthLogin();
         $this->validate(
             $request,
             [
-                'address' => 'required|unique:address,address,'.$id,
+                'address' => 'required|unique:address,address,' . $id,
             ],
             [
                 'address.required' => 'Bạn chưa nhập địa chỉ',
                 'address.unique' => 'Địa chỉ đã tồn tại',
-            ]);
+            ]
+        );
         DB::table('address')->where('id', $id)->update([
             'address' => $request->address,
         ]);
@@ -287,5 +291,79 @@ class UserController extends Controller
             ->join('coupons', 'coupons_user.cou_id', '=', 'coupons.cou_id')
             ->where('user_id', $id)->get();
         return view('frontend.user.voucher', compact('vc'));
+    }
+    public function forgotPassword()
+    {
+        return view('frontend.user.forgotPassword');
+    }
+    public function postForgotPassword(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'required|email',
+        ], [
+            'email.required' => 'Bạn chưa nhập email',
+            'email.email' => 'Email không đúng định dạng',
+        ]);
+        $email = $request->email;
+        $user = User::where('email', $email)->first();
+        $token = Str::random(60);
+        if ($user) {
+            DB::table('password_resets')->insert([
+                'email' => $email,
+                'token' => $token,
+                'created_at' => Carbon::now('Asia/Ho_Chi_Minh'),
+            ]);
+            Mail::send('frontend.user.password', ['token' => $token], function ($message) use ($email) {
+                $message->to($email, 'Khách hàng')->subject('Lấy lại mật khẩu');
+            });
+            return redirect()->back()->with('success', 'Chúng tôi đã gửi một email với hướng dẫn để lấy lại mật khẩu');
+        } else {
+            return redirect()->back()->with('error', 'Email không tồn tại');
+        }
+    }
+    public function resetPassword($token)
+    {
+        $check = DB::table('password_resets')->where('token', $token)->first();
+        if ($check) {
+            $email = $check->email;
+            $user = User::where('email', $email)->first();
+            if ($user) {
+                return view('frontend.user.resetPassword', compact('token'));
+            } else {
+                return redirect()->route('home')->with('error', 'Email không tồn tại');
+            }
+        } else {
+            return redirect()->route('home')->with('error', 'Token không tồn tại');
+        }
+    }
+    public function postResetPassword(Request $request, $token)
+    {
+        $this->validate(
+            $request,
+            [
+                'email' => 'required|email',
+                'password' => 'required|min:8|max:20',
+                'Repassword' => 'required|same:password',
+            ],
+            [
+                'email' => 'Bạn chưa nhập email',
+                'password.required' => 'Bạn chưa nhập mật khẩu',
+                'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự',
+                'password.max' => 'Mật khẩu chỉ được tối đa 20 ký tự',
+                'Repassword.required' => 'Bạn chưa nhập lại mật khẩu',
+                'Repassword.same' => 'Mật khẩu nhập lại chưa khớp',
+            ]
+        );
+        $email = $request->email;
+        $password = $request->password;
+        $user = User::where('email', $email)->first();
+        if ($user) {
+            DB::table('password_resets')->where('token', $token)->delete();
+            $user->password = md5($password);
+            $user->save();
+            return redirect()->route('login')->with('success', 'Đổi mật khẩu thành công');
+        } else {
+            return redirect()->route('home')->with('error', 'Email không tồn tại');
+        }
     }
 }

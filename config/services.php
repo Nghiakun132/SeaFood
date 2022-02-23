@@ -30,8 +30,8 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
     'google' => [
-        'client_id' =>'845167596943-ge7nirl3hetoh67opdqb9ehdhoqarnd4.apps.googleusercontent.com',
-        'client_secret'=>'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',
+        'client_id' =>'267412584610-5bkqvpbbarqh206rk5to0g7vpltkceoc.apps.googleusercontent.com',
+        'client_secret'=>'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',
         'redirect' => 'http://localhost/nienluan/public/dang-nhap/google/callback',
     ]
 ];

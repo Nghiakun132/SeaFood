@@ -9,14 +9,15 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Login</title>
+    <title>Đăng Nhập</title>
 
-    <link href="{{asset('backend/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
-    <link href="{{asset('backend/css/sb-admin-2.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('backend/css/sb-admin-2.min.css') }}" rel="stylesheet">
 </head>
+
 <body class="bg-gradient-primary">
     <div class="container">
         <div class="row justify-content-center">
@@ -28,52 +29,50 @@
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Đăng nhập</h1>
                                     </div>
-                                    <form class="user" action="{{route('postLogin')}}" method="post">
+                                    <form class="user" action="{{ route('postLogin') }}" method="post">
                                         @csrf
                                         <div class="form-group">
                                             <input type="email" class="form-control form-control-user"
                                                 id="exampleInputEmail" aria-describedby="emailHelp"
-                                                placeholder="Enter Email Address..." name="email">
+                                                placeholder="Nhập email của bạn" name="email">
                                         </div>
                                         @if ($errors->has('email'))
-                                        <div class="alert alert-danger">
-                                            {{ $errors->first('email') }}
-                                        </div>
+                                            <div class="alert alert-danger">
+                                                {{ $errors->first('email') }}
+                                            </div>
                                         @endif
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Password" name="password">
+                                                id="exampleInputPassword" placeholder="Nhập mật khẩu" name="password">
                                         </div>
                                         @if ($errors->has('password'))
-                                        <div class="alert alert-danger">
-                                            {{ $errors->first('password') }}
-                                        </div>
+                                            <div class="alert alert-danger">
+                                                {{ $errors->first('password') }}
+                                            </div>
                                         @endif
 
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
                                                 <input type="checkbox" class="custom-control-input" id="customCheck">
-                                                <label class="custom-control-label" for="customCheck">Remember
-                                                    Me</label>
+                                                <label class="custom-control-label" for="customCheck">Ghi nhớ</label>
                                             </div>
                                         </div>
-                                        <button  class="btn btn-primary btn-user btn-block">
-                                            Login
+                                        <button class="btn btn-primary btn-user btn-block">
+                                            Đăng nhập
                                         </button>
                                         <hr>
-                                        <a href="{{route('login.google')}}" class="btn btn-google btn-user btn-block">
-                                            <i class="fab fa-google fa-fw"></i> Login with Google
+                                        <a href="{{ route('login.google') }}" class="btn btn-google btn-user btn-block">
+                                            <i class="fab fa-google fa-fw"></i> Đăng nhập với Google
                                         </a>
-
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="forgot-password.html">Forgot Password?</a>
+                                        <a class="small" href="{{ route('forgotPassword') }}">Quên mật khẩu</a>
                                     </div>
                                     <div class="text-center">
-                                        <a class="small" href="{{route('register')}}">Create an Account!</a>
+                                        <a class="small" href="{{ route('register') }}">Tạo tài khoản mới</a>
                                     </div>
                                 </div>
                             </div>
@@ -87,19 +86,21 @@
 
     </div>
 
-    <script src="{{asset('backend/vendor/jquery/jquery.min.js')}}"></script>
-    <script src="{{asset('backend/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-    <script src="{{asset('backend/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
-    <script src="{{asset('backend/js/sb-admin-2.min.js')}}"></script>
+    <script src="{{ asset('backend/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+    <script src="{{ asset('backend/js/sb-admin-2.min.js') }}"></script>
 </body>
 <?php
-    $success = Session::get('success');
-    $error = Session::get('error');
-    if($success){
-        echo "<script>alert('$success')</script>";
-    }elseif($error) {
-         echo "<script>alert('$error')</script>";
-    }
+$success = Session::get('success');
+$error = Session::get('error');
+if ($success) {
+    echo "<script>alert('$success')</script>";
     Session::forget('success');
+} elseif ($error) {
+    echo "<script>alert('$error')</script>";
+    Session::forget('error');
+}
 ?>
+
 </html>

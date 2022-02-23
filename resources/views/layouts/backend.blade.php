@@ -62,6 +62,11 @@
                     <i class="fas fa-fw fa-table"></i>
                     <span>Nhập hàng</span></a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Bình luận</span></a>
+            </li>
             @if (Session::get('admins')->role == 2)
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('admin.staff') }}">
@@ -77,6 +82,12 @@
                     <a class="nav-link" href="{{ route('admin.user') }}">
                         <i class="fas fa-fw fa-chart-area"></i>
                         <span>Khách hàng</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('admin.statistic')}}" class="nav-link">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Thống kê</span></a>
+                    </a>
                 </li>
             @endif
 
@@ -98,11 +109,11 @@
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-                    <form class="form-inline">
-                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                            <i class="fa fa-bars"></i>
-                        </button>
-                    </form>
+                    {{-- <form class="form-inline"> --}}
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    {{-- </form> --}}
                     <form
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
@@ -153,36 +164,71 @@
                                 <h6 class="dropdown-header">
                                     Alerts Center
                                 </h6>
-                                @foreach ($noti as $noti)
-                                    @if ($noti->read == 0)
-                                        <a class="dropdown-item d-flex align-items-center bg-warning"
-                                            href="{{ route('admin.notification.read', $noti->id) }}">
-                                            <div class="mr-3">
-                                                <div class="icon-circle bg-primary">
-                                                    <i class="fas fa-file-alt text-white"></i>
+                                @if ($countNoti > 3)
+                                    @foreach ($notiLimit as $noti)
+                                        @if ($noti->read == 0)
+                                            <a class="dropdown-item d-flex align-items-center bg-warning"
+                                                href="{{ route('admin.notification.read', $noti->id) }}">
+                                                <div class="mr-3">
+                                                    <div class="icon-circle bg-primary">
+                                                        <i class="fas fa-file-alt text-white"></i>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div>
-                                                <div class="small text-gray-500">{{ $noti->created_at }}</div>
-                                                <span class="font-weight-bold">{{ $noti->notification }}</span>
-                                            </div>
-                                        </a>
-                                    @else
-                                        <a class="dropdown-item d-flex align-items-center"
-                                            href="{{ route('admin.order') }}">
-                                            <div class="mr-3">
-                                                <div class="icon-circle bg-primary">
-                                                    <i class="fas fa-file-alt text-white"></i>
+                                                <div>
+                                                    <div class="small text-gray-500">{{ $noti->created_at }}</div>
+                                                    <span class="font-weight-bold">{{ $noti->notification }}</span>
                                                 </div>
-                                            </div>
-                                            <div>
-                                                <div class="small text-gray-500">{{ $noti->created_at }}</div>
-                                                <span class="font-weight-bold">{{ $noti->notification }}</span>
-                                            </div>
-                                        </a>
-                                    @endif
-                                @endforeach
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                            </a>
+                                        @else
+                                            <a class="dropdown-item d-flex align-items-center"
+                                                href="{{ route('admin.order') }}">
+                                                <div class="mr-3">
+                                                    <div class="icon-circle bg-primary">
+                                                        <i class="fas fa-file-alt text-white"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="small text-gray-500">{{ $noti->created_at }}</div>
+                                                    <span class="font-weight-bold">{{ $noti->notification }}</span>
+                                                </div>
+                                            </a>
+                                        @endif
+                                    @endforeach
+                                    <a class="dropdown-item text-center small text-gray-500"
+                                        href="{{ route('admin.notification') }}">Show All
+                                        Alerts</a>
+                                @else
+                                    @foreach ($noti as $noti)
+                                        @if ($noti->read == 0)
+                                            <a class="dropdown-item d-flex align-items-center bg-warning"
+                                                href="{{ route('admin.notification.read', $noti->id) }}">
+                                                <div class="mr-3">
+                                                    <div class="icon-circle bg-primary">
+                                                        <i class="fas fa-file-alt text-white"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="small text-gray-500">{{ $noti->created_at }}</div>
+                                                    <span class="font-weight-bold">{{ $noti->notification }}</span>
+                                                </div>
+                                            </a>
+                                        @else
+                                            <a class="dropdown-item d-flex align-items-center"
+                                                href="{{ route('admin.order') }}">
+                                                <div class="mr-3">
+                                                    <div class="icon-circle bg-primary">
+                                                        <i class="fas fa-file-alt text-white"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="small text-gray-500">{{ $noti->created_at }}</div>
+                                                    <span class="font-weight-bold">{{ $noti->notification }}</span>
+                                                </div>
+                                            </a>
+                                        @endif
+                                    @endforeach
+                                @endif
+
                             </div>
                         </li>
 
