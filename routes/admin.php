@@ -48,13 +48,14 @@ Route::group(['namespace' => 'backend', 'prefix' => 'admin'], function () {
         Route::get('/xem-chi-tiet/{id}', 'OrderController@show')->name('admin.order.show');
         Route::get('/xoa/{id}', 'OrderController@destroy')->name('admin.order.destroy');
         Route::get('/thay-doi-trang-thai/{id}', 'OrderController@changeStatus')->name('admin.order.changeStatus');
+        Route::get('/in-hoa-don/{id}', 'OrderController@print')->name('admin.order.print');
     });
     Route::group(['prefix' => 'thong-bao'], function () {
         Route::get('/', 'AdminController@Notification')->name('admin.notification');
         Route::get('/xoa/{id}', 'AdminController@destroyNotification')->name('admin.notification.destroy');
         Route::get('/doc/{id}', 'AdminController@readNotification')->name('admin.notification.read');
     });
-    Route::group(['prefix' => 'ma-giam-gia'],function(){
+    Route::group(['prefix' => 'ma-giam-gia'], function () {
         Route::get('/', 'CouponController@index')->name('admin.coupon');
         Route::post('/', 'CouponController@store')->name('admin.coupon.store');
         Route::post('/sua/{id}', 'CouponController@update')->name('admin.coupon.update');
@@ -64,7 +65,11 @@ Route::group(['namespace' => 'backend', 'prefix' => 'admin'], function () {
     Route::group(['prefix' => 'khach-hang'], function () {
         Route::get('/', 'UserController@index')->name('admin.user');
     });
-    Route::group(['prefix' =>'thong-ke'],function(){
+    Route::group(['prefix' => 'thong-ke'], function () {
         Route::get('/', 'AdminController@statistic')->name('admin.statistic');
+    });
+    Route::group(['prefix' => 'binh-luan'], function () {
+        Route::get('/', 'CommentController@index')->name('admin.comment');
+        Route::get('/xoa/{id}', 'CommentController@destroy')->name('admin.comment.destroy');
     });
 });

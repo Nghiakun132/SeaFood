@@ -28,9 +28,10 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 }
 var url2 = window.location.href;
 var thongke = url2.slice(url2.indexOf('=') + 1);
+console.log(thongke);
 var ctx = document.getElementById("myBarChart");
 if (thongke == '7_ngay') {
-    var url = 'http://localhost/nienluan/public/api/7-ngay-gan-nhat';
+    var url = 'http://localhost/nienluan/public/api/doanh-thu/7-ngay-gan-nhat';
     var options = {
         method: 'GET',
         headers: {
@@ -137,7 +138,7 @@ if (thongke == '7_ngay') {
         })
 
 } else if(thongke == 'thang') {
-    var url = 'http://localhost/nienluan/public/api/thang-gan-nhat';
+    var url = 'http://localhost/nienluan/public/api/doanh-thu/thang-gan-nhat';
     var options = {
         method: 'GET',
         headers: {
@@ -245,7 +246,7 @@ if (thongke == '7_ngay') {
         })
 
 }else if(thongke=='nam'){
-    var url = 'http://localhost/nienluan/public/api/nam';
+    var url = 'http://localhost/nienluan/public/api/doanh-thu/nam';
     var options = {
         method: 'GET',
         headers: {
@@ -265,7 +266,6 @@ if (thongke == '7_ngay') {
                 return item.doanhthu;
             });
             var min2 = min.sort(function (a, b) { return a - b; })[0] - 1000000;
-
             var myBarChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
@@ -282,6 +282,7 @@ if (thongke == '7_ngay') {
                         }),
                     }],
                 },
+
                 options: {
                     maintainAspectRatio: false,
                     layout: {
@@ -352,7 +353,7 @@ if (thongke == '7_ngay') {
             });
         })
 }else{
-    var url = 'http://localhost/nienluan/public/api/';
+    var url = 'http://localhost/nienluan/public/api/doanh-thu';
     var options = {
         method: 'GET',
         headers: {

@@ -21,8 +21,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['namespace' => 'api'], function () {
-    Route::get('/', "TestController@index");
-    Route::get('/thang-gan-nhat', "TestController@thang");
-    Route::get('/7-ngay-gan-nhat', "TestController@ngay7");
-    Route::get('/nam', "TestController@hientai");
+    Route::group(['prefix' => 'doanh-thu'], function () {
+        Route::get('/', "TestController@index");
+        Route::get('/thang-gan-nhat', "TestController@thang");
+        Route::get('/7-ngay-gan-nhat', "TestController@ngay7");
+        Route::get('/nam', "TestController@hientai");
+    });
+    Route::group(['prefix' => 'don-hang'], function () {
+        Route::get('/', "OrderController@index");
+    });
 });

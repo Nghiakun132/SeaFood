@@ -32,7 +32,8 @@ class CartController extends Controller
             ->get();
         $total = DB::table('cart')->where('cart_user_id', Session::get('user')->id)->sum('cart_product_total');
         $countCart = count($cart);
-        return view('frontend.cart.index', compact('cart', 'total', 'countCart'));
+        $mostView = products::orderBy('pro_view', 'desc')->take(6)->get();
+        return view('frontend.cart.index', compact('cart', 'total', 'countCart', 'mostView'));
     }
     //them vao gio hang
     public function addCart(Request $request)
@@ -45,6 +46,9 @@ class CartController extends Controller
             $product->cart_product_quantity = $product->cart_product_quantity + $request->product_quatity;
             $product->cart_product_total =  $product->cart_product_total + ($request->product_quatity * $product->cart_product_price);
             $product->save();
+            DB::table('products')->where('pro_id', $request->pro_id)->update([
+                'pro_qty' => DB::table('products')->where('pro_id', $request->pro_id)->first()->pro_qty - $request->product_quatity,
+            ]);
             return redirect()->route('cart')->with('success', 'Thêm sản phẩm thành công');
         } else {
             $cart = new cart();
@@ -56,6 +60,11 @@ class CartController extends Controller
             $cart->cart_product_total = $request->pro_price * $request->product_quatity;
             $cart->cart_product_quantity = $request->product_quatity;
             $cart->save();
+
+            DB::table('products')->where('pro_id', $request->pro_id)->update([
+                'pro_qty' => DB::table('products')->where('pro_id', $request->pro_id)->first()->pro_qty - $request->product_quatity,
+            ]);
+
             return redirect()->route('cart')->with('success', 'Thêm giỏ hàng thành công');
         }
     }
@@ -89,15 +98,29 @@ class CartController extends Controller
     {
         $this->AuthLogin();
         $cart = cart::where('cart_id', $cart_id)->first();
-        $cart->cart_product_quantity = $request->product_quatity;
-        $cart->cart_product_total = $request->product_quatity * $cart->cart_product_price;
-        $cart->save();
-        return redirect()->route('cart')->with('success', 'Cập nhật giỏ hàng thành công');
+        $qty = $request->product_quatity - $cart->cart_product_quantity;
+        $pro_qty = DB::table('products')->where('pro_id', $cart->cart_product_id)->first()->pro_qty;
+        if ($qty > $pro_qty) {
+            return redirect()->route('cart')->with('error', 'Số lượng sản phẩm không đủ');
+        } else {
+            DB::table('products')->where('pro_id', $cart->cart_product_id)->update([
+                'pro_qty' => DB::table('products')->where('pro_id', $cart->cart_product_id)->first()->pro_qty - $qty,
+            ]);
+            $cart->cart_product_quantity = $request->product_quatity;
+            $cart->cart_product_total = $request->product_quatity * $cart->cart_product_price;
+            $cart->save();
+            return redirect()->route('cart')->with('success', 'Cập nhật giỏ hàng thành công');
+        }
     }
     //xoa 1 sp khoi gio hang
     public function deleteCart($cart_id)
     {
         $this->AuthLogin();
+        $pro_id = DB::table('cart')->where('cart_id', $cart_id)->first()->cart_product_id;
+
+        DB::table('products')->where('pro_id', $pro_id)->update([
+            'pro_qty' => DB::table('products')->where('pro_id', $pro_id)->first()->pro_qty + DB::table('cart')->where('cart_id', $cart_id)->first()->cart_product_quantity,
+        ]);
         $cart = cart::where('cart_id', $cart_id)->first();
         $cart->delete();
         return redirect()->route('cart')->with('success', 'Xóa giỏ hàng thành công');
@@ -106,6 +129,12 @@ class CartController extends Controller
     public function clearCart()
     {
         $this->AuthLogin();
+        $products = DB::table('cart')->where('cart_user_id', Session::get('user')->id)->get();
+        foreach ($products as $product) {
+            DB::table('products')->where('pro_id', $product->cart_product_id)->update([
+                'pro_qty' => DB::table('products')->where('pro_id', $product->cart_product_id)->first()->pro_qty + $product->cart_product_quantity,
+            ]);
+        }
         $cart = cart::where('cart_user_id', Session::get('user')->id)->delete();
         return redirect()->route('cart')->with('success', 'Xóa giỏ hàng thành công');
     }

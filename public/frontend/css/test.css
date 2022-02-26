@@ -2,7 +2,8 @@
     margin:5px 5px;
 }
 .product-list li:hover{
-    box-shadow : 0 5px 15px rgba(35, 37, 32, 0.9)
+    box-shadow : 0 5px 15px rgba(35, 37, 32, 0.9);
+    border-radius : 15px;
 }
 .product-list{
     padding: 10px;
@@ -179,4 +180,13 @@
     align-items: center;
     -webkit-box-pack: center;
     justify-content: center;
+}
+
+.sort_by{
+    padding: 10px;
+    border-radius: 26px;
+}
+.sort_by:hover{
+    background-color: #00A2EC;
+    color: white;
 }

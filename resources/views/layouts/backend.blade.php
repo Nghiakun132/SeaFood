@@ -63,7 +63,7 @@
                     <span>Nhập hàng</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="">
+                <a class="nav-link" href="{{ route('admin.comment') }}">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Bình luận</span></a>
             </li>
@@ -84,7 +84,7 @@
                         <span>Khách hàng</span></a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('admin.statistic')}}" class="nav-link">
+                    <a href="{{ route('admin.statistic') }}" class="nav-link">
                         <i class="fas fa-fw fa-chart-area"></i>
                         <span>Thống kê</span></a>
                     </a>
@@ -227,6 +227,9 @@
                                             </a>
                                         @endif
                                     @endforeach
+                                    <a class="dropdown-item text-center small text-gray-500"
+                                        href="{{ route('admin.notification') }}">Show All
+                                        Alerts</a>
                                 @endif
 
                             </div>
@@ -377,10 +380,12 @@
     <script src="{{ asset('backend/vendor/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('backend/js/demo/datatables-demo.js') }}"></script>
-    <script src="{{ asset('backend/ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('backend/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
     <script>
         CKEDITOR.replace('editor1');
         CKEDITOR.replace('editor2');
+        CKEDITOR.replace('editor3');
+        CKEDITOR.replace('editor4');
     </script>
     <script>
         $(document).ready(function() {

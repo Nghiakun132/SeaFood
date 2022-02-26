@@ -16,6 +16,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Tên</th>
+                            <th>Banner</th>
                             <th>Trạng thái</th>
                             <th>Ngày tạo</th>
                             <th>Ngày cập nhật</th>
@@ -28,10 +29,18 @@
                                 <td>{{ $category->c_id }}</td>
                                 <td>{{ $category->c_name }}</td>
                                 <td>
-                                    @if ($category->c_status == 1)
-                                        <a href="{{route('admin.categories.changeStatus', $category->c_id)}}"><span class="badge badge-success">Hiển thị</span></a>
+                                    @if ($category->c_banner)
+                                        Có
                                     @else
-                                        <a href="{{route('admin.categories.changeStatus', $category->c_id)}}"><span class="badge badge-danger">Ẩn</span></a>
+                                        Không
+                                    @endif
+                                <td>
+                                    @if ($category->c_status == 1)
+                                        <a href="{{ route('admin.categories.changeStatus', $category->c_id) }}"><span
+                                                class="badge badge-success">Hiển thị</span></a>
+                                    @else
+                                        <a href="{{ route('admin.categories.changeStatus', $category->c_id) }}"><span
+                                                class="badge badge-danger">Ẩn</span></a>
                                     @endif
                                 <td>{{ $category->created_at }}</td>
                                 <td>{{ $category->updated_at }}</td>
@@ -58,7 +67,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('admin.categories.store') }}" method="post">
+                <form action="{{ route('admin.categories.store') }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <label for="">Tên</label>
@@ -67,6 +76,10 @@
                     @if ($errors->has('c_name'))
                         <div class="alert alert-danger">{{ $errors->first('c_name') }}</div>
                     @endif
+                    <div class="form-group">
+                        <label for="">Banner</label>
+                        <input type="file" name="c_banner" class="form-control">
+                    </div>
                     <button class="btn btn-primary">Thêm</button>
                 </form>
             </div>

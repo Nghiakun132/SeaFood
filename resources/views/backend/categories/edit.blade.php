@@ -10,11 +10,15 @@
                             class="btn btn-primary">Thêm</a></h6>
                 </div> --}}
                 <div class="card-body">
-                    <form action="" method="post">
+                    <form action="" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
                           <label for="">Tên danh mục</label>
                           <input type="text" name="c_name" value="{{$categories->c_name}}" class="form-control" >
+                        </div>
+                        <div class="form-group">
+                            <label for="">Banner</label>
+                            <input type="file" name="c_banner" class="form-control">
                         </div>
                         <button class="btn btn-primary">Sửa</button>
                     </form>

@@ -36,7 +36,7 @@
                                     <span>Thông tin tài khoản</span>
                                 </a>
                             </li>
-                            <li style="background-color: #ccc">
+                            <li style="background-color: rgb(241, 19, 19); font-weight:bold;">
                                 <a href="{{ route('order') }}" class="account-link">
                                     <i class="fa-solid fa-certificate" style="color: rgb(241, 151, 16)"></i>
                                     <span>Quản lý đơn hàng</span>

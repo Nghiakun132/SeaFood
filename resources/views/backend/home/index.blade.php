@@ -15,7 +15,7 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                     Khách hàng</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{$user}}</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $user }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -31,9 +31,20 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                    Doanh thu</div>
+                                    Doanh thu / Nhập hàng</div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                    {{number_format($revenue->total,0,',','.'). ' VND' }}
+                                    {{ number_format($revenue->total, 0, ',', '.') }} /
+                                    {{ number_format($import, 0, ',', '.') }}
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    <span class="text-success">
+                                        <i class="fas fa-arrow-up"></i>
+                                        12%
+                                    </span>
+                                    <span class="text-danger">
+                                        <i class="fas fa-arrow-down"></i>
+                                        3%
+                                    </span>
                                 </div>
                             </div>
                             <div class="col-auto">
@@ -52,7 +63,7 @@
                                 </div>
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
-                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{$comments}}</div>
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ $comments }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -70,7 +81,7 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                     Đơn hàng</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{$orders}}</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $orders }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -172,15 +183,16 @@
                     </div>
                     <div class="card-body">
                         @foreach ($products as $vl)
-                        <?php
-                        $bg = ['bg-info', 'bg-primary', 'bg-secondary', 'bg-danger', 'bg-success', 'bg-warning', 'bg-dark'];
-                        $adu = $bg[rand(0, count($bg) - 1)];
-                        ?>
-                        <h4 class="small font-weight-bold">{{$vl->pro_name}} <span class="float-right">{{$vl->pro_qty}}</span></h4>
-                        <div class="progress mb-4">
-                            <div class="progress-bar <?php echo $adu ?>" role="progressbar" style="width: 50%" aria-valuenow="20"
-                            aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
+                            <?php
+                            $bg = ['bg-info', 'bg-primary', 'bg-secondary', 'bg-danger', 'bg-success', 'bg-warning', 'bg-dark'];
+                            $adu = $bg[rand(0, count($bg) - 1)];
+                            ?>
+                            <h4 class="small font-weight-bold">{{ $vl->pro_name }} <span
+                                    class="float-right">{{ $vl->pro_qty }}</span></h4>
+                            <div class="progress mb-4">
+                                <div class="progress-bar <?php echo $adu; ?>" role="progressbar" style="width: 50%"
+                                    aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
                         @endforeach
                     </div>
                 </div>

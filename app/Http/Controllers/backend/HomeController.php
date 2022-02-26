@@ -27,7 +27,8 @@ class HomeController extends Controller
         $comments = DB::table('comments')->count();
         $orders = DB::table('orders')->count();
         $products = DB::table('products')->get();
-        return view('backend.home.index', compact('revenue','user','comments','orders','products'));
+        $import = DB::table('import_products')->sum('ip_total');
+        return view('backend.home.index', compact('revenue','user','comments','orders','products','import'));
     }
     public function Login()
     {

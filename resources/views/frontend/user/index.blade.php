@@ -28,11 +28,12 @@
                             Tài khoản của <br>
                             <strong>{{ Session::get('user')->name }}</strong>
                         </div>
+
                     </div>
                     <div class="AccountSidebar-list">
                         <ul class="list-unstyled">
-                            <li style="background-color: #ccc">
-                                <a href="{{ route('profile') }}" class="account-link">
+                            <li style="background-color: rgb(241, 19, 19); font-weight:bold;">
+                                <a href="{{ route('profile') }}" class="account-link" style="color:#fff">
                                     <i class="fa-solid fa-user" style="color: blue"></i>
                                     <span>Thông tin tài khoản</span>
                                 </a>
@@ -65,7 +66,7 @@
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <div class="account-manger">
-                                <form action="{{route('postProfile')}}" method="post">
+                                <form action="{{route('postProfile')}}" method="post" enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-group">
                                         <label for="">
@@ -100,6 +101,9 @@
                                         <strong>{{$errors->first('phone')}}</strong>
                                       </div>
                                     @endif
+                                    <div class="form-group">
+                                        <input type="file" name="avatar" class="form-control" placeholder="avatar">
+                                    </div>
                                     <button class="btn btn-primary" type="submit">Cập nhật</button>
                                     <a href="#" class="btn btn-danger" id="myBtn">Đổi
                                         mật khẩu</a>

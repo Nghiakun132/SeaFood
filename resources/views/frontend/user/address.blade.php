@@ -43,9 +43,9 @@
                                     <span>Quản lý đơn hàng</span>
                                 </a>
                             </li>
-                            <li style="background-color: #ccc">
-                                <a href="{{ route('address') }}" class="account-link">
-                                    <i class="fa-solid fa-location-dot" style="color: red"></i>
+                            <li style="background-color: rgb(241, 19, 19); font-weight:bold;">
+                                <a href="{{ route('address') }}" class="account-link" style="color: #fff">
+                                    <i class="fa-solid fa-location-dot" style="color: rgb(25, 226, 19)"></i>
                                     <span>Sổ địa chỉ</span>
                                 </a>
                             </li>

@@ -13,25 +13,21 @@
                 <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12 main-content-area">
                     <div class="banner-shop">
                         <a href="#" class="banner-link">
-                            <figure><img src="../frontend/images/shop-banner.jpg" alt=""></figure>
+                            <figure><img src="{{'../uploads/banner/'.$cate->c_banner}}" alt=""></figure>
                         </a>
                     </div>
                     <div class="wrap-shop-control">
                         <h1 class="shop-title">{{ $cate->c_name }}</h1>
                         <div class="wrap-right">
                             <div class="sort-item orderby">
-                                <a href="{{ Request::URL() }}" style="margin:8px"><label>Mac
-                                        dinh</label></a>
-                                <a href="{{ Request::URL() }}?sort_by=gia-giam-dan" style="margin:8px"><label>Gia giam
-                                        dan</label></a>
-                                <a href="{{ Request::URL() }}?sort_by=gia-tang-dan" style="margin:8px"><label>Gia tang
-                                        dan</label></a>
-                                <a href="{{ Request::URL() }}?sort_by=moi-nhat" style="margin:8px"><label>Moi
-                                        nhat</label></a>
+                                <a href="{{ Request::URL() }}" style="margin:8px" class="sort_by"><label>Mặc định</label></a>
+                                <a href="{{ Request::URL() }}?sort_by=gia-giam-dan" style="margin:8px" class="sort_by"><label>Giá giảm dần</label></a>
+                                <a href="{{ Request::URL() }}?sort_by=gia-tang-dan" style="margin:8px" class="sort_by"><label>Giá tăng dần</label></a>
+                                <a href="{{ Request::URL() }}?sort_by=moi-nhat" style="margin:8px" class="sort_by"><label>Mới nhất</label></a>
                             </div>
-                            <div class="change-display-mode">
+                            {{-- <div class="change-display-mode">
                                 <a href="#" class="grid-mode display-mode active"><i class="fa fa-th"></i>Grid</a>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                     <div class="row">

@@ -70,7 +70,7 @@
                 @endif
                 <div class="form-group">
                     <label for="">Mo ta</label>
-                    <textarea name="pro_description" id="editor1" cols="30"
+                    <textarea name="pro_description" id="editor4" cols="30"
                         rows="10">{{ $product->pro_description }}</textarea>
                 </div>
                 @if ($errors->has('pro_description'))
@@ -80,7 +80,7 @@
                 @endif
                 <div class="form-group">
                     <label for="">Mô tả ngắn</label>
-                    <textarea name="pro_content" id="editor2" cols="30" rows="10">{{$product->pro_content}}</textarea>
+                    <textarea name="pro_content" id="editor3" cols="30" rows="10">{{$product->pro_content}}</textarea>
                 </div>
                 @if ($errors->has('pro_content'))
                     <div class="alert alert-danger">

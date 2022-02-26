@@ -43,6 +43,12 @@ class CategoriesController extends Controller
         $this->categories->c_name = $request->c_name;
         $this->categories->c_slug = Str::slug($request->c_name);
         $this->categories->created_at = Carbon::now('Asia/Ho_Chi_Minh');
+        if ($request->c_banner) {
+            $file = $request->file('c_banner');
+            $name = $file->getClientOriginalName();
+            $file->move("uploads/banner", $name);
+            $this->categories->c_banner = $name;
+        }
         $this->categories->save();
         return redirect()->back()->with('cate_success', 'Thêm danh mục thành công');
     }
@@ -60,11 +66,18 @@ class CategoriesController extends Controller
         ], [
             'c_name.required' => 'Bạn chưa nhập tên danh mục',
         ]);
-        $this->categories->where('c_id', $id)->update([
-            'c_name' => $request->c_name,
-            'c_slug' => Str::slug($request->c_name),
-            'updated_at' => Carbon::now('Asia/Ho_Chi_Minh'),
-        ]);
+        $categories = $this->categories->where('c_id', $id)->first();
+        $categories->c_name = $request->c_name;
+        $categories->c_slug = Str::slug($request->c_name);
+        $categories->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
+        if ($request->c_banner) {
+            $file = $request->file('c_banner');
+            $name = $file->getClientOriginalName();
+            $file->move("uploads/banner", $name);
+            $categories->c_banner = $name;
+        }
+        $categories->save();
+
         return redirect()->route('admin.categories')->with('cate_success', 'Sửa danh mục thành công');
     }
     public function destroy($id)

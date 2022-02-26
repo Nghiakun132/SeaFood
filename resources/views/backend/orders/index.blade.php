@@ -1,9 +1,15 @@
 @extends('layouts.backend')
 @section('content')
-@section('title', 'Sản phẩm')
+@section('title', 'Đơn hàng')
 <div class="container-fluid">
-    <h1 class="h3 mb-2 text-gray-800">Sản phẩm</h1>
+    <h1 class="h3 mb-2 text-gray-800">Đơn hàng</h1>
     <div class="card shadow mb-4">
+        <div class="card-header">
+            <a href="#" class="btn btn-primary">Tất cả</a>
+            <a href="#" class="btn btn-warning">Đang chờ duyệt</a>
+            <a href="#" class="btn btn-success">Đã xác nhận</a>
+            <a href="#" class="btn btn-danger">Đã hủy</a>
+        </div>
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered" id="example" width="100%" cellspacing="0">
@@ -22,13 +28,15 @@
                         @foreach ($orders as $order)
                             <tr>
                                 <td>{{ $order->order_id }}</td>
-                                <td>{{ number_format(($order->price_total),0,',',','). ' VND'}}</td>
+                                <td>{{ number_format($order->price_total, 0, ',', ',') . ' VND' }}</td>
                                 <td>{{ $order->created_at }}</td>
                                 <td>
                                     @if ($order->order_status == 0)
-                                        <a href="{{route('admin.order.changeStatus',$order->order_id)}}"><span class="badge badge-warning">Đang chờ</span></a>
+                                        <a href="{{ route('admin.order.changeStatus', $order->order_id) }}"><span
+                                                class="badge badge-warning">Đang chờ</span></a>
                                     @elseif ($order->order_status == 1)
-                                        <a href="{{route('admin.order.changeStatus',$order->order_id)}}"><span class="badge badge-success">Đã xác nhận</span></a>
+                                        <a href="{{ route('admin.order.changeStatus', $order->order_id) }}"><span
+                                                class="badge badge-success">Đã xác nhận</span></a>
                                     @elseif ($order->order_status == 2)
                                         <span class="badge badge-danger">Đã hủy</span>
                                     @elseif ($order->order_status == 3)
@@ -44,8 +52,12 @@
                                 </td>
                                 <td>{{ $order->order_type }}</td>
                                 <td>
-                                    <a href="#" class="btn btn-primary">Chi tiết</a>
-                                    <a href="{{route('admin.order.destroy',$order->order_id)}}" class="btn btn-danger" onclick="return confirm('Ban co chac muon xoa don hang nay ?')">Xoa</a>
+                                    <a href="{{ route('admin.order.show', $order->order_id) }}"
+                                        class="btn btn-primary">Chi tiết</a>
+                                    <a href="{{ route('admin.order.destroy', $order->order_id) }}" class="btn btn-danger"
+                                        onclick="return confirm('Ban co chac muon xoa don hang nay ?')">Xoa</a>
+                                    <a href="{{ route('admin.order.print', $order->order_id) }}"
+                                        class="btn btn-warning">In hóa đơn</a>
                                 </td>
                             </tr>
                         @endforeach

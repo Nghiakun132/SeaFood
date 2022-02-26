@@ -181,13 +181,23 @@ class UserController extends Controller
             'email.email' => 'Bạn chưa nhập đúng định dạng email',
             'email.unique' => 'Email đã tồn tại',
         ]);
-        $id = Session::get('user')->id;
-        $user = User::find($id);
-        $user->name = $request->name;
-        $user->phone = $request->phone;
-        $user->email = $request->email;
-        $user->save();
-        return redirect()->back()->with('success', 'Cập nhật thông tin thành công');
+        if (Session::get('user')->type == 'Account') {
+            $id = Session::get('user')->id;
+            $user = User::find($id);
+            $user->name = $request->name;
+            $user->phone = $request->phone;
+            $user->email = $request->email;
+            if ($request->avatar) {
+                $file = $request->avatar;
+                $file_name = $file->getClientOriginalName();
+                $file->move('uploads/avatar', $file_name);
+                $user->avatar = $file_name;
+            }
+            $user->save();
+            return redirect()->back()->with('success', 'Cập nhật thông tin thành công');
+        } else {
+            return redirect()->back()->with('error', 'Không thể cập nhật thông tin khi đăng nhập bằng Google');
+        }
     }
     public function changePassword(Request $request)
     {

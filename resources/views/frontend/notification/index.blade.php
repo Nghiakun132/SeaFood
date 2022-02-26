@@ -1,19 +1,19 @@
 @extends('layouts.frontend')
 @section('content')
-@section('title', 'Don hang')
+@section('title', 'Thông báo')
 <main id="main" class="main-site left-sidebar">
     <div class="container">
         <div class="wrap-breadcrumb">
             <ul>
-                <li class="item-link"><a href="#" class="link">Trang chu</a></li>
-                <li class="item-link"><span>Don hang</span></li>
+                <li class="item-link"><a href="#" class="link">Trang chủ</a></li>
+                <li class="item-link"><span>Thông báo</span></li>
             </ul>
         </div>
         <div class="row">
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="wrap-product-detail">
-                        <div class="advance-info">
+                        <div class="advance-info khong-cach">
                             <div class="tab-control normal">
                                 <a href="#orders" class="tab-control-item active">Tất cả thông báo</a>
                             </div>
@@ -31,9 +31,10 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                <?php $i = 1; ?>
                                                 @foreach ($notifications as $notifications)
                                                     <tr>
-                                                        <td>{{ $notifications->id }}</td>
+                                                        <td>{{ $i++ }}</td>
                                                         <td>{{ $notifications->type }}</td>
                                                         <td>{{ $notifications->notification }}</td>
                                                         <td>{{ $notifications->created_at }}</td>

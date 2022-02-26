@@ -342,7 +342,9 @@ if ($success) {
     var qty_input = document.querySelector('input[name="product_quatity"]');
     var checkCart = {{ $checkValue }};
     btn.addEventListener('click', function(e) {
-        if (parseInt(checkCart) + parseInt(qty_input.value) > qty.innerHTML) {
+        if ( parseInt(qty_input.value) > parseInt(qty.innerHTML)) {
+            console.log( parseInt(qty_input.value));
+            console.log(parseInt(qty.innerHTML));
             alert('Số lượng sản phẩm không đủ');
             e.preventDefault();
         }

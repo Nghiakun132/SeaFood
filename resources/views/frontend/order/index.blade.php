@@ -1,13 +1,13 @@
 @extends('layouts.frontend')
 @section('content')
-@section('title', 'Tài khoản')
+@section('title', 'Đơn hàng')
 <main id="main" class="main-site left-sidebar">
     <div class="container">
         <div class="background">
             <div class="wrap-breadcrumb">
                 <ul>
                     <li class="item-link"><a href="#" class="link">Trang chủ</a></li>
-                    <li class="item-link"><span>Tài khoản của tôi</span></li>
+                    <li class="item-link"><span>Đơn hàng</span></li>
                 </ul>
             </div>
             <div class="row">
@@ -37,8 +37,8 @@
                                     <span>Thông tin tài khoản</span>
                                 </a>
                             </li>
-                            <li style="background-color: #ccc">
-                                <a href="{{ route('order') }}" class="account-link">
+                            <li style="background-color: rgb(241, 19, 19); font-weight:bold;">
+                                <a href="{{ route('order') }}" class="account-link" style="color:white">
                                     <i class="fa-solid fa-certificate" style="color: rgb(241, 151, 16)"></i>
                                     <span>Quản lý đơn hàng</span>
                                 </a>

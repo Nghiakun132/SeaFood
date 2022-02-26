@@ -85,8 +85,8 @@
                         <div class="topbar-menu left-menu">
                             <ul>
                                 <li class="menu-item">
-                                    <a title="Hotline: (+123) 456 789" href="#"><span
-                                            class="icon label-before fa fa-mobile"></span>Hotline: (+123) 456 789</a>
+                                    <a title="Hotline: (+84) 776585055" href="tel:0776585055"><span
+                                            class="icon label-before fa fa-mobile"></span>Hotline: (+84) 776585055</a>
                                 </li>
                             </ul>
                         </div>

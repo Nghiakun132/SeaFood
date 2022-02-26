@@ -35,17 +35,21 @@ class ProductController extends Controller
         $popularProducts = products::where('pro_status', 0)->orderBy('pro_view', 'desc')->limit(6)->get();
         $comments = products::join('comments', 'products.pro_id', '=', 'comments.cm_product_id')
             ->join('users', 'users.id', '=', 'comments.cm_user_id')
-            ->select('comments.*', 'users.name','users.avatar','users.type')
+            ->select('comments.*', 'users.name', 'users.avatar', 'users.type')
             ->where('products.pro_id', $product->pro_id)
             ->paginate(10);
         $countComments = count($comments);
         $star = DB::table('comments')->where('cm_product_id', $product->pro_id)->avg('cm_star');
-        $checkCart = DB::table('cart')->where('cart_product_id', $product->pro_id)
-        ->where('cart_user_id', Session::get('user')->id)->first();
-        if ($checkCart==null) {
-            $checkValue = 0;
+        if (Session::get('user')) {
+            $checkCart = DB::table('cart')->where('cart_product_id', $product->pro_id)
+                ->where('cart_user_id', Session::get('user')->id)->first();
+            if ($checkCart) {
+                $checkValue = $checkCart->cart_product_quantity;
+            } else {
+                $checkValue = 0;
+            }
         } else {
-            $checkValue = $checkCart->cart_product_quantity;
+            $checkValue = 0;
         }
         return view('frontend.detail.index', compact('product', 'images', 'productRelated', 'cate', 'popularProducts', 'comments', 'countComments', 'star', 'checkValue'));
     }
@@ -79,13 +83,14 @@ class ProductController extends Controller
         DB::table('wishlist')->where('w_user_id', Session::get('user')->id)->where('w_product_id', $id)->delete();
         return Redirect()->back()->with('success', 'Xóa sản phẩm khỏi danh sách yêu thích thành công');
     }
-    public function deleteAllWishlist(){
+    public function deleteAllWishlist()
+    {
         $this->AuthLogin();
         DB::table('wishlist')->where('w_user_id', Session::get('user')->id)->delete();
         return Redirect()->back()->with('success', 'Xóa tất cả sản phẩm khỏi danh sách yêu thích thành công');
     }
 
-    public function comments(Request $request,$id)
+    public function comments(Request $request, $id)
     {
         $this->AuthLogin();
         $product = products::where('pro_id', $id)->first();
@@ -98,6 +103,4 @@ class ProductController extends Controller
         DB::table('comments')->insert($data);
         return Redirect()->back();
     }
-
-
 }
