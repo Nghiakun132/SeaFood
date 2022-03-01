@@ -67,34 +67,33 @@
                         <h4 class="title-box">Phương thức thanh toán</h4>
                         <div class="choose-payment-methods">
                             <label class="payment-method">
-                                <input name="payment_method" id="payment-method-bank" value="Chuyển khoản" type="radio"
+                                <input name="payment_method" id="payment-method-bank" value="VnPay" type="radio"
                                     required>
-                                <span>Chuyển khoản</span>
-                                {{-- <span class="payment-desc">But the majority have suffered alteration in some form, by
-                                    injected humour, or randomised words which don't look even slightly
-                                    believable</span> --}}
+                                <span>Thanh toán qua VnPay</span>
                             </label>
                             <label class="payment-method">
                                 <input name="payment_method" id="payment-method-visa" value="COD" type="radio" required>
                                 <span>Thanh toán khi nhận hàng</span>
-                                {{-- <span class="payment-desc">There are many variations of passages of Lorem Ipsum
-                                    available</span> --}}
+                            </label>
+                            <label class="payment-method">
+                                <input name="payment_method" id="payment-method-paypal" value="MOMO" type="radio"
+                                    required>
+                                <span>Thanh toán qua MOMO</span>
                             </label>
                             <label class="payment-method">
                                 <input name="payment_method" id="payment-method-paypal" value="Paypal" type="radio"
                                     required>
                                 <span>Thanh toán qua Paypal</span>
-                                {{-- <span class="payment-desc">You can pay with your credit</span>
-                                <span class="payment-desc">card if you don't have a paypal account</span> --}}
                             </label>
                         </div>
                         <p class="summary-info grand-total"><span>Thành tiền</span> <span
                                 class="grand-total-price">{{ number_format($total, 0, ',', ',') . ' VND' }}</span>
                         </p>
                         @if ($countCart > 0)
-                        <button class="btn btn-medium">Đặt hàng ngay</button>
+                            <button class="btn btn-medium" name="redirect">Đặt hàng ngay</button>
                         @else
-                        <button class="btn btn-medium" disabled onclick="return alert('Thêm gì đó vào giỏ hàng đi!!!!!!!')">Đặt hàng ngay</button>
+                            <button class="btn btn-medium" disabled
+                                onclick="return alert('Thêm gì đó vào giỏ hàng đi!!!!!!!')">Đặt hàng ngay</button>
                         @endif
                     </div>
                     <div class="summary-item shipping-method">

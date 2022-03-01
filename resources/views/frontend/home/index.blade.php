@@ -276,7 +276,7 @@
                                 @foreach ($productsBestSeller as $arr)
                                     <div class="product product-style-2 equal-elem ">
                                         <div class="product-thumnail">
-                                            <a href="detail.html" title="T-Shirt Raw Hem Organic Boro Constrast Denim">
+                                            <a href="{{route('detail',$arr['pro_slug'])}}" title="T-Shirt Raw Hem Organic Boro Constrast Denim">
                                                 <figure><img
                                                         src="{{ asset('uploads/products/' . $arr['pro_avatar']) }}"
                                                         width="800" height="800"
@@ -290,11 +290,11 @@
                                             @endif
 
                                             <div class="wrap-btn">
-                                                <a href="#" class="function-link">quick view</a>
+                                                <a href="{{route('detail',$arr['pro_slug'])}}" class="function-link">quick view</a>
                                             </div>
                                         </div>
                                         <div class="product-info">
-                                            <a href="#"
+                                            <a href="{{route('detail',$arr['pro_slug'])}}"
                                                 class="product-name"><span>{{ $arr['pro_name'] }}</span></a>
                                             <div class="wrap-price"><span
                                                     class="product-price">{{ number_format($arr['pro_price'] - $arr['pro_price'] * $arr['pro_sale'], 0, ',', ',') . ' VND' }}</span>

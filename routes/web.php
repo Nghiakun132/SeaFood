@@ -56,33 +56,42 @@ Route::group(['namespace' => 'frontend'], function () {
         Route::get('/xoa/{id}', 'CartController@deleteCart')->name('deleteCart');
         Route::get('/xoa-gio-hang', 'CartController@clearCart')->name('clearCart');
     });
+
+
     Route::get('/thanh-toan', 'CartController@checkout')->name('checkout');
     Route::post('/thanh-toan', 'CartController@postCheckout')->name('postCheckout');
-    Route::get('/huy', 'CartController@cancelTransaction')->name('cancelTransaction');
-    Route::get('/hoan-thanh', 'CartController@successTransaction')->name('successTransaction');
+    //paypal
+    Route::get('/huy-paypal', 'CartController@cancelTransaction')->name('cancelTransaction');
+    Route::get('/hoan-thanh-paypal', 'CartController@successTransaction')->name('successTransaction');
+    //thanh toan vnpay
+    Route::get('/thanh-toan-vnpay', 'CartController@vnpay')->name('vnpay');
+    //thanh toan momo
+    Route::get('/thanh-toan-momo', 'CartController@momo')->name('momo');
+
+
 
     Route::post('/ma-giam-gia', 'CartController@postCoupon')->name('postCoupon');
     Route::get('/xoa-ma-giam-gia', 'CartController@deleteCoupon')->name('deleteCoupon');
     Route::get('/test', 'HomeController@test')->name('test');
-    Route::get('/danh-sach-yeu-thich','ProductController@wishlist')->name('wishlist');
-    Route::get('/them-san-pham-yeu-thich/{id}','ProductController@addWishlist')->name('addWishlist');
-    Route::get('/xoa-san-pham-yeu-thich/{id}','ProductController@deleteWishlist')->name('deleteWishlist');
-    Route::get('/xoa-tat-ca-san-pham-yeu-thich','ProductController@deleteAllWishlist')->name('deleteAllWishlist');
-    Route::get('/thong-bao','UserController@notifications')->name('notifications');
-    Route::get('/doc-thong-bao/{id}','UserController@readNotifications')->name('readNotifications');
-    Route::get('/xoa-thong-bao/{id}','UserController@deleteNotifications')->name('deleteNotifications');
-    Route::get('/xoa-tat-ca-thong-bao','UserController@deleteAllNotifications')->name('deleteAllNotifications');
-    Route::get('/thong-tin-ca-nhan','UserController@profile')->name('profile');
-    Route::post('/thong-tin-ca-nhan','UserController@postProfile')->name('postProfile');
-    Route::post('/doi-mat-khau','UserController@changePassword')->name('changePassword');
-    Route::get('/dia-chi','UserController@address')->name('address');
-    Route::post('/dia-chi','UserController@addAddress')->name('addAddress');
-    Route::get('/xoa-dia-chi/{id}','UserController@deleteAddress')->name('deleteAddress');
-    Route::get('/dia-chi-mac-dinh/{id}','UserController@setDefault')->name('setDefault');
-    Route::get('sua-dia-chi/{id}','UserController@editAddress')->name('editAddress');
-    Route::post('/sua-dia-chi/{id}','UserController@updateAddress')->name('updateAddress');
-    Route::get('/ma-giam-gia-hien-co','UserController@coupon')->name('coupon');
-    Route::post('/nhan-xet/{id}','ProductController@comments')->name('comments');
+    Route::get('/danh-sach-yeu-thich', 'ProductController@wishlist')->name('wishlist');
+    Route::get('/them-san-pham-yeu-thich/{id}', 'ProductController@addWishlist')->name('addWishlist');
+    Route::get('/xoa-san-pham-yeu-thich/{id}', 'ProductController@deleteWishlist')->name('deleteWishlist');
+    Route::get('/xoa-tat-ca-san-pham-yeu-thich', 'ProductController@deleteAllWishlist')->name('deleteAllWishlist');
+    Route::get('/thong-bao', 'UserController@notifications')->name('notifications');
+    Route::get('/doc-thong-bao/{id}', 'UserController@readNotifications')->name('readNotifications');
+    Route::get('/xoa-thong-bao/{id}', 'UserController@deleteNotifications')->name('deleteNotifications');
+    Route::get('/xoa-tat-ca-thong-bao', 'UserController@deleteAllNotifications')->name('deleteAllNotifications');
+    Route::get('/thong-tin-ca-nhan', 'UserController@profile')->name('profile');
+    Route::post('/thong-tin-ca-nhan', 'UserController@postProfile')->name('postProfile');
+    Route::post('/doi-mat-khau', 'UserController@changePassword')->name('changePassword');
+    Route::get('/dia-chi', 'UserController@address')->name('address');
+    Route::post('/dia-chi', 'UserController@addAddress')->name('addAddress');
+    Route::get('/xoa-dia-chi/{id}', 'UserController@deleteAddress')->name('deleteAddress');
+    Route::get('/dia-chi-mac-dinh/{id}', 'UserController@setDefault')->name('setDefault');
+    Route::get('sua-dia-chi/{id}', 'UserController@editAddress')->name('editAddress');
+    Route::post('/sua-dia-chi/{id}', 'UserController@updateAddress')->name('updateAddress');
+    Route::get('/ma-giam-gia-hien-co', 'UserController@coupon')->name('coupon');
+    Route::post('/nhan-xet/{id}', 'ProductController@comments')->name('comments');
 });
 
 
