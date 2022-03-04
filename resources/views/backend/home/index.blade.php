@@ -182,16 +182,24 @@
                         <h6 class="m-0 font-weight-bold text-primary">Sản phẩm</h6>
                     </div>
                     <div class="card-body">
-                        @foreach ($products as $vl)
+                        @foreach ($product_sell_arr as $vl)
                             <?php
                             $bg = ['bg-info', 'bg-primary', 'bg-secondary', 'bg-danger', 'bg-success', 'bg-warning', 'bg-dark'];
                             $adu = $bg[rand(0, count($bg) - 1)];
                             ?>
-                            <h4 class="small font-weight-bold">{{ $vl->pro_name }} <span
-                                    class="float-right">{{ $vl->pro_qty }}</span></h4>
+
+                            <h4 class="small font-weight-bold">{{ $vl['pro_name'] }} <span
+                                    class="float-right">{{ $vl['pro_qty'] + $vl['product_sell'] }}</span></h4>
+                            <?php
+                            $product_sell = $vl['product_sell'];
+                            $pro_qty = $vl['pro_qty'];
+                            $percent = ($product_sell / ($pro_qty + $product_sell)) * 100;
+                            ?>
                             <div class="progress mb-4">
-                                <div class="progress-bar <?php echo $adu; ?>" role="progressbar" style="width: 50%"
-                                    aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar  <?php echo $adu; ?> progress-bar-striped progress-bar-animated"
+                                    role="progressbar" title="Bán được {{ $product_sell }} sản phẩm"
+                                    style="width: {{ $percent }}%;" aria-valuenow="20" aria-valuemin="0"
+                                    aria-valuemax="100">{{ $product_sell }}</div>
                             </div>
                         @endforeach
                     </div>
@@ -267,37 +275,60 @@
             <div class="col-lg-6 mb-4">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
+                        <span class="m-0 font-weight-bold text-primary">Thống kê doanh thu</span>
+                        <div class="dropdown" style="float: right">
+                            <button class="btn btn-primary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Thống kê theo
+                            </button>
+                            <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="{{ Request::URL() }}">Mặc định</a>
+                                <a class="dropdown-item" href="{{ Request::URL() }}?thong_ke=7_ngay">7 ngày gần nhất</a>
+                                <a class="dropdown-item" href="{{ Request::URL() }}?thong_ke=thang">Tháng gần nhất</a>
+                                <a class="dropdown-item" href="{{ Request::URL() }}?thong_ke=nam">Năm</a>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
-                        <div class="text-center">
-                            <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                src="{{ asset('backend/img/undraw_posting_photo.svg') }}" alt="...">
+                        <div class="chart-bar">
+                            <canvas id="myBarChart"></canvas>
                         </div>
-                        <p>Add some quality, svg illustrations to your project courtesy of <a target="_blank" rel="nofollow"
-                                href="https://undraw.co/">unDraw</a>, a
-                            constantly updated collection of beautiful svg images that you can use
-                            completely free and without attribution!</p>
-                        <a target="_blank" rel="nofollow" href="https://undraw.co/">Browse Illustrations on
-                            unDraw &rarr;</a>
+                        <hr>
+                        <p class="chart-title"></p>
                     </div>
                 </div>
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Development Approach</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Donut Chart</h6>
                     </div>
                     <div class="card-body">
-                        <p>SB Admin 2 makes extensive use of Bootstrap 4 utility classes in order to reduce
-                            CSS bloat and poor page performance. Custom CSS classes are used to create
-                            custom components and custom utility classes.</p>
-                        <p class="mb-0">Before working with this theme, you should become
-                            familiar with the
-                            Bootstrap framework, especially the utility classes.</p>
+                        <div class="chart-pie pt-4">
+                            <canvas id="myPieChart"></canvas>
+                        </div>
+                        <hr>
+                        Styling for the donut chart can be found in the
+                        <code>/js/demo/chart-pie-demo.js</code> file.
                     </div>
                 </div>
 
             </div>
         </div>
     </div>
-
+    <script src="{{ asset('backend/js/demo/chart-bar-demo.js') }}"></script>
+    <script src="{{ asset('backend/js/demo/chart-pie-demo.js') }}"></script>
+    <script src="{{ asset('backend/vendor/chart.js/Chart.min.js') }}"></script>
+    <script>
+        let title = document.querySelector('.chart-title')
+        var url = window.location.href;
+        var thong_ke = url.split('=')[1];
+        if (thong_ke == '7_ngay') {
+            title.innerHTML = 'Thống kê doanh thu 7 ngày gần nhất'
+        } else if (thong_ke == 'thang') {
+            title.innerHTML = 'Thống kê doanh thu tháng gần nhất'
+        } else if (thong_ke == 'nam') {
+            title.innerHTML = 'Thống kê doanh thu năm'
+        } else {
+            title.innerHTML = 'Thống kê doanh thu mặc định'
+        }
+    </script>
 @stop

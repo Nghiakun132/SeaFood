@@ -235,20 +235,20 @@ class ProductController extends Controller
     {
         $this->AuthLogin();
         $import = DB::table('import_products')
-        ->join('admins', 'import_products.ip_admin_id', '=', 'admins.id')
-        ->select('import_products.*', 'admins.name')
-        ->orderBy('ip_id', 'desc')->get();
+            ->join('admins', 'import_products.ip_admin_id', '=', 'admins.id')
+            ->select('import_products.*', 'admins.name')
+            ->orderBy('ip_id', 'desc')->get();
         return view('backend.import.index', compact('import'));
     }
     public function import_detail($id)
     {
         $this->AuthLogin();
         $import = DB::table('import_products')
-        ->join('admins', 'import_products.ip_admin_id', '=', 'admins.id')
-        ->join('import_product_details', 'import_products.ip_id', '=', 'import_product_details.ipd_import_product_id')
-        ->join('products', 'import_product_details.ipd_product_id', '=', 'products.pro_id')
-        ->select('import_products.*', 'admins.name', 'import_product_details.*', 'products.pro_name')
-        ->where('ipd_import_product_id', $id)->first();
+            ->join('admins', 'import_products.ip_admin_id', '=', 'admins.id')
+            ->join('import_product_details', 'import_products.ip_id', '=', 'import_product_details.ipd_import_product_id')
+            ->join('products', 'import_product_details.ipd_product_id', '=', 'products.pro_id')
+            ->select('import_products.*', 'admins.name', 'import_product_details.*', 'products.pro_name')
+            ->where('ipd_import_product_id', $id)->first();
         return view('backend.import.detail', compact('import'));
     }
 }

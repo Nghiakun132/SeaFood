@@ -27,7 +27,7 @@
                                     @if ($item->read == 1)
                                         <span class="badge badge-success">Đã đọc</span>
                                     @else
-                                        <span class="badge badge-danger">Chưa đọc</span>
+                                       <a href="{{route('admin.notification.read',$item->id)}}"> <span class="badge badge-danger">Chưa đọc</span></a>
                                     @endif
                                 </td>
                                 <td>

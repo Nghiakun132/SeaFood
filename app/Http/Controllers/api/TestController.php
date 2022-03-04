@@ -45,6 +45,7 @@ class TestController extends Controller
     static function layDoanhThuTungThang($year)
     {
         $doanhthuTungThang = DB::table('orders')
+            ->where('order_status', '<>',2)
             ->select(DB::raw('SUM(price_total) as doanhthu'), DB::raw('MONTH(orders.created_at) as thang'))
             ->whereYear('orders.created_at', '=', $year)
             ->groupBy('thang')
@@ -55,6 +56,7 @@ class TestController extends Controller
     static function LayDoanhThuTungNgay($thang)
     {
         $doanhthuTungNgay = DB::table('orders')
+            ->where('order_status', '<>',2)
             ->select(DB::raw('SUM(price_total) as doanhthu'), DB::raw('DAY(orders.created_at) as ngay'))
             ->whereMonth('orders.created_at', '=', $thang)
             ->groupBy('ngay')
@@ -64,6 +66,7 @@ class TestController extends Controller
     static function LayDoanhThu7Ngay($day)
     {
         $doanhthu7Ngay = DB::table('orders')
+            ->where('order_status', '<>',2)
             ->select(DB::raw('SUM(price_total) as doanhthu'), DB::raw('DAY(orders.created_at) as ngay'))
             ->where('orders.created_at', '>=', $day)
             ->where('orders.created_at', '<=', Carbon::now('Asia/Ho_Chi_Minh'))
@@ -74,10 +77,12 @@ class TestController extends Controller
     static function LayDoanhThuThangHienTai($month)
     {
         $doanhthuThangHienTai = DB::table('orders')
+            ->where('order_status', '<>',2)
             ->select(DB::raw('SUM(price_total) as doanhthu'), DB::raw('DAY(orders.created_at) as ngay'))
             ->whereMonth('orders.created_at', '=', $month)
             ->groupBy('ngay')
             ->get();
         return $doanhthuThangHienTai;
     }
+
 }

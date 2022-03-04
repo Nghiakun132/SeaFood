@@ -30,4 +30,8 @@ Route::group(['namespace' => 'api'], function () {
     Route::group(['prefix' => 'don-hang'], function () {
         Route::get('/', "OrderController@index");
     });
+    Route::group(['prefix' => 'san-pham'], function () {
+        Route::get('/', "ProductController@index");
+        Route::get('/ngay-gan-nhat', "ProductController@getQuantity");
+    });
 });

@@ -4,14 +4,8 @@
 <div class="container-fluid">
     <h1 class="h3 mb-2 text-gray-800">Đơn hàng</h1>
     <div class="card shadow mb-4">
-        <div class="card-header">
-            <a href="#" class="btn btn-primary">Tất cả</a>
-            <a href="#" class="btn btn-warning">Đang chờ duyệt</a>
-            <a href="#" class="btn btn-success">Đã xác nhận</a>
-            <a href="#" class="btn btn-danger">Đã hủy</a>
-        </div>
         <div class="card-body">
-            <div class="table-responsive">
+            <div class="table-responsive" >
                 <table class="table table-bordered" id="example" width="100%" cellspacing="0">
                     <thead>
                         <tr>
@@ -33,14 +27,14 @@
                                 <td>
                                     @if ($order->order_status == 0)
                                         <a href="{{ route('admin.order.changeStatus', $order->order_id) }}"><span
-                                                class="badge badge-warning">Đang chờ</span></a>
+                                                class="badge badge-warning">Đang chờ duyệt</span></a>
                                     @elseif ($order->order_status == 1)
                                         <a href="{{ route('admin.order.changeStatus', $order->order_id) }}"><span
-                                                class="badge badge-success">Đã xác nhận</span></a>
+                                                class="badge badge-info">Đã xác nhận</span></a>
                                     @elseif ($order->order_status == 2)
                                         <span class="badge badge-danger">Đã hủy</span>
                                     @elseif ($order->order_status == 3)
-                                        <span class="badge badge-info">Đã giao hàng</span>
+                                        <span class="badge badge-success">Đã giao hàng</span>
                                     @endif
                                 </td>
                                 <td>
@@ -53,11 +47,14 @@
                                 <td>{{ $order->order_type }}</td>
                                 <td>
                                     <a href="{{ route('admin.order.show', $order->order_id) }}"
-                                        class="btn btn-primary">Chi tiết</a>
-                                    <a href="{{ route('admin.order.destroy', $order->order_id) }}" class="btn btn-danger"
+                                        class="btn-sm btn btn-primary">Chi tiết</a>
+                                    <a href="{{ route('admin.order.destroy', $order->order_id) }}"
+                                        class="btn-sm btn btn-danger"
                                         onclick="return confirm('Ban co chac muon xoa don hang nay ?')">Xoa</a>
-                                    <a href="{{ route('admin.order.print', $order->order_id) }}"
-                                        class="btn btn-warning">In hóa đơn</a>
+                                    @if ($order->order_status != 2)
+                                        <a href="{{ route('admin.order.print', $order->order_id) }}"
+                                            class="btn-sm btn btn-warning">In hóa đơn</a>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

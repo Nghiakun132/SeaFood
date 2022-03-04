@@ -4,8 +4,10 @@ namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\admins;
+use Hamcrest\Core\IsTypeOf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Session;
 
 class HomeController extends Controller
@@ -22,13 +24,36 @@ class HomeController extends Controller
     public function index()
     {
         $this->AuthLogin();
-        $revenue = DB::table('orders')->select(DB::raw('sum(price_total) as total'))->where('order_status','<>',2)->first();
+        $revenue = DB::table('orders')->select(DB::raw('sum(price_total) as total'))->where('order_status', '<>', 2)->first();
         $user = DB::table('users')->count();
         $comments = DB::table('comments')->count();
         $orders = DB::table('orders')->count();
         $products = DB::table('products')->get();
         $import = DB::table('import_products')->sum('ip_total');
-        return view('backend.home.index', compact('revenue','user','comments','orders','products','import'));
+        $product_sell = DB::table('products')
+            ->rightJoin('order_details', 'products.pro_id', '=', 'order_details.product_id')
+            ->join('orders', 'order_details.order_id', '=', 'orders.order_id')
+            ->where('orders.order_status', '<>', 2)
+            ->select(DB::raw('sum(order_details.product_quantity) as total'), 'product_id')
+            ->groupBy('order_details.product_id')
+            ->get();
+        //covert object to array
+        $product_sell = json_decode(json_encode($product_sell), true);
+        $product_arr = json_decode(json_encode($products), true);
+        $product_sell_arr = array();
+        for($i = 0; $i < count($product_sell); $i++){
+            for($j = 0; $j < count($product_arr); $j++){
+                if($product_sell[$i]['product_id'] == $product_arr[$j]['pro_id']){
+                    $product_sell_arr[] = array(
+                        'pro_name' => $product_arr[$j]['pro_name'],
+                        'product_sell' => $product_sell[$i]['total'],
+                        'pro_qty' => $product_arr[$j]['pro_qty'],
+                        'pro_id' => $product_arr[$j]['pro_id']
+                    );
+                }
+            }
+        }
+        return view('backend.home.index', compact('revenue', 'user', 'comments', 'orders', 'products', 'import','product_sell_arr'));
     }
     public function Login()
     {
@@ -48,7 +73,7 @@ class HomeController extends Controller
         $password = $request->password;
         $admins = admins::where('email', $email)->first();
         if ($admins) {
-            if ($admins->password == md5($password)) {
+            if (Hash::check($password, $admins->password)) {
                 Session()->put('admins', $admins);
                 DB::table('admins')->where('id', $admins->id)->update(['status' => 1]);
                 return redirect()->route('admin.home');

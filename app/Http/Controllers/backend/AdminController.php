@@ -7,6 +7,7 @@ use App\Models\admins;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Session;
 
 class AdminController extends Controller
@@ -49,7 +50,7 @@ class AdminController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
-            'password' => md5('12345678'),
+            'password' => Hash::make('12345678'),
         ];
         $this->admins->create($data);
         return redirect()->back()->with('success', 'Thêm thành công');
@@ -60,7 +61,7 @@ class AdminController extends Controller
         $this->admins->find($id)->delete();
         return redirect()->back()->with('success', 'Xóa thành công');
     }
-    public function up_level($id)
+    public function promoteStaff($id)
     {
         $this->authLogin();
         $admin = $this->admins->find($id);
@@ -73,7 +74,7 @@ class AdminController extends Controller
         }
     }
 
-    public function Notification()
+    public function getNotifications()
     {
         $this->AuthLogin();
         $noti = DB::table('notifications')->where('role', 1)->get();
@@ -91,65 +92,91 @@ class AdminController extends Controller
         DB::table('notifications')->where('id', $id)->update(['read' => 1]);
         return redirect()->route('admin.order');
     }
-    public function statistic()
+    public function statistics()
     {
         $this->AuthLogin();
-        // if (isset($_GET['thong_ke'])) {
-        //     $thongke = $_GET['thong_ke'];
-        //     if ($thongke == '7_ngay') {
-        //         $day = Carbon::now('Asia/Ho_Chi_Minh')->subDays(7);
-        //         $doanhthu = $this->LayDoanhThu7Ngay($day);
-        //         return view('backend.home.statistic', compact('doanhthu'));
-        //     } else if ($thongke == 'thang') {
-        //         $day = Carbon::now('Asia/Ho_Chi_Minh')->subMonth(1);
-        //         $doanhthu = $this->LayDoanhThuTungNgay($day);
-        //         return view('backend.home.statistic', compact('doanhthu'));
-        //     } else if ($thongke == 'nam') {
-        //         $year = Carbon::now('Asia/Ho_Chi_Minh')->year;
-        //         $doanhthu = $this->layDoanhThuTungThang($year);
-        //         return view('backend.home.statistic', compact('doanhthu'));
-        //     }
-        // }
-        // $month = Carbon::now('Asia/Ho_Chi_Minh')->month;
-        // $doanhthu = $this->LayDoanhThuThangHienTai($month);
-        return view('backend.home.statistic');
-    }
-    static function layDoanhThuTungThang($year)
-    {
-        $doanhthuTungThang = DB::table('orders')
-            ->select(DB::raw('SUM(price_total) as doanhthu'), DB::raw('MONTH(orders.created_at) as thang'))
-            ->whereYear('orders.created_at', '=', $year)
-            ->groupBy('thang')
-            ->get();
+        if(isset($_GET['from_date']) && isset($_GET['to_date'])){
+            $from_date = $_GET['from_date'];
+            $to_date = $_GET['to_date'];
+            // format date
+            $from_date = date('Y-m-d', strtotime($from_date));
+            $to_date = date('Y-m-d', strtotime($to_date));
 
-        return $doanhthuTungThang;
+            $details = DB::table('orders')
+                ->join('order_details', 'orders.order_id', '=', 'order_details.order_id')
+                ->join('products', 'order_details.product_id', '=', 'products.pro_id')
+                ->select('products.pro_name', DB::raw('SUM(order_details.product_quantity) as quantity'), DB::raw('SUM(order_details.product_price) as price'))
+                ->where('orders.order_status', '<>', 2)
+                ->whereBetween('order_details.created_at', [$from_date, $to_date])
+                ->groupBy('products.pro_name')
+                ->get();
+            //format to array
+            $details = json_decode(json_encode($details), true);
+            dd($details);
+            return view('backend.home.statistic');
+        // }else{
+        //     $orders = DB::table('orders')->get();
+        //     $total = 0;
+        //     foreach ($orders as $order) {
+        //         $total += $order->total;
+        //     }
+        //     $total = number_format($total);
+        //     $orders = DB::table('orders')->get();
+        //     $total_order = DB::table('orders')->count();
+        //     $total_product = DB::table('order_details')->count();
+        //     $total_customer = DB::table('users')->count();
+        //     $total_revenue = DB::table('orders')->sum('price_total');
+        //     $total_revenue = number_format($total_revenue);
+         } else{
+            return view('backend.home.statistic');
+        }
     }
-    static function LayDoanhThuTungNgay($thang)
-    {
-        $doanhthuTungNgay = DB::table('orders')
-            ->select(DB::raw('SUM(price_total) as doanhthu'), DB::raw('DAY(orders.created_at) as ngay'))
-            ->whereMonth('orders.created_at', '=', $thang)
-            ->groupBy('ngay')
-            ->get();
-        return $doanhthuTungNgay;
-    }
-    static function LayDoanhThu7Ngay($day)
-    {
-        $doanhthu7Ngay = DB::table('orders')
-            ->select(DB::raw('SUM(price_total) as doanhthu'), DB::raw('DAY(orders.created_at) as ngay'))
-            ->where('orders.created_at', '>=', $day)
-            ->where('orders.created_at', '<=', Carbon::now('Asia/Ho_Chi_Minh'))
-            ->groupBy('ngay')
-            ->get();
-        return $doanhthu7Ngay;
-    }
-    static function LayDoanhThuThangHienTai($month)
-    {
-        $doanhthuThangHienTai = DB::table('orders')
-            ->select(DB::raw('SUM(price_total) as doanhthu'), DB::raw('DAY(orders.created_at) as ngay'))
-            ->whereMonth('orders.created_at', '=', $month)
-            ->groupBy('ngay')
-            ->get();
-        return $doanhthuThangHienTai;
-    }
+
+
+
+
+
+
+    // static function layDoanhThuTungThang($year)
+    // {
+    //     $doanhthuTungThang = DB::table('orders')
+    //         ->where('order_status', '<>',2)
+    //         ->select(DB::raw('SUM(price_total) as doanhthu'), DB::raw('MONTH(orders.created_at) as thang'))
+    //         ->whereYear('orders.created_at', '=', $year)
+    //         ->groupBy('thang')
+    //         ->get();
+
+    //     return $doanhthuTungThang;
+    // }
+    // static function LayDoanhThuTungNgay($thang)
+    // {
+    //     $doanhthuTungNgay = DB::table('orders')
+    //         ->where('order_status', '<>',2)
+    //         ->select(DB::raw('SUM(price_total) as doanhthu'), DB::raw('DAY(orders.created_at) as ngay'))
+    //         ->whereMonth('orders.created_at', '=', $thang)
+    //         ->groupBy('ngay')
+    //         ->get();
+    //     return $doanhthuTungNgay;
+    // }
+    // static function LayDoanhThu7Ngay($day)
+    // {
+    //     $doanhthu7Ngay = DB::table('orders')
+    //         ->where('order_status', '<>',2)
+    //         ->select(DB::raw('SUM(price_total) as doanhthu'), DB::raw('DAY(orders.created_at) as ngay'))
+    //         ->where('orders.created_at', '>=', $day)
+    //         ->where('orders.created_at', '<=', Carbon::now('Asia/Ho_Chi_Minh'))
+    //         ->groupBy('ngay')
+    //         ->get();
+    //     return $doanhthu7Ngay;
+    // }
+    // static function LayDoanhThuThangHienTai($month)
+    // {
+    //     $doanhthuThangHienTai = DB::table('orders')
+    //         ->where('order_status', '<>',2)
+    //         ->select(DB::raw('SUM(price_total) as doanhthu'), DB::raw('DAY(orders.created_at) as ngay'))
+    //         ->whereMonth('orders.created_at', '=', $month)
+    //         ->groupBy('ngay')
+    //         ->get();
+    //     return $doanhthuThangHienTai;
+    // }
 }

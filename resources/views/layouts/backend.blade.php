@@ -18,72 +18,84 @@
     <link href="{{ asset('backend/css/sb-admin-2.min.css') }}" rel="stylesheet">
 
 </head>
-
+<style>
+    .item-hover a{
+        color: rgb(247, 246, 250) !important;
+    }
+    .item-hover:hover{
+        background-color: #fff;
+    }
+    .item-hover:hover a{
+        color: rgb(231, 6, 6) !important;
+        font-weight: bold;
+    }
+    .item-hover:hover i{
+        color: rgb(231, 6, 6) !important;
+        font-weight: bold;
+    }
+</style>
 
 <body id="page-top">
     <div id="wrapper">
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('admin.home') }}">
                 <div class="sidebar-brand-text mx-3">
                     <img src="{{ asset('backend/img/2.png') }}" alt="">
                 </div>
             </a>
-
             <hr class="sidebar-divider my-0">
-
-            <li class="nav-item active">
+            <li class="nav-item item-hover active">
                 <a class="nav-link" href="{{ route('admin.home') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
-
             <hr class="sidebar-divider">
-            <li class="nav-item">
+            <li class="nav-item item-hover">
                 <a class="nav-link" href="{{ route('admin.categories') }}" aria-expanded="true">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Danh mục sản phẩm</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item item-hover">
                 <a class="nav-link" href="{{ route('admin.product') }}" aria-expanded="true">
                     <i class="fas fa-fw fa-wrench"></i>
                     <span>Sản phẩm</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item item-hover">
                 <a class="nav-link" href="{{ route('admin.order') }}" aria-expanded="true">
                     <i class="fas fa-fw fa-folder"></i>
                     <span>Đơn hàng</span>
                 </a>
             </li>
 
-            <li class="nav-item">
+            <li class="nav-item item-hover">
                 <a class="nav-link" href="{{ route('admin.import') }}">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Nhập hàng</span></a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item item-hover">
                 <a class="nav-link" href="{{ route('admin.comment') }}">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Bình luận</span></a>
             </li>
             @if (Session::get('admins')->role == 2)
-                <li class="nav-item">
+                <li class="nav-item item-hover">
                     <a class="nav-link" href="{{ route('admin.staff') }}">
                         <i class="fas fa-fw fa-table"></i>
                         <span>Nhân viên</span></a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item item-hover">
                     <a class="nav-link" href="{{ route('admin.coupon') }}">
                         <i class="fas fa-fw fa-table"></i>
                         <span>Mã giảm giá</span></a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item item-hover">
                     <a class="nav-link" href="{{ route('admin.user') }}">
                         <i class="fas fa-fw fa-chart-area"></i>
                         <span>Khách hàng</span></a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item item-hover">
                     <a href="{{ route('admin.statistic') }}" class="nav-link">
                         <i class="fas fa-fw fa-chart-area"></i>
                         <span>Thống kê</span></a>
@@ -91,12 +103,12 @@
                 </li>
             @endif
 
-            <li class="nav-item">
+            <li class="nav-item item-hover">
                 <a class="nav-link" href="#">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Bài viết</span></a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item item-hover">
                 <a class="nav-link" href="{{ route('admin.notification') }}">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Thông báo</span></a>
@@ -162,42 +174,8 @@
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="alertsDropdown">
                                 <h6 class="dropdown-header">
-                                    Alerts Center
+                                    Thông báo
                                 </h6>
-                                @if ($countNoti > 3)
-                                    @foreach ($notiLimit as $noti)
-                                        @if ($noti->read == 0)
-                                            <a class="dropdown-item d-flex align-items-center bg-warning"
-                                                href="{{ route('admin.notification.read', $noti->id) }}">
-                                                <div class="mr-3">
-                                                    <div class="icon-circle bg-primary">
-                                                        <i class="fas fa-file-alt text-white"></i>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div class="small text-gray-500">{{ $noti->created_at }}</div>
-                                                    <span class="font-weight-bold">{{ $noti->notification }}</span>
-                                                </div>
-                                            </a>
-                                        @else
-                                            <a class="dropdown-item d-flex align-items-center"
-                                                href="{{ route('admin.order') }}">
-                                                <div class="mr-3">
-                                                    <div class="icon-circle bg-primary">
-                                                        <i class="fas fa-file-alt text-white"></i>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div class="small text-gray-500">{{ $noti->created_at }}</div>
-                                                    <span class="font-weight-bold">{{ $noti->notification }}</span>
-                                                </div>
-                                            </a>
-                                        @endif
-                                    @endforeach
-                                    <a class="dropdown-item text-center small text-gray-500"
-                                        href="{{ route('admin.notification') }}">Show All
-                                        Alerts</a>
-                                @else
                                     @foreach ($noti as $noti)
                                         @if ($noti->read == 0)
                                             <a class="dropdown-item d-flex align-items-center bg-warning"
@@ -228,10 +206,7 @@
                                         @endif
                                     @endforeach
                                     <a class="dropdown-item text-center small text-gray-500"
-                                        href="{{ route('admin.notification') }}">Show All
-                                        Alerts</a>
-                                @endif
-
+                                        href="{{ route('admin.notification') }}">Xem tất cả</a>
                             </div>
                         </li>
 
@@ -396,6 +371,7 @@
             });
         });
     </script>
+
 </body>
 
 </html>

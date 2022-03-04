@@ -273,14 +273,14 @@
                             <div class="wrap-products slide-carousel owl-carousel style-nav-1 equal-container"
                                 data-items="5" data-loop="false" data-nav="true" data-dots="false"
                                 data-responsive='{"0":{"items":"1"},"480":{"items":"2"},"768":{"items":"3"},"992":{"items":"4"},"1200":{"items":"5"}}'>
-                                @foreach ($productsBestSeller as $arr)
+                                @foreach ($pro_sale_arr as $arr)
                                     <div class="product product-style-2 equal-elem ">
                                         <div class="product-thumnail">
-                                            <a href="{{route('detail',$arr['pro_slug'])}}" title="T-Shirt Raw Hem Organic Boro Constrast Denim">
+                                            <a href="{{route('detail',$arr['pro_slug'])}}" title="{{$arr['pro_name']}}">
                                                 <figure><img
                                                         src="{{ asset('uploads/products/' . $arr['pro_avatar']) }}"
                                                         width="800" height="800"
-                                                        alt="T-Shirt Raw Hem Organic Boro Constrast Denim"></figure>
+                                                        alt="{{$arr['pro_name']}}"></figure>
                                             </a>
                                             @if ($arr['pro_sale'] > 0)
                                                 <div class="group-flash">

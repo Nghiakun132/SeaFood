@@ -8,6 +8,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
@@ -57,7 +58,7 @@ class UserController extends Controller
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = md5($request->password);
+        $user->password = Hash::make($request->password);
         $user->phone = $request->phone;
         $user->avatar = $request->avatar;
         $user->type = $request->type;
@@ -87,10 +88,11 @@ class UserController extends Controller
             'password.required' => 'Bạn chưa nhập mật khẩu',
         ]);
         $email = $request->email;
-        $password = md5($request->password);
+        $password = $request->password;
         $check = User::where('email', $email)->first();
         if ($check) {
-            if ($check->password == $password) {
+            if (Hash::check($password, $check->password)) {
+                DB::table('users')->where('id', $check->id)->update(['status' => Carbon::now('Asia/Ho_Chi_Minh')]);
                 Session::put('user', $check);
                 return redirect()->route('home');
             } else {
@@ -115,6 +117,7 @@ class UserController extends Controller
             $userLogin = Socialite::driver('google')->stateless()->user();
             $user = User::where('email', $userLogin->email)->first();
             if ($user) {
+                DB::table('users')->where('id', $user->id)->update(['status' => Carbon::now('Asia/Ho_Chi_Minh')]);
                 Session::put('user', $user);
                 return redirect()->route('home');
             } else {
@@ -127,6 +130,7 @@ class UserController extends Controller
     }
     public function logout()
     {
+        DB::table('users')->where('id', Session::get('user')->id)->update(['status' => 1]);
         Session::forget('user');
         return redirect()->route('home');
     }
@@ -218,8 +222,8 @@ class UserController extends Controller
 
         $id = Session::get('user')->id;
         $user = User::find($id);
-        if ($user->password == md5($old)) {
-            $user->password = md5($new);
+        if (Hash::check($old, $user->password)) {
+            $user->password = Hash::make($new);
             $user->save();
             return redirect()->back()->with('success', 'Đổi mật khẩu thành công');
         } else {
@@ -369,7 +373,7 @@ class UserController extends Controller
         $user = User::where('email', $email)->first();
         if ($user) {
             DB::table('password_resets')->where('token', $token)->delete();
-            $user->password = md5($password);
+            $user->password = Hash::make($password);
             $user->save();
             return redirect()->route('login')->with('success', 'Đổi mật khẩu thành công');
         } else {

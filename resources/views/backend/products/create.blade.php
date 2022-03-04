@@ -8,7 +8,7 @@
             <form action="" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
-                    <label for="">Ten</label>
+                    <label for="">Tên sản phẩm</label>
                     <input type="text" name="pro_name" class="form-control">
                 </div>
                 @if ($errors->has('pro_name'))
@@ -32,7 +32,7 @@
                 @endif
 
                 <div class="form-group">
-                    <label for="">Gia</label>
+                    <label for="">Giá</label>
                     <input type="number" name="pro_price" class="form-control">
                 </div>
                 @if ($errors->has('pro_price'))
@@ -41,7 +41,7 @@
                     </div>
                 @endif
                 <div class="form-group">
-                    <label for="">Giam gia</label>
+                    <label for="">Giảm giá</label>
                     <input type="text" name="pro_sale" class="form-control">
                 </div>
                 @if ($errors->has('pro_sale'))
@@ -50,7 +50,7 @@
                     </div>
                 @endif
                 <div class="form-group">
-                    <label for="">So luong</label>
+                    <label for="">Số lượng</label>
                     <input type="text" name="pro_qty" class="form-control">
                 </div>
                 @if ($errors->has('pro_qty'))
@@ -68,7 +68,7 @@
                     </div>
                 @endif
                 <div class="form-group">
-                    <label for="">Mo ta</label>
+                    <label for="">Mô tả sản phẩm</label>
                     <textarea name="pro_description" id="editor1" cols="30" rows="10"></textarea>
                 </div>
                 @if ($errors->has('pro_description'))
@@ -86,7 +86,7 @@
                     </div>
                 @endif
                 <div class="form-group">
-                    <label for="">Hinh anh</label>
+                    <label for="">Hình ảnh sản phẩm</label>
                     <input type="file" name="pro_avatar[]" multiple class="form-control">
                 </div>
                 @if ($errors->has('pro_avatar'))
@@ -94,7 +94,7 @@
                         {{ $errors->first('pro_avatar') }}
                     </div>
                 @endif
-                <button type="submit" class="btn btn-primary">Them</button>
+                <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
             </form>
         </div>
     </div>

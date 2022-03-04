@@ -28,7 +28,7 @@ Route::group(['namespace' => 'backend', 'prefix' => 'admin'], function () {
         Route::post('/', 'AdminController@store')->name('admin.staff.store');
         Route::get('/xoa/{id}', 'AdminController@destroy')->name('admin.staff.destroy');
         Route::get('/thay-doi-trang-thai/{id}', 'AdminController@changeStatus')->name('admin.staff.changeStatus');
-        Route::get('/len-cap/{id}', 'AdminController@up_level')->name('admin.staff.uplevel');
+        Route::get('/len-cap/{id}', 'AdminController@promoteStaff')->name('admin.staff.uplevel');
     });
     Route::group(['prefix' => 'san-pham'], function () {
         Route::get('/', 'ProductController@index')->name('admin.product');
@@ -51,7 +51,7 @@ Route::group(['namespace' => 'backend', 'prefix' => 'admin'], function () {
         Route::get('/in-hoa-don/{id}', 'OrderController@print')->name('admin.order.print');
     });
     Route::group(['prefix' => 'thong-bao'], function () {
-        Route::get('/', 'AdminController@Notification')->name('admin.notification');
+        Route::get('/', 'AdminController@getNotifications')->name('admin.notification');
         Route::get('/xoa/{id}', 'AdminController@destroyNotification')->name('admin.notification.destroy');
         Route::get('/doc/{id}', 'AdminController@readNotification')->name('admin.notification.read');
     });
@@ -64,9 +64,12 @@ Route::group(['namespace' => 'backend', 'prefix' => 'admin'], function () {
     });
     Route::group(['prefix' => 'khach-hang'], function () {
         Route::get('/', 'UserController@index')->name('admin.user');
+        Route::get('/xoa/{id}', 'UserController@destroy')->name('admin.user.destroy');
+        Route::get('/thay-doi-trang-thai/{id}', 'UserController@changeStatus')->name('admin.user.changeStatus');
+        Route::get('/khoa/{id}', 'UserController@block')->name('admin.user.block');
     });
     Route::group(['prefix' => 'thong-ke'], function () {
-        Route::get('/', 'AdminController@statistic')->name('admin.statistic');
+        Route::get('/', 'AdminController@statistics')->name('admin.statistic');
     });
     Route::group(['prefix' => 'binh-luan'], function () {
         Route::get('/', 'CommentController@index')->name('admin.comment');

@@ -13,13 +13,13 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Code</th>
-                            <th>So lan</th>
-                            <th>Giam ?%</th>
+                            <th>Mã giảm giá</th>
+                            <th>Số lượng</th>
+                            <th>Giảm ?%</th>
                             <th>Trạng thái</th>
-                            <th>Ngay het han</th>
-                            <th>Ngay tao</th>
-                            <th>Hanh dong</th>
+                            <th>Ngày hết hạn</th>
+                            <th>Ngày tạo</th>
+                            <th>Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -32,18 +32,19 @@
                                 <td>
                                     @if ($cp->cou_status == 0)
                                         <a href="{{ route('admin.coupon.changeStatus', $cp->cou_id) }}"><span
-                                                class="badge badge-success">Con han</span></a>
+                                                class="badge badge-success">Cho phép sử dụng</span></a>
                                     @else
                                         <a href="{{ route('admin.coupon.changeStatus', $cp->cou_id) }}"><span
-                                                class="badge badge-danger">Het han</span></a>
+                                                class="badge badge-danger">
+                                                Không cho phép sử dụng</span></a>
                                     @endif
                                 </td>
                                 <td>{{ $cp->cou_expired_date }}</td>
-                                <td>{{ $cp->created_at }}</td>
+                                <td>{{ \Carbon\Carbon::parse($cp->created_at)->format('Y-m-d') }}</td>
                                 <td>
                                     <a href="{{ route('admin.coupon.destroy', $cp->cou_id) }}"
-                                        onclick="return confirm('Are you sure you want to delete this coupon???')"
-                                        class="btn btn-danger">Delete</a>
+                                        onclick="return confirm('Bạn có chắc chắn muốn xóa không?')"
+                                        class="btn btn-danger btn-sm">Xoá</a>
                             </tr>
                         @endforeach
                     </tbody>

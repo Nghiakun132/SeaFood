@@ -60,6 +60,7 @@ Route::group(['namespace' => 'frontend'], function () {
 
     Route::get('/thanh-toan', 'CartController@checkout')->name('checkout');
     Route::post('/thanh-toan', 'CartController@postCheckout')->name('postCheckout');
+    Route::get('/cam-on', 'CartController@success')->name('success');
     //paypal
     Route::get('/huy-paypal', 'CartController@cancelTransaction')->name('cancelTransaction');
     Route::get('/hoan-thanh-paypal', 'CartController@successTransaction')->name('successTransaction');
@@ -67,7 +68,6 @@ Route::group(['namespace' => 'frontend'], function () {
     Route::get('/thanh-toan-vnpay', 'CartController@vnpay')->name('vnpay');
     //thanh toan momo
     Route::get('/thanh-toan-momo', 'CartController@momo')->name('momo');
-
 
 
     Route::post('/ma-giam-gia', 'CartController@postCoupon')->name('postCoupon');

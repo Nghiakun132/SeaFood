@@ -18,6 +18,9 @@
                             <th>Tên</th>
                             <th>Email</th>
                             <th>Số điện thoại</th>
+                            <th>Trạng thái</th>
+                            <th>Đang</th>
+                            <th>Loại đăng nhập</th>
                             <th>Avatar</th>
                             <th>Hành động</th>
                         </tr>
@@ -38,19 +41,42 @@
                                     {{ $user->phone }}
                                 </td>
                                 <td>
+                                    @if ($user->block == 0)
+                                        <a href="{{route('admin.user.block',$user->id)}}" onclick="return confirm('Khóa tài khoản này ??')">
+                                            <span class="badge badge-success">Đang hoạt động</span>
+                                        </a>
+                                    @else
+                                        <a href="{{route('admin.user.block',$user->id)}}" onclick="return confirm('Mở khóa tài khoản này ??')">
+                                            <span class="badge badge-danger">Đã bị khóa</span>
+                                        </a>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($user->status == 1)
+                                        <span class="badge badge-success">Offline</span>
+                                    @else
+                                        <span class="badge badge-danger">{{ $user->status }}</span>
+                                    @endif
+                                <td>
+                                    {{ $user->type }}
+                                </td>
+                                <td>
                                     @if ($user->type == 'Google')
                                         <img src="{{ $user->avatar }}" alt="" width="80" height="80">
                                     @else
                                         @if ($user->avatar == null)
-                                            <img src="{{ asset('uploads/avatar/default.png') }}" alt="" width="80" height="80">
-                                        @else
-                                            <img src="{{ asset('uploads/avatar/' . $user->avatar) }}" alt="" width="80"
+                                            <img src="{{ asset('uploads/avatar/default.png') }}" alt="" width="80"
                                                 height="80">
+                                        @else
+                                            <img src="{{ asset('uploads/avatar/' . $user->avatar) }}" alt=""
+                                                width="80" height="80">
                                         @endif
                                     @endif
                                 </td>
                                 <td>
-
+                                    <a href="{{ route('admin.user.destroy', $user->id) }}"
+                                        onclick="return confirm('Bạn chắc đã muốn xóa không ??')"
+                                        class="btn btn-danger">Xóa</a>
                                 </td>
                             </tr>
                         @endforeach
