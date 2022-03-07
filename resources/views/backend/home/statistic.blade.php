@@ -1,10 +1,10 @@
 @extends('layouts.backend')
 @section('content')
-@section('title', 'Sản phẩm')
+@section('title', 'Thống kê sản phẩm')
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Thống kê</h1>
+    <h1 class="h3 mb-2 text-gray-800">Thống kê sản phẩm bán chạy</h1>
     <div class="row">
         <div class="col-xl-12 col-lg-12">
             <div class="card shadow mb-4">
@@ -52,19 +52,17 @@
                                     <th>Tên sản phẩm</th>
                                     <th>Số lượng</th>
                                     <th>Tổng tiền</th>
-                                    <th>Ngày tạo</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @foreach ($orders as $key => $order)
+                                @foreach ($details as $key => $details)
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
-                                    <td>{{ $order->product->name }}</td>
-                                    <td>{{ $order->quantity }}</td>
-                                    <td>{{ number_format($order->total_price) }}</td>
-                                    <td>{{ $order->created_at }}</td>
+                                    <td>{{ $details['pro_name'] }}</td>
+                                    <td>{{ $details['quantity'] }}</td>
+                                    <td>{{ number_format(($details['price']),0,',',','). ' VND'}}</td>
                                 </tr>
-                                @endforeach --}}
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

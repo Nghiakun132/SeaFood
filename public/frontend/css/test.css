@@ -190,3 +190,27 @@
     background-color: #00A2EC;
     color: white;
 }
+
+@media screen and (max-width: 768px) {
+    .modal-content {
+        width: 100%;
+    }
+}
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    .modal-content {
+        width: 50%;
+    }
+}
+@media screen and (min-width: 1025px) {
+    .modal-content {
+        width: 35%;
+    }
+}
+
+
+/* @media screen and (max-width: 501px) and (min-width:992px){
+    .tab-control-item {
+        width: 100%;
+    }
+
+} */

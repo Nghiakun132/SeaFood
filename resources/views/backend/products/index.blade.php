@@ -22,6 +22,7 @@
                             <th>Giá</th>
                             <th>Khuyến mãi</th>
                             <th>Số lượng</th>
+                            <th>Lượt xem</th>
                             <th>Trạng thái</th>
                             <th>Hành động</th>
                         </tr>
@@ -37,6 +38,7 @@
                                 <td>{{ number_format($value->pro_price, 0, '.', '.') . 'VND' }}</td>
                                 <td>{{ $value->pro_sale * 100 . '%' }}</td>
                                 <td>{{ $value->pro_qty }}</td>
+                                <td>{{ $value->pro_view }}</td>
                                 <td>
                                     @if ($value->pro_status == 0)
                                         <a href="{{ route('admin.product.changeStatus', $value->pro_id) }}"><span

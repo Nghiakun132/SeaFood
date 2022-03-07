@@ -2,65 +2,63 @@
 @section('content')
     <main id="main" class="main-site left-sidebar">
         <div class="container">
-            <div class="wrap-breadcrumb">
+            <div class="wrap-breadcrumb ">
                 <ul>
-                    <li class="item-link"><a href="#" class="link">Trang chu</a></li>
-                    {{-- <li class="item-link"><span>{{ $cate->c_name }}</span></li> --}}
+                    <li class="item-link"><a href="{{ route('home') }}" class="link">Trang chủ</a></li>
+                    <li class="item-link"><span>Tìm kiếm</span></li>
                 </ul>
             </div>
             <div class="row">
-                <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12 main-content-area">
-                    <div class="banner-shop">
+                <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 col-xs-12 main-content-area">
+                    {{-- <div class="banner-shop">
                         <a href="#" class="banner-link">
                             <figure><img src="./frontend/images/shop-banner.jpg" alt=""></figure>
                         </a>
-                    </div>
+                    </div> --}}
                     <div class="wrap-shop-control">
                         <h1 class="shop-title">Tim kiem</h1>
-                        <div class="wrap-right">
+                        {{-- <div class="wrap-right">
                             <div class="sort-item orderby">
-                                <a href="{{ Request::URL() }}" style="margin:8px"><label>Mac
-                                        dinh</label></a>
-                                <a href="{{ Request::URL() }}?sort_by=gia-giam-dan" style="margin:8px"><label>Gia giam
-                                        dan</label></a>
-                                <a href="{{ Request::URL() }}?sort_by=gia-tang-dan" style="margin:8px"><label>Gia tang
-                                        dan</label></a>
-                                <a href="{{ Request::URL() }}?sort_by=moi-nhat" style="margin:8px"><label>Moi
-                                        nhat</label></a>
+                                <a class="sort_by" href="{{ Request::URL() }}" style="margin:8px"><label>Mặc định</label></a>
+                                <a class="sort_by" href="{{ Request::URL() }}?sort_by=gia-giam-dan" style="margin:8px"><label>Giá giảm dần</label></a>
+                                <a class="sort_by" href="{{ Request::URL() }}?sort_by=gia-tang-dan" style="margin:8px"><label>Giá tăng dần</label></a>
+                                <a class="sort_by" href="{{ Request::URL() }}?sort_by=moi-nhat" style="margin:8px"><label>Mới nhất</label></a>
                             </div>
-                            <div class="change-display-mode">
-                                <a href="#" class="grid-mode display-mode active"><i class="fa fa-th"></i>Grid</a>
-                            </div>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="row">
                         <ul class="product-list grid-products equal-container">
-                            @foreach ($products as $value)
-                                <li class="col-lg-4 col-md-6 col-sm-6 col-xs-6 ">
-                                    <div class="product product-style-3 equal-elem ">
-                                        <div class="product-thumnail">
-                                            <a href="{{ route('detail', $value->pro_slug) }}"
-                                                title="T-Shirt Raw Hem Organic Boro Constrast Denim">
-                                                <figure><img src="{{ asset('./uploads/products/' . $value->pro_avatar) }}"
-                                                        alt=""></figure>
-                                            </a>
-                                        </div>
-                                        <div class="product-info">
-                                            <a href="{{ route('detail', $value->pro_slug) }}"
-                                                class="product-name"><span>{{ $value->pro_name }}</span></a>
-                                            <div class="wrap-price"><span
-                                                    class="product-price">{{ number_format($value->pro_price, 0, ',', ',') . ' VND' }}</span>
+                            @if (count($products) > 0)
+                                @foreach ($products as $value)
+                                    <li class="col-lg-4 col-md-6 col-sm-6 col-xs-6 ">
+                                        <div class="product product-style-3 equal-elem ">
+                                            <div class="product-thumnail">
+                                                <a href="{{ route('detail', $value->pro_slug) }}"
+                                                    title="T-Shirt Raw Hem Organic Boro Constrast Denim">
+                                                    <figure><img
+                                                            src="{{ asset('./uploads/products/' . $value->pro_avatar) }}"
+                                                            alt=""></figure>
+                                                </a>
                                             </div>
-                                            @if ($value->pro_qty > 0)
-                                                <a href="{{ route('quickAddCart', $value->pro_slug) }}"
-                                                    class="btn add-to-cart">Thêm vào giỏ hàng</a>
-                                            @else
-                                                <a href="#" class="btn add-to-cart">Hết hàng</a>
-                                            @endif
+                                            <div class="product-info">
+                                                <a href="{{ route('detail', $value->pro_slug) }}"
+                                                    class="product-name"><span>{{ $value->pro_name }}</span></a>
+                                                <div class="wrap-price"><span
+                                                        class="product-price">{{ number_format($value->pro_price, 0, ',', ',') . ' VND' }}</span>
+                                                </div>
+                                                @if ($value->pro_qty > 0)
+                                                    <a href="{{ route('quickAddCart', $value->pro_slug) }}"
+                                                        class="btn add-to-cart">Thêm vào giỏ hàng</a>
+                                                @else
+                                                    <a href="#" class="btn add-to-cart">Hết hàng</a>
+                                                @endif
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
-                            @endforeach
+                                    </li>
+                                @endforeach
+                            @else
+                                <div class="alert alert-danger">Không tìm thấy sản phẩm nào</div>
+                            @endif
                         </ul>
                     </div>
                     <div class="wrap-pagination-info">
@@ -69,55 +67,6 @@
                 </div>
 
                 {{-- <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 sitebar">
-                    <div class="widget mercado-widget categories-widget">
-                        <h2 class="widget-title">All Categories</h2>
-                        <div class="widget-content">
-                            <ul class="list-category">
-                                <li class="category-item has-child-cate">
-                                    <a href="#" class="cate-link">Fashion & Accessories</a>
-                                    <span class="toggle-control">+</span>
-                                    <ul class="sub-cate">
-                                        <li class="category-item"><a href="#" class="cate-link">Batteries (22)</a>
-                                        </li>
-                                        <li class="category-item"><a href="#" class="cate-link">Headsets (16)</a>
-                                        </li>
-                                        <li class="category-item"><a href="#" class="cate-link">Screen (28)</a></li>
-                                    </ul>
-                                </li>
-                                <li class="category-item has-child-cate">
-                                    <a href="#" class="cate-link">Furnitures & Home Decors</a>
-                                    <span class="toggle-control">+</span>
-                                    <ul class="sub-cate">
-                                        <li class="category-item"><a href="#" class="cate-link">Batteries (22)</a>
-                                        </li>
-                                        <li class="category-item"><a href="#" class="cate-link">Headsets (16)</a>
-                                        </li>
-                                        <li class="category-item"><a href="#" class="cate-link">Screen (28)</a></li>
-                                    </ul>
-                                </li>
-                                <li class="category-item has-child-cate">
-                                    <a href="#" class="cate-link">Digital & Electronics</a>
-                                    <span class="toggle-control">+</span>
-                                    <ul class="sub-cate">
-                                        <li class="category-item"><a href="#" class="cate-link">Batteries (22)</a>
-                                        </li>
-                                        <li class="category-item"><a href="#" class="cate-link">Headsets (16)</a>
-                                        </li>
-                                        <li class="category-item"><a href="#" class="cate-link">Screen (28)</a></li>
-                                    </ul>
-                                </li>
-                                <li class="category-item">
-                                    <a href="#" class="cate-link">Tools & Equipments</a>
-                                </li>
-                                <li class="category-item">
-                                    <a href="#" class="cate-link">Kid’s Toys</a>
-                                </li>
-                                <li class="category-item">
-                                    <a href="#" class="cate-link">Organics & Spa</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
                     <div class="widget mercado-widget filter-widget brand-widget">
                         <h2 class="widget-title">Brand</h2>
                         <div class="widget-content">
@@ -140,22 +89,24 @@
                                         Tablets</a></li>
                                 <li class="list-item"><a
                                         data-label='Show less<i class="fa fa-angle-up" aria-hidden="true"></i>'
-                                        class="btn-control control-show-more" href="#">Show more<i
-                                            class="fa fa-angle-down" aria-hidden="true"></i></a></li>
+                                        class="btn-control control-show-more" href="#">Show more<i class="fa fa-angle-down"
+                                            aria-hidden="true"></i></a></li>
                             </ul>
                         </div>
                     </div><!-- brand widget-->
 
                     <div class="widget mercado-widget filter-widget price-filter">
                         <h2 class="widget-title">Price</h2>
+                        <form action="#" method="get">
                         <div class="widget-content">
                             <div id="slider-range"></div>
                             <p>
-                                <label for="amount">Price:</label>
-                                <input type="text" id="amount" readonly>
-                                <button class="filter-submit">Filter</button>
+                                <label for="amount">Giá: </label>
+                                <input type="text" id="amount" readonly name="price">
+                                <button class="filter-submit" type="submit">Filter</button>
                             </p>
                         </div>
+                    </form>
                     </div><!-- Price-->
 
                     <div class="widget mercado-widget filter-widget">

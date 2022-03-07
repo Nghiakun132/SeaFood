@@ -314,9 +314,9 @@
             </div>
         </div>
     </div>
-    <script src="{{ asset('backend/js/demo/chart-bar-demo.js') }}"></script>
-    <script src="{{ asset('backend/js/demo/chart-pie-demo.js') }}"></script>
-    <script src="{{ asset('backend/vendor/chart.js/Chart.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/chart.js/Chart.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('backend/js/demo/chart-pie-demo.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('backend/js/demo/chart-bar-demo.js') }}" type="text/javascript"></script>
     <script>
         let title = document.querySelector('.chart-title')
         var url = window.location.href;

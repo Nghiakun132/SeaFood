@@ -14,15 +14,15 @@ class CategoryController extends Controller
     {
         try {
             $cate = categories::where('c_slug', $slug)->first();
-            $products = products::where('pro_category_id', $cate->c_id)->where('pro_status',0)->paginate(18);
+            $products = products::where('pro_category_id', $cate->c_id)->where('pro_status', 0)->paginate(18);
             if (isset($_GET['sort_by'])) {
                 $sort_by = $_GET['sort_by'];
                 if ($sort_by == 'moi-nhat') {
-                    $products = products::where('pro_category_id', $cate->c_id)->orderBy('pro_price', 'asc')->paginate(18);
+                    $products = products::where('pro_category_id', $cate->c_id)->where('pro_status', 0)->orderBy('pro_price', 'asc')->paginate(18);
                 } elseif ($sort_by == 'gia-giam-dan') {
-                    $products = products::where('pro_category_id', $cate->c_id)->orderBy('pro_price', 'desc')->paginate(18);
+                    $products = products::where('pro_category_id', $cate->c_id)->where('pro_status', 0)->orderBy('pro_price', 'desc')->paginate(18);
                 } elseif ($sort_by == 'gia-tang-dan') {
-                    $products = products::where('pro_category_id', $cate->c_id)->orderBy('pro_id', 'asc')->paginate(18);
+                    $products = products::where('pro_category_id', $cate->c_id)->where('pro_status', 0)->orderBy('pro_id', 'asc')->paginate(18);
                 }
             }
             return view('frontend.category.index', compact('products', 'cate'));
@@ -30,23 +30,13 @@ class CategoryController extends Controller
             return redirect()->route('home');
         }
     }
-    public function search(Request $request)
+    public function search()
     {
-        try {
-            $keyword = $request->search;
-            $products = products::where('pro_name', 'like', '%' . $keyword . '%')->paginate(18);
-            if (isset($_GET['sort_by'])) {
-                $sort_by = $_GET['sort_by'];
-                if ($sort_by == 'moi-nhat') {
-                    $products = products::where('pro_category_id', $cate->c_id)->orderBy('pro_price', 'asc')->paginate(18);
-                } elseif ($sort_by == 'gia-giam-dan') {
-                    $products = products::where('pro_category_id', $cate->c_id)->orderBy('pro_price', 'desc')->paginate(18);
-                } elseif ($sort_by == 'gia-tang-dan') {
-                    $products = products::where('pro_category_id', $cate->c_id)->orderBy('pro_id', 'asc')->paginate(18);
-                }
-            }
+        if (isset($_GET['search'])) {
+            $keyword = $_GET['search'];
+            $products = products::where('pro_name', 'like', '%' . $keyword . '%')->where('pro_status', 0)->paginate(18);
             return view('frontend.category.search', compact('products'));
-        } catch (\Throwable $th) {
+        } else {
             return redirect()->route('home');
         }
     }

@@ -201,7 +201,7 @@ if (thongke == '7_ngay') {
                         }],
                         yAxes: [{
                             ticks: {
-                                min: min2,
+                                min: 0,
                                 max: max2,
                                 maxTicksLimit: 10,
                                 padding: 10,
@@ -309,7 +309,7 @@ if (thongke == '7_ngay') {
                         }],
                         yAxes: [{
                             ticks: {
-                                min: min2,
+                                min: 0,
                                 max: max2,
                                 maxTicksLimit: 10,
                                 padding: 10,
@@ -416,7 +416,7 @@ if (thongke == '7_ngay') {
                         }],
                         yAxes: [{
                             ticks: {
-                                min: min2,
+                                min: 0,
                                 max: max2,
                                 maxTicksLimit: 10,
                                 padding: 10,

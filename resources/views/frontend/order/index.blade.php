@@ -31,7 +31,7 @@
                     </div>
                     <div class="AccountSidebar-list">
                         <ul class="list-unstyled">
-                            <li >
+                            <li>
                                 <a href="{{ route('profile') }}" class="account-link">
                                     <i class="fa-solid fa-user" style="color: blue"></i>
                                     <span>Thông tin tài khoản</span>
@@ -44,13 +44,13 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{route('address')}}" class="account-link">
+                                <a href="{{ route('address') }}" class="account-link">
                                     <i class="fa-solid fa-location-dot" style="color: red"></i>
                                     <span>Sổ địa chỉ</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="{{route('coupon')}}" class="account-link">
+                                <a href="{{ route('coupon') }}" class="account-link">
                                     <i class="fa-solid fa-gift" style="color: red"></i>
                                     <span>Mã giảm giá </span>
                                 </a>
@@ -75,7 +75,8 @@
                                 <div class="tab-contents">
                                     <div class="tab-content-item active" id="orders">
                                         <div class="table-responsive">
-                                            <table class="table table-bordered" id="vidu" width="100%" cellspacing="0">
+                                            <table class="table table-bordered" id="myTable" width="100%"
+                                                cellspacing="0">
                                                 <thead>
                                                     <tr>
                                                         <th>ID đơn hàng</th>
@@ -93,7 +94,7 @@
                                                         @foreach ($orders as $order)
                                                             <tr>
                                                                 <td>#{{ $order->order_id }}</td>
-                                                                <td>{{ number_format($order->price_total, 0, ',', ',') . ' VND' }}
+                                                                <td>{{ number_format($order->price_total, 0, ',', ',') . 'đ' }}
                                                                 </td>
                                                                 <td>{{ $order->created_at }}</td>
                                                                 <td>
@@ -104,7 +105,8 @@
                                                                         <span class="label label-success">Đã xác
                                                                             nhận</span>
                                                                     @elseif ($order->order_status == 2)
-                                                                        <span class="label label-danger">Đã hủy</span>
+                                                                        <span class="label label-danger">Đã
+                                                                            hủy</span>
                                                                     @elseif ($order->order_status == 3)
                                                                         <span class="label label-info">Đã giao
                                                                             hàng</span>
@@ -130,7 +132,8 @@
                                                         @endforeach
                                                     @else
                                                         <tr>
-                                                            <td colspan="7" style="text-align:center">Không có đơn hàng
+                                                            <td colspan="7" style="text-align:center">Không có đơn
+                                                                hàng
                                                                 nào</td>
                                                     @endif
                                                 </tbody>
@@ -139,7 +142,8 @@
                                     </div>
                                     <div class="tab-content-item " id="wait">
                                         <div class="table-responsive">
-                                            <table class="table table-bordered" id="vidu" width="100%" cellspacing="0">
+                                            <table class="table table-bordered" id="myTable" width="100%"
+                                                cellspacing="0">
                                                 <thead>
                                                     <tr>
                                                         <th>ID đơn hàng</th>
@@ -156,7 +160,7 @@
                                                         @foreach ($ordersWait as $order1)
                                                             <tr>
                                                                 <td>#{{ $order1->order_id }}</td>
-                                                                <td>{{ number_format($order1->price_total, 0, ',', ',') . ' VND' }}
+                                                                <td>{{ number_format($order1->price_total, 0, ',', ',') . 'đ' }}
                                                                 </td>
                                                                 <td>{{ $order1->created_at }}</td>
                                                                 <td>
@@ -203,7 +207,8 @@
                                     </div>
                                     <div class="tab-content-item " id="confirmed">
                                         <div class="table-responsive">
-                                            <table class="table table-bordered" id="vidu" width="100%" cellspacing="0">
+                                            <table class="table table-bordered" id="myTable" width="100%"
+                                                cellspacing="0">
                                                 <thead>
                                                     <tr>
                                                         <th>ID đơn hàng</th>
@@ -220,7 +225,7 @@
                                                         @foreach ($ordersConfirmed as $order2)
                                                             <tr>
                                                                 <td>#{{ $order2->order_id }}</td>
-                                                                <td>{{ number_format($order2->price_total, 0, ',', ',') . ' VND' }}
+                                                                <td>{{ number_format($order2->price_total, 0, ',', ',') . 'đ' }}
                                                                 </td>
                                                                 <td>{{ $order2->created_at }}</td>
                                                                 <td>
@@ -267,7 +272,8 @@
                                     </div>
                                     <div class="tab-content-item " id="delivered">
                                         <div class="table-responsive">
-                                            <table class="table table-bordered" id="vidu" width="100%" cellspacing="0">
+                                            <table class="table table-bordered" id="myTable" width="100%"
+                                                cellspacing="0">
                                                 <thead>
                                                     <tr>
                                                         <th>ID đơn hàng</th>
@@ -284,7 +290,7 @@
                                                         @foreach ($ordersDelivered as $order3)
                                                             <tr>
                                                                 <td>#{{ $order3->order_id }}</td>
-                                                                <td>{{ number_format($order3->price_total, 0, ',', ',') . ' VND' }}
+                                                                <td>{{ number_format($order3->price_total, 0, ',', ',') . 'đ' }}
                                                                 </td>
                                                                 <td>{{ $order3->created_at }}</td>
                                                                 <td>
@@ -331,7 +337,8 @@
                                     </div>
                                     <div class="tab-content-item " id="cancel">
                                         <div class="table-responsive">
-                                            <table class="table table-bordered" id="vidu" width="100%" cellspacing="0">
+                                            <table class="table table-bordered" id="myTable" width="100%"
+                                                cellspacing="0">
                                                 <thead>
                                                     <tr>
                                                         <th>ID đơn hàng</th>
@@ -349,7 +356,7 @@
                                                         @foreach ($ordersCancel as $order4)
                                                             <tr>
                                                                 <td>#{{ $order4->order_id }}</td>
-                                                                <td>{{ number_format($order4->price_total, 0, ',', ',') . ' VND' }}
+                                                                <td>{{ number_format($order4->price_total, 0, ',', ',') . 'đ' }}
                                                                 </td>
                                                                 <td>{{ $order4->created_at }}</td>
                                                                 <td>
@@ -405,6 +412,17 @@
         </div>
     </div>
 </main>
+<style>
+    @media screen and (min-width: 501px) and (max-width:991px) {
+        .tab-control-item {
+            width: 100% !important;
+            text-align: center !important;
+            margin: 4px !important;
+            border-radius: 4px !important;
+        }
+    }
+
+</style>
 <?php
 $success = Session::get('success');
 $error = Session::get('error');

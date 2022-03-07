@@ -104,19 +104,22 @@
                                                 aria-hidden="true"></i></a>
                                         <ul class="submenu curency">
                                             <li class="menu-item list_hover">
-                                                <a title="Tài khoản của tôi" href="{{route('profile')}}">Tài khoản của tôi</a>
+                                                <a title="Tài khoản của tôi" href="{{ route('profile') }}">Tài khoản
+                                                    của tôi</a>
                                             </li>
                                             <li class="menu-item list_hover">
-                                                <a title="Đơn hàng" href="{{route('order')}}">Đơn hàng</a>
+                                                <a title="Đơn hàng" href="{{ route('order') }}">Đơn hàng</a>
                                             </li>
                                             <li class="menu-item list_hover">
-                                                <a title="Danh sách yêu thích" href="{{route('wishlist')}}">Danh sách yêu thích</a>
+                                                <a title="Danh sách yêu thích" href="{{ route('wishlist') }}">Danh sách
+                                                    yêu thích</a>
                                             </li>
                                             <li class="menu-item list_hover">
-                                                <a title="Mã giảm giá" href="{{route('coupon')}}">Mã giảm giá</a>
+                                                <a title="Mã giảm giá" href="{{ route('coupon') }}">Mã giảm giá</a>
                                             </li>
                                             <li class="menu-item list_hover">
-                                                <a title="Danh sách địa chỉ" href="{{route('address')}}">Danh sách địa chỉ</a>
+                                                <a title="Danh sách địa chỉ" href="{{ route('address') }}">Danh sách
+                                                    địa chỉ</a>
                                             </li>
 
                                             <li class="menu-item list_hover">
@@ -138,7 +141,7 @@
                             </div>
                             <div class="wrap-search center-section">
                                 <div class="wrap-search-form" style="border-color:#2e9ed5">
-                                    <form action="{{ route('search') }}" method="post">
+                                    <form action="{{ route('search') }}" method="GET">
                                         @csrf
                                         <input type="text" name="search" class="search_input"
                                             placeholder="Search here...">
@@ -155,7 +158,8 @@
                                             style="color:rgb(18, 238, 18)"></i>
                                         <div class="left-info">
                                             <span class="index">{{ $count }} item</span>
-                                            <span class="title" style="color:rgb(247, 247, 247)">GIỎ Hàng</span>
+                                            <span class="title" style="color:rgb(247, 247, 247)">GIỎ
+                                                Hàng</span>
                                         </div>
                                     </a>
                                 </div>
@@ -164,27 +168,30 @@
                                         <i class="fa-solid fa-bell" style="color:yellow"></i>
                                         <div class="left-info">
                                             <span class="index">{{ $countNotification }} mới</span>
-                                            <span class="title" style="color:rgb(247, 247, 247)">Thông báo</span>
+                                            <span class="title" style="color:rgb(247, 247, 247)">Thông
+                                                báo</span>
                                         </div>
                                         <ul class="dropdown-menu">
                                             @if ($countNotification > 3)
                                                 @foreach ($notification as $notification)
                                                     <li>
                                                         @if ($notification->read == 0)
-                                                        <a class="" href="{{ route('readNotifications', $notification->id) }}">
+                                                            <a class=""
+                                                                href="{{ route('readNotifications', $notification->id) }}">
                                                                 <div class="alert alert-danger">
                                                                     <strong>{{ $notification->notification }}</strong>
                                                                     <p>{{ $notification->created_at }}</p>
                                                                 </div>
-                                                        </a>
-                                                            @else
-                                                        <a class="" href="{{ route('notifications') }}">
-                                                            <div class="alert alert-default">
+                                                            </a>
+                                                        @else
+                                                            <a class=""
+                                                                href="{{ route('notifications') }}">
+                                                                <div class="alert alert-default">
                                                                     <strong>{{ $notification->notification }}</strong>
                                                                     <p>{{ $notification->created_at }}</p>
                                                                 </div>
                                                             </a>
-                                                            @endif
+                                                        @endif
                                                     </li>
                                                 @endforeach
                                                 <div class="readAll" style="text-align: center">
@@ -194,25 +201,27 @@
                                                 @foreach ($notification as $notification)
                                                     <li>
                                                         @if ($notification->read == 0)
-                                                        <a class="" href="{{ route('readNotifications', $notification->id) }}">
+                                                            <a class=""
+                                                                href="{{ route('readNotifications', $notification->id) }}">
                                                                 <div class="alert alert-danger">
                                                                     <strong>{{ $notification->notification }}</strong>
                                                                     <p>{{ $notification->created_at }}</p>
                                                                 </div>
-                                                        </a>
-                                                            @else
-                                                        <a class="" href="{{ route('notifications') }}">
-                                                            <div class="alert alert-default">
+                                                            </a>
+                                                        @else
+                                                            <a class=""
+                                                                href="{{ route('notifications') }}">
+                                                                <div class="alert alert-default">
                                                                     <strong>{{ $notification->notification }}</strong>
                                                                     <p>{{ $notification->created_at }}</p>
                                                                 </div>
                                                             </a>
-                                                            @endif
-                                                        </a>
-                                                    </li>
-                                                @endforeach
-                                            @endif
-                                        </ul>
+                                                        @endif
+                                    </a>
+                                    </li>
+                                    @endforeach
+                                    @endif
+                                    </ul>
                                     </a>
                                 </div>
                                 <div class="wrap-icon-section show-up-after-1024">

@@ -439,6 +439,7 @@ class CartController extends Controller
                 $data_detail['product_id'] = $value->cart_product_id;
                 $data_detail['product_price'] = Session::get('cou_value') ? $value->cart_product_price - (Session::get('cou_value') * $value->cart_product_price) : $value->cart_product_price;
                 $data_detail['product_quantity'] = $value->cart_product_quantity;
+                $data_detail['created_at'] = Carbon::now('Asia/Ho_Chi_Minh');
                 DB::table('order_details')->insert($data_detail);
             }
             //thong bao don hang moi
@@ -546,6 +547,7 @@ class CartController extends Controller
                 $data_detail['product_id'] = $value->cart_product_id;
                 $data_detail['product_price'] = Session::get('cou_value') ? $value->cart_product_price - (Session::get('cou_value') * $value->cart_product_price) : $value->cart_product_price;
                 $data_detail['product_quantity'] = $value->cart_product_quantity;
+                $data_detail['created_at'] = Carbon::now('Asia/Ho_Chi_Minh');
                 DB::table('order_details')->insert($data_detail);
             }
             //thong bao don hang moi
@@ -631,6 +633,7 @@ class CartController extends Controller
             $data_detail['product_id'] = $value->cart_product_id;
             $data_detail['product_price'] = Session::get('cou_value') ? $value->cart_product_price - (Session::get('cou_value') * $value->cart_product_price) : $value->cart_product_price;
             $data_detail['product_quantity'] = $value->cart_product_quantity;
+            $data_detail['created_at'] = Carbon::now('Asia/Ho_Chi_Minh');
             DB::table('order_details')->insert($data_detail);
         }
         //thong bao don hang moi

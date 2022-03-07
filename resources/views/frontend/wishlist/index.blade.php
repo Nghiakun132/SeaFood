@@ -1,11 +1,16 @@
 @extends('layouts.frontend')
 @section('title', 'Danh sách sản phẩm yêu thích')
 @section('content')
+<style>
+    .add-to-cart{
+        border-radius: 25px !important;
+    }
+</style>
     <main id="main" class="main-site left-sidebar">
         <div class="container">
             <div class="wrap-breadcrumb">
                 <ul>
-                    <li class="item-link"><a href="#" class="link">Trang chu</a></li>
+                    <li class="item-link"><a href="{{route('home')}}" class="link">Trang chủ</a></li>
                     <li class="item-link"><span>Danh sách sản phẩm yêu thích</span></li>
                 </ul>
             </div>
@@ -21,7 +26,7 @@
                         <div class="wrap-right">
                             <div class="change-display-mode">
                                 <a href="{{route('deleteAllWishlist')}}" class="grid-mode display-mode active">Xóa tất cả</a>
-                                <a href="#" class="grid-mode display-mode active"><i class="fa fa-th"></i>Grid</a>
+                                {{-- <a href="#" class="grid-mode display-mode active"><i class="fa fa-th"></i>Grid</a> --}}
                             </div>
                         </div>
                     </div>
@@ -42,9 +47,14 @@
                                                 class="product-name"><span>{{ $value->pro_name }}</span></a>
                                             <div class="wrap-price"><span
                                                     class="product-price">{{ number_format(($value->pro_price - ($value->pro_price * $value->pro_sale)),0,',',','). ' VND'}}</span></div>
+                                            @if ($value->pro_qty > 0)
                                             <a href="{{ route('quickAddCart', $value->pro_slug) }}"
-                                                class="btn add-to-cart">Add
-                                                To Cart</a>
+                                                class="btn add-to-cart">Thêm vào giỏ hàng</a>
+                                            @else
+                                            <a href="#"
+                                                class="btn add-to-cart" disabled="disabled">Hết hàng</a>
+                                            @endif
+
                                                 <a href="{{route('deleteWishlist', $value->pro_id)}}"
                                                     class="btn add-to-cart">Xóa</a>
                                         </div>

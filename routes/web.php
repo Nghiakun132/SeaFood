@@ -36,7 +36,11 @@ Route::group(['namespace' => 'frontend'], function () {
     Route::get('dang-nhap/google/callback', 'UserController@loginGGCallback')->name('login.google.callback');
     //danh mục
     Route::get('/danh-muc/{slug}', 'CategoryController@index')->name('category');
-    Route::post('/tim-kiem', 'CategoryController@search')->name('search');
+    // tìm kiếm
+    Route::get('/tim-kiem', 'CategoryController@search')->name('search');
+
+
+    //chi tiết sản phẩm
     Route::group(['prefix' => 'chi-tiet-san-pham'], function () {
         Route::get('/{slug}', 'ProductController@index')->name('detail');
     });

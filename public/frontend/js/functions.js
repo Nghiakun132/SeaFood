@@ -120,14 +120,14 @@
                 $( "#slider-range" ).slider({
                     range: true,
                     min: 0,
-                    max: 500,
-                    values: [ 75, 300 ],
+                    max: 10000000,
+                    values: [ 0, 10000000 ],
                     slide: function( event, ui ) {
-                        $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+                        $( "#amount" ).val(ui.values[0] + " VNĐ" + " - " + ui.values[1] + " VNĐ" );
                     }
                 });
-                $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
-                    " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+                $( "#amount" ).val($( "#slider-range" ).slider( "values", 0 ) + " VNĐ" +
+                    " - " + $( "#slider-range" ).slider( "values", 1 ) ) + " VNĐ";
             }
 		},
         /* ---------------------------------------------
