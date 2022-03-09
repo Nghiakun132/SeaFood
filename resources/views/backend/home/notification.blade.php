@@ -18,7 +18,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($noti as $item)
+                        @foreach ($notis as $item)
                             <tr>
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->type }}</td>

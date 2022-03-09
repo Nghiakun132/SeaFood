@@ -251,4 +251,59 @@ class ProductController extends Controller
             ->where('ipd_import_product_id', $id)->first();
         return view('backend.import.detail', compact('import'));
     }
+    public function sales()
+    {
+        $sales = DB::table('sales')->get();
+        $countSales = DB::table('sales')->where('sale_status', 1)->count();
+        return view('backend.sales.index', compact('sales', 'countSales'));
+    }
+    public function store_sales(Request $request)
+    {
+        $this->validate(
+            $request,
+            [
+                'time_start' => 'required',
+                'time_end' => 'required',
+                'sale_percent' => 'required',
+            ],
+            [
+                'time_start.required' => 'Bạn chưa nhập thời gian bắt đầu',
+                'time_end.required' => 'Bạn chưa nhập thời gian kết thúc',
+                'sale_percent.required' => 'Bạn chưa nhập phần trăm khuyến mãi',
+            ]
+        );
+        //format thời gian
+        $time_start = Carbon::parse($request->time_start)->format('Y/m/d H:i:s');
+        $time_end = Carbon::parse($request->time_end)->format('Y/m/d H:i:s');
+        if ($time_start > $time_end) {
+            return redirect()->back()->with('error', 'Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc');
+        } else {
+            DB::table('sales')->insert([
+                'time_start' => $time_start,
+                'time_end' => $time_end,
+                'sale_percent' => $request->sale_percent / 100,
+                'created_at' => Carbon::now('Asia/Ho_Chi_Minh'),
+            ]);
+        }
+        return redirect()->back()->with('success', 'Thêm khuyến mãi thành công');
+    }
+    public function destroy_sales($id)
+    {
+        DB::table('sales')->where('id', $id)->delete();
+        return redirect()->route('admin.sales')->with('success', 'Xóa khuyến mãi thành công');
+    }
+    public function changeStatus_sales($id)
+    {
+        $sale = DB::table('sales')->where('id', $id)->first();
+        if ($sale->sale_status == 1) {
+            DB::table('sales')->where('id', $id)->update([
+                'sale_status' => 0,
+            ]);
+        }
+        return redirect()->route('admin.sales')->with('success', 'Thay đổi trạng thái thành công');
+    }
+    public function add_product($id)
+    {
+
+    }
 }

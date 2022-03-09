@@ -111,7 +111,8 @@
                                                 <a title="Đơn hàng" href="{{ route('order') }}">Đơn hàng</a>
                                             </li>
                                             <li class="menu-item list_hover">
-                                                <a title="Danh sách yêu thích" href="{{ route('wishlist') }}">Danh sách
+                                                <a title="Danh sách yêu thích" href="{{ route('wishlist') }}">Danh
+                                                    sách
                                                     yêu thích</a>
                                             </li>
                                             <li class="menu-item list_hover">
@@ -367,7 +368,7 @@
 
                         </div>
 
-                        <div class="col-lg-4 col-sm-4 col-md-4 col-xs-12 box-twin-content ">
+                        <div class="col-lg-4 col-sm-4 col-md-4 col-xs-12 box-twin-content mb-3">
                             <div class="row">
                                 <div class="wrap-footer-item twin-item">
                                     <h3 class="item-header">Tài khoản</h3>
@@ -412,7 +413,7 @@
 
                     </div>
 
-                    <div class="row">
+                    {{-- <div class="row">
 
                         <div class="col-lg-4 col-sm-4 col-md-4 col-xs-12">
                             <div class="wrap-footer-item">
@@ -473,11 +474,12 @@
                             </div>
                         </div>
 
-                    </div>
+                    </div> --}}
+                    <div style="margin-bottom:10px"></div>
                 </div>
             </div>
 
-            <div class="coppy-right-box">
+            {{-- <div class="coppy-right-box">
                 <div class="container">
                     <div class="coppy-right-item item-left">
                         <p class="coppy-right-text">Copyright © 2020 Surfside Media. All rights reserved</p>
@@ -498,7 +500,7 @@
                     </div>
                     <div class="clearfix"></div>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </footer>
     <script src="{{ asset('frontend/js/jquery-1.12.4.minb8ff.js') }}"></script>
@@ -511,6 +513,7 @@
     <script src="{{ asset('frontend/js/jquery.sticky.js') }}"></script>
     <script src="{{ asset('frontend/js/functions.js') }}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
 </body>
 
 </html>

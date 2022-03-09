@@ -5,6 +5,7 @@ namespace App\Http\Controllers\frontend;
 use App\Http\Controllers\Controller;
 use App\Models\import_product;
 use App\Models\products;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -40,6 +41,7 @@ class HomeController extends Controller
                         'pro_slug' => $product_arr[$j]['pro_slug'],
                         'pro_sale' => $product_arr[$j]['pro_sale'],
                         'pro_price' => $product_arr[$j]['pro_price'],
+                        'pro_unit' => $product_arr[$j]['pro_unit']
                     );
                 }
             }
@@ -58,11 +60,7 @@ class HomeController extends Controller
         $productsDiscount = products::orderBy('pro_sale', 'desc')->take(8)->get();
         //san pham duoc xem nhieu nhat
         $productsView = products::orderBy('pro_view', 'desc')->take(8)->get();
-        return view('frontend.home.index', compact('productsLatest', 'productsDiscount', 'productsView', 'pro_sale_arr', 'products'));
-    }
-    public function test()
-    {
-        $cp = DB::table('coupons')->where('cou_status', 0)->inRandomOrder()->first();
-        dd($cp);
+        $timestamp = Carbon::now('Asia/Ho_Chi_Minh')->addMonths(1)->format('Y/m/d H:i:s');
+        return view('frontend.home.index', compact('productsLatest', 'productsDiscount', 'productsView', 'pro_sale_arr', 'products', 'timestamp'));
     }
 }

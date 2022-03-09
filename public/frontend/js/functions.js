@@ -369,7 +369,7 @@
                 	var _this = $(this),
 						_expire = _this.data('expire');
 					_this.countdown(_expire, function(event) {
-                        $(this).html( event.strftime('<span><b>%D</b> Days</span> <span><b>%-H</b> Hrs</span> <span><b>%M</b> Mins</span> <span><b>%S</b> Secs</span>'));
+                        $(this).html( event.strftime('<span><b>%D</b> Ngày</span> <span><b>%-H</b> Giờ</span> <span><b>%M</b> Phút</span> <span><b>%S</b> Giây</span>'));
                     });
                 });
 			}

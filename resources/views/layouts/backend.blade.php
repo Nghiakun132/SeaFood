@@ -19,20 +19,24 @@
 
 </head>
 <style>
-    .item-hover a{
+    .item-hover a {
         color: rgb(247, 246, 250) !important;
     }
-    .item-hover:hover{
+
+    .item-hover:hover {
         background-color: #fff;
     }
-    .item-hover:hover a{
+
+    .item-hover:hover a {
         color: rgb(231, 6, 6) !important;
         font-weight: bold;
     }
-    .item-hover:hover i{
+
+    .item-hover:hover i {
         color: rgb(231, 6, 6) !important;
         font-weight: bold;
     }
+
 </style>
 
 <body id="page-top">
@@ -81,6 +85,12 @@
             </li>
             @if (Session::get('admins')->role == 2)
                 <li class="nav-item item-hover">
+                    <a href="{{route('admin.sales')}}" class="nav-link">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Giảm giá (sản phẩm)</span></a>
+                    </a>
+                </li>
+                <li class="nav-item item-hover">
                     <a class="nav-link" href="{{ route('admin.staff') }}">
                         <i class="fas fa-fw fa-table"></i>
                         <span>Nhân viên</span></a>
@@ -101,6 +111,7 @@
                         <span>Thống kê</span></a>
                     </a>
                 </li>
+                {{-- giảm giá sản phẩm --}}
             @endif
 
             <li class="nav-item item-hover">
@@ -176,37 +187,37 @@
                                 <h6 class="dropdown-header">
                                     Thông báo
                                 </h6>
-                                    @foreach ($noti as $noti)
-                                        @if ($noti->read == 0)
-                                            <a class="dropdown-item d-flex align-items-center bg-warning"
-                                                href="{{ route('admin.notification.read', $noti->id) }}">
-                                                <div class="mr-3">
-                                                    <div class="icon-circle bg-primary">
-                                                        <i class="fas fa-file-alt text-white"></i>
-                                                    </div>
+                                @foreach ($noti as $noti)
+                                    @if ($noti->read == 0)
+                                        <a class="dropdown-item d-flex align-items-center bg-warning"
+                                            href="{{ route('admin.notification.read', $noti->id) }}">
+                                            <div class="mr-3">
+                                                <div class="icon-circle bg-primary">
+                                                    <i class="fas fa-file-alt text-white"></i>
                                                 </div>
-                                                <div>
-                                                    <div class="small text-gray-500">{{ $noti->created_at }}</div>
-                                                    <span class="font-weight-bold">{{ $noti->notification }}</span>
+                                            </div>
+                                            <div>
+                                                <div class="small text-gray-500">{{ $noti->created_at }}</div>
+                                                <span class="font-weight-bold">{{ $noti->notification }}</span>
+                                            </div>
+                                        </a>
+                                    @else
+                                        <a class="dropdown-item d-flex align-items-center"
+                                            href="{{ route('admin.order') }}">
+                                            <div class="mr-3">
+                                                <div class="icon-circle bg-primary">
+                                                    <i class="fas fa-file-alt text-white"></i>
                                                 </div>
-                                            </a>
-                                        @else
-                                            <a class="dropdown-item d-flex align-items-center"
-                                                href="{{ route('admin.order') }}">
-                                                <div class="mr-3">
-                                                    <div class="icon-circle bg-primary">
-                                                        <i class="fas fa-file-alt text-white"></i>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div class="small text-gray-500">{{ $noti->created_at }}</div>
-                                                    <span class="font-weight-bold">{{ $noti->notification }}</span>
-                                                </div>
-                                            </a>
-                                        @endif
-                                    @endforeach
-                                    <a class="dropdown-item text-center small text-gray-500"
-                                        href="{{ route('admin.notification') }}">Xem tất cả</a>
+                                            </div>
+                                            <div>
+                                                <div class="small text-gray-500">{{ $noti->created_at }}</div>
+                                                <span class="font-weight-bold">{{ $noti->notification }}</span>
+                                            </div>
+                                        </a>
+                                    @endif
+                                @endforeach
+                                <a class="dropdown-item text-center small text-gray-500"
+                                    href="{{ route('admin.notification') }}">Xem tất cả</a>
                             </div>
                         </li>
 
@@ -294,7 +305,7 @@
                                 <a class="dropdown-item"
                                     href="{{ route('admin.change_profile', Session::get('admins')->id) }}">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
+                                    Thông tin
                                 </a>
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -307,7 +318,7 @@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
+                                    Đăng xuất
                                 </a>
                             </div>
                         </li>
@@ -335,15 +346,15 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Bạn muốn thoát</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-body">Chọn "Đăng xuất" nếu bạn muốn thoát</div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="{{ route('admin.logout') }}">Logout</a>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+                    <a class="btn btn-primary" href="{{ route('admin.logout') }}">Đăng xuất</a>
                 </div>
             </div>
         </div>

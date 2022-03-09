@@ -45,10 +45,11 @@ class CartController extends Controller
         if ($product) {
             $product->cart_product_quantity = $product->cart_product_quantity + $request->product_quatity;
             $product->cart_product_total =  $product->cart_product_total + ($request->product_quatity * $product->cart_product_price);
+            $product->created_at = Carbon::now('Asia/Ho_Chi_Minh');
             $product->save();
-            DB::table('products')->where('pro_id', $request->pro_id)->update([
-                'pro_qty' => DB::table('products')->where('pro_id', $request->pro_id)->first()->pro_qty - $request->product_quatity,
-            ]);
+            // DB::table('products')->where('pro_id', $request->pro_id)->update([
+            //     'pro_qty' => DB::table('products')->where('pro_id', $request->pro_id)->first()->pro_qty - $request->product_quatity,
+            // ]);
             return redirect()->route('cart')->with('success', 'Thêm sản phẩm thành công');
         } else {
             $cart = new cart();
@@ -59,11 +60,12 @@ class CartController extends Controller
             $cart->cart_product_price = $request->pro_price;
             $cart->cart_product_total = $request->pro_price * $request->product_quatity;
             $cart->cart_product_quantity = $request->product_quatity;
+            $cart->created_at = Carbon::now('Asia/Ho_Chi_Minh');
             $cart->save();
 
-            DB::table('products')->where('pro_id', $request->pro_id)->update([
-                'pro_qty' => DB::table('products')->where('pro_id', $request->pro_id)->first()->pro_qty - $request->product_quatity,
-            ]);
+            // DB::table('products')->where('pro_id', $request->pro_id)->update([
+            //     'pro_qty' => DB::table('products')->where('pro_id', $request->pro_id)->first()->pro_qty - $request->product_quatity,
+            // ]);
 
             return redirect()->route('cart')->with('success', 'Thêm giỏ hàng thành công');
         }
@@ -78,6 +80,7 @@ class CartController extends Controller
         if ($product) {
             $product->cart_product_quantity = $product->cart_product_quantity + 1;
             $product->cart_product_total =  $product->cart_product_total + (1 * $product->cart_product_price);
+            $product->created_at = Carbon::now('Asia/Ho_Chi_Minh');
             $product->save();
             return redirect()->route('cart')->with('success', 'Thêm sản phẩm thành công');
         } else {
@@ -89,6 +92,7 @@ class CartController extends Controller
             $cart->cart_product_price = $productAdd->pro_price;
             $cart->cart_product_total = $productAdd->pro_price * 1;
             $cart->cart_product_quantity = 1;
+            $cart->created_at = Carbon::now('Asia/Ho_Chi_Minh');
             $cart->save();
             return redirect()->route('cart')->with('success', 'Thêm giỏ hàng thành công');
         }
@@ -117,9 +121,9 @@ class CartController extends Controller
     {
         $this->AuthLogin();
         $pro_id = DB::table('cart')->where('cart_id', $cart_id)->first()->cart_product_id;
-        DB::table('products')->where('pro_id', $pro_id)->update([
-            'pro_qty' => DB::table('products')->where('pro_id', $pro_id)->first()->pro_qty + DB::table('cart')->where('cart_id', $cart_id)->first()->cart_product_quantity,
-        ]);
+        // DB::table('products')->where('pro_id', $pro_id)->update([
+        //     'pro_qty' => DB::table('products')->where('pro_id', $pro_id)->first()->pro_qty + DB::table('cart')->where('cart_id', $cart_id)->first()->cart_product_quantity,
+        // ]);
         $cart = cart::where('cart_id', $cart_id)->first();
         $cart->delete();
         return redirect()->route('cart')->with('success', 'Xóa giỏ hàng thành công');
@@ -129,11 +133,11 @@ class CartController extends Controller
     {
         $this->AuthLogin();
         $products = DB::table('cart')->where('cart_user_id', Session::get('user')->id)->get();
-        foreach ($products as $product) {
-            DB::table('products')->where('pro_id', $product->cart_product_id)->update([
-                'pro_qty' => DB::table('products')->where('pro_id', $product->cart_product_id)->first()->pro_qty + $product->cart_product_quantity,
-            ]);
-        }
+        // foreach ($products as $product) {
+        //     DB::table('products')->where('pro_id', $product->cart_product_id)->update([
+        //         'pro_qty' => DB::table('products')->where('pro_id', $product->cart_product_id)->first()->pro_qty + $product->cart_product_quantity,
+        //     ]);
+        // }
         $cart = cart::where('cart_user_id', Session::get('user')->id)->delete();
         return redirect()->route('cart')->with('success', 'Xóa giỏ hàng thành công');
     }
@@ -409,12 +413,7 @@ class CartController extends Controller
             return redirect()->to($jsonResult['payUrl']);
             // header('Location: ' . $jsonResult['payUrl']);
         } else {
-            $products = DB::table('cart')->where('cart_user_id', Session::get('user')->id)->get();
-            foreach ($products as $product) {
-                DB::table('products')->where('pro_id', $product->cart_product_id)->update([
-                    'pro_qty' => DB::table('products')->where('pro_id', $product->cart_product_id)->first()->pro_qty + $product->cart_product_quantity,
-                ]);
-            }
+
 
             $cart = DB::table('cart')->where('cart_user_id', Session::get('user')->id)->get();
             $total = DB::table('cart')->where('cart_user_id', Session::get('user')->id)->sum('cart_product_total');
@@ -513,12 +512,7 @@ class CartController extends Controller
 
         if (isset($response['status']) && $response['status'] == 'COMPLETED') {
 
-            $products = DB::table('cart')->where('cart_user_id', Session::get('user')->id)->get();
-            foreach ($products as $product) {
-                DB::table('products')->where('pro_id', $product->cart_product_id)->update([
-                    'pro_qty' => DB::table('products')->where('pro_id', $product->cart_product_id)->first()->pro_qty + $product->cart_product_quantity,
-                ]);
-            }
+
 
             $cart = DB::table('cart')
                 ->join('products', 'products.pro_id', '=', 'cart.cart_product_id')

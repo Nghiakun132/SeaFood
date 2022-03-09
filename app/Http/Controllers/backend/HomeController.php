@@ -4,8 +4,10 @@ namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\admins;
+use Carbon\Carbon;
 use Hamcrest\Core\IsTypeOf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Session;
@@ -41,9 +43,9 @@ class HomeController extends Controller
         $product_sell = json_decode(json_encode($product_sell), true);
         $product_arr = json_decode(json_encode($products), true);
         $product_sell_arr = array();
-        for($i = 0; $i < count($product_sell); $i++){
-            for($j = 0; $j < count($product_arr); $j++){
-                if($product_sell[$i]['product_id'] == $product_arr[$j]['pro_id']){
+        for ($i = 0; $i < count($product_sell); $i++) {
+            for ($j = 0; $j < count($product_arr); $j++) {
+                if ($product_sell[$i]['product_id'] == $product_arr[$j]['pro_id']) {
                     $product_sell_arr[] = array(
                         'pro_name' => $product_arr[$j]['pro_name'],
                         'product_sell' => $product_sell[$i]['total'],
@@ -53,7 +55,7 @@ class HomeController extends Controller
                 }
             }
         }
-        return view('backend.home.index', compact('revenue', 'user', 'comments', 'orders', 'products', 'import','product_sell_arr'));
+        return view('backend.home.index', compact('revenue', 'user', 'comments', 'orders', 'products', 'import', 'product_sell_arr'));
     }
     public function Login()
     {
@@ -74,6 +76,14 @@ class HomeController extends Controller
         $admins = admins::where('email', $email)->first();
         if ($admins) {
             if (Hash::check($password, $admins->password)) {
+                DB::table('activities_log')->insert([
+                    'account_id' => $admins->id,
+                    'role' => 0,
+                    'activity' => 'Đăng nhập',
+                    'ip_address' => $_SERVER['REMOTE_ADDR'],
+                    'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+                    'date_time' => Carbon::now('Asia/Ho_Chi_Minh')
+                ]);
                 Session()->put('admins', $admins);
                 DB::table('admins')->where('id', $admins->id)->update(['status' => 1]);
                 return redirect()->route('admin.home');
@@ -122,5 +132,18 @@ class HomeController extends Controller
         }
 
         return redirect()->back()->with('success', 'Cập nhật thành công');
+    }
+
+    public function checkCart()
+    {
+        Artisan::call('cart:check');
+        return redirect()->back();
+    }
+    public function test()
+    {
+        //get ip user
+        $ip = $_SERVER['REMOTE_ADDR'];
+        $user_agent = $_SERVER['HTTP_USER_AGENT'];
+        //get device
     }
 }

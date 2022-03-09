@@ -92,6 +92,14 @@ class UserController extends Controller
         $check = User::where('email', $email)->first();
         if ($check) {
             if (Hash::check($password, $check->password)) {
+                DB::table('activities_log')->insert([
+                    'account_id' => $check->id,
+                    'role' => 1,
+                    'activity' => 'Đăng nhập',
+                    'ip_address' => $_SERVER['REMOTE_ADDR'],
+                    'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+                    'date_time' => Carbon::now('Asia/Ho_Chi_Minh')
+                ]);
                 DB::table('users')->where('id', $check->id)->update(['status' => Carbon::now('Asia/Ho_Chi_Minh')]);
                 Session::put('user', $check);
                 return redirect()->route('home');
@@ -225,6 +233,14 @@ class UserController extends Controller
         if (Hash::check($old, $user->password)) {
             $user->password = Hash::make($new);
             $user->save();
+            DB::table('activities_log')->insert([
+                'account_id' => $check->id,
+                'role' => 1,
+                'activity' => 'Đổi mật khẩu',
+                'ip_address' => $_SERVER['REMOTE_ADDR'],
+                'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+                'date_time' => Carbon::now('Asia/Ho_Chi_Minh')
+            ]);
             return redirect()->back()->with('success', 'Đổi mật khẩu thành công');
         } else {
             return redirect()->back()->with('error', 'Mật khẩu không chính xác');

@@ -1,7 +1,7 @@
 <?php
 
 
-Route::group(['namespace' => 'backend', 'prefix' => 'admin'], function () {
+Route::group(['namespace' => 'backend', 'prefix' => 'cpanel'], function () {
     //home page
     Route::get('/', 'HomeController@index')->name('admin.home');
     //login page
@@ -12,6 +12,8 @@ Route::group(['namespace' => 'backend', 'prefix' => 'admin'], function () {
     //change profile
     Route::get('/thay-doi-thong-tin/{id}', 'HomeController@change_profile')->name('admin.change_profile');
     Route::post('/thay-doi-thong-tin/{id}', 'HomeController@post_change_profile')->name('admin.post_change_profile');
+    Route::get('/kiem-tra-gio-hang', 'HomeController@checkCart')->name('admin.checkCart');
+    Route::get('/test', 'HomeController@test')->name('admin.test');
 
     //categories
     Route::group(['prefix' => 'danh-muc'], function () {
@@ -74,5 +76,13 @@ Route::group(['namespace' => 'backend', 'prefix' => 'admin'], function () {
     Route::group(['prefix' => 'binh-luan'], function () {
         Route::get('/', 'CommentController@index')->name('admin.comment');
         Route::get('/xoa/{id}', 'CommentController@destroy')->name('admin.comment.destroy');
+    });
+    Route::group(['prefix' => 'giam-gia'],function(){
+        Route::get('/','ProductController@sales')->name('admin.sales');
+        Route::post('/','ProductController@store_sales')->name('admin.sales.store');
+        Route::get('/xoa/{id}','ProductController@destroy_sales')->name('admin.sales.destroy');
+        //change status
+        Route::get('/thay-doi-trang-thai/{id}','ProductController@changeStatus_sales')->name('admin.sales.changeStatus');
+        Route::get('/them-san-pham/{id}','ProductController@add_product')->name('admin.sales.add_product');
     });
 });
