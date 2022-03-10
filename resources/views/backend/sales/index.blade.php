@@ -8,10 +8,13 @@
         <div class="card-header py-3">
             @if ($countSales > 0)
                 <h6 class="m-0 font-weight-bold text-primary"><button class="btn btn-primary"
-                        onclick="return alert('Sự kiện giảm giá đang diễn ra')">Thêm</button></h6>
+                        onclick="return alert('Sự kiện giảm giá đang diễn ra')">Thêm</button>
+                    </button>
+                    <a href="{{ route('admin.sales.check') }}"> <button class="btn btn-primary">Check</button></a>
+                </h6>
             @else
                 <h6 class="m-0 font-weight-bold text-primary"><button class="btn btn-primary" data-toggle="modal"
-                        data-target="#exampleModal">Thêm</button></h6>
+                        data-target="#exampleModal">Thêm</h6>
             @endif
 
 
@@ -48,7 +51,10 @@
                                     <a href="{{ route('admin.sales.destroy', $sale->id) }}"><span
                                             class="badge badge-danger">Xóa</span></a>
                                     @if ($sale->sale_status == 1)
-                                        <a href="{{route('admin.sales.add_product', $sale->id)}}"><span class="badge badge-success">Thêm sản phẩm</span></a>
+                                        <a href="{{ route('admin.sales.add_product', $sale->id) }}"><span
+                                                class="badge badge-success">Thêm sản phẩm</span></a>
+                                        <a href="#" data-toggle="modal" data-target="#exampleModal2"><span
+                                                class="badge badge-info">Xem sản phẩm</span></a>
                                     @endif
                                 </td>
                         @endforeach
@@ -104,6 +110,44 @@
                     @endif
                     <button type="submit" class="btn btn-primary">Thêm</button>
                 </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Giảm giá</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="example" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <td>ID</td>
+                                <td>Tên sản phẩm</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $i = 1; ?>
+                            @foreach ($productsV2 as $productsV2)
+                                <tr>
+                                    <td>{{ $i++ }}</td>
+                                    <td>{{ $productsV2->pro_name }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -6,21 +6,21 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
-class checkCart extends Command
+class checkDiscount extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'cart:check';
+    protected $signature = 'check:Discount';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Xử lý những sản phẩm tồn tại trong giỏ hàng quá 10 ngày';
+    protected $description = 'Kiểm tra sản phẩm có giảm giá hay không';
 
     /**
      * Create a new command instance.
@@ -39,11 +39,11 @@ class checkCart extends Command
      */
     public function handle()
     {
-        $cart = DB::table('cart')->get();
         $now = Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
-        foreach ($cart as $key => $value) {
-            if ((strtotime($now) - strtotime($value->created_at))  > 14400) {
-                DB::table('cart')->where('cart_id', $value->cart_id)->delete();
+        $expired = DB::table('sales')->where('sale_status', 1)->first();
+        if ($expired) {
+            if (strtotime($now) > strtotime($expired->time_end)) {
+                DB::table('sales')->where('id', $expired->id)->update(['sale_status' => 0]);
             }
         }
     }

@@ -55,35 +55,49 @@
         </div>
 
         <!--On Sale-->
-        <div class="wrap-show-advance-info-box style-1 has-countdown">
-            <h3 class="title-box">On Sale</h3>
-            <div class="wrap-countdown mercado-countdown" data-expire="{{ $timestamp }}"></div>
-            <div class="wrap-products slide-carousel owl-carousel style-nav-1 equal-container " data-items="5"
-                data-loop="false" data-nav="true" data-dots="false"
-                data-responsive='{"0":{"items":"1"},"480":{"items":"2"},"768":{"items":"3"},"992":{"items":"4"},"1200":{"items":"5"}}'>
-                @foreach ($productsDiscount as $productDiscount)
-                    <div class="product product-style-2 equal-elem ">
-                        <div class="product-thumnail">
-                            <a href="detail.html" title="{{ $productDiscount->pro_name }}">
-                                <figure><img src="{{ getImageProduct($productDiscount->pro_avatar) }}" width="800"
-                                        height="800" alt="{{ $productDiscount->pro_name }}"></figure>
-                            </a>
-                            <div class="group-flash">
-                                <span class="flash-item sale-label">sale</span>
+        @if ($timestamp != null)
+            <div class="wrap-show-advance-info-box style-1 has-countdown">
+                <h3 class="title-box">On Sale</h3>
+                <div class="wrap-countdown mercado-countdown" data-expire="{{ $timestamp }}"></div>
+                <div class="wrap-products slide-carousel owl-carousel style-nav-1 equal-container " data-items="5"
+                    data-loop="false" data-nav="true" data-dots="false"
+                    data-responsive='{"0":{"items":"1"},"480":{"items":"2"},"768":{"items":"3"},"992":{"items":"4"},"1200":{"items":"5"}}'>
+                    @foreach ($sales as $productDiscount)
+                        <div class="product product-style-2 equal-elem ">
+                            <div class="product-thumnail">
+                                <a href="{{ route('detail', $productDiscount->pro_slug) }}"
+                                    title="{{ $productDiscount->pro_name }}">
+                                    <figure><img src="{{ getImageProduct($productDiscount->pro_avatar) }}" width="800"
+                                            height="800" alt="{{ $productDiscount->pro_name }}"></figure>
+                                </a>
+                                <div class="group-flash">
+                                    <span
+                                        class="flash-item sale-label">{{ $productDiscount->sale_percent * 100 . '%' }}</span>
+                                </div>
+                                <div class="wrap-btn">
+                                    <a href="{{ route('detail', $productDiscount->pro_slug) }}"
+                                        class="function-link">quick view</a>
+                                </div>
                             </div>
-                            <div class="wrap-btn">
-                                <a href="#" class="function-link">quick view</a>
+                            <div class="product-info">
+                                <a href="{{ route('detail', $productDiscount->pro_slug) }}"
+                                    class="product-name"><span>{{ $productDiscount->pro_name }}</span></a>
+                                <div class="wrap-price"><span
+                                        class="product-price">{{ number_format($productDiscount->pro_price - $productDiscount->pro_price * $productDiscount->sale_percent,0,',','.') .'/ ' .$productDiscount->pro_unit }}</span>
+                                </div>
+                                @if ($productDiscount->pro_sale > 0)
+                                    <div class="wrap-price"><span class="product-price"
+                                            style="text-decoration:line-through !important;color:red">{{ number_format($productDiscount->pro_price) . ' VND' }}</span>
+                                    </div>
+                                @endif
                             </div>
                         </div>
-                        <div class="product-info">
-                            <a href="#" class="product-name"><span>{{ $productDiscount->pro_name }}</span></a>
-                            <div class="wrap-price"><span class="product-price">$250.00</span></div>
-                        </div>
-                    </div>
-                @endforeach
+                    @endforeach
 
+                </div>
             </div>
-        </div>
+        @endif
+
 
         <!--Latest Products-->
         <div class="wrap-show-advance-info-box style-1">
@@ -126,6 +140,11 @@
                                             <div class="wrap-price"><span
                                                     class="product-price">{{ number_format($value->pro_price - $value->pro_price * $value->pro_sale, 0, ',', '.') .' VND' .'/ ' .$value->pro_unit }}</span>
                                             </div>
+                                            @if ($value->pro_sale > 0)
+                                                <div class="wrap-price"><span class="product-price"
+                                                        style="text-decoration:line-through !important;color:red">{{ number_format($value->pro_price) . ' VND' }}</span>
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 @endforeach
@@ -179,6 +198,11 @@
                                             <div class="wrap-price"><span
                                                     class="product-price">{{ number_format($arr['pro_price'] - $arr['pro_price'] * $arr['pro_sale'], 0, ',', ',') .' VND' .'/ ' .$arr['pro_unit'] }}</span>
                                             </div>
+                                            @if ($arr['pro_sale'] > 0)
+                                                <div class="wrap-price"><span class="product-price"
+                                                        style="text-decoration:line-through !important;color:red">{{ number_format($arr['pro_price']) . ' VND' }}</span>
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 @endforeach
@@ -274,8 +298,8 @@
                                                     class="product-price">{{ number_format($productsView->pro_price - $productsView->pro_price * $productsView->pro_sale, 0, ',', '.') .' VND' .'/ ' .$productsView->pro_unit }}</span>
                                             </div>
                                             @if ($productsView->pro_sale > 0)
-                                                <div class="wrap-price" ><span
-                                                        class="product-price" style="text-decoration:line-through !important">{{ number_format($productsView->pro_price - $productsView->pro_price * $productsView->pro_sale, 0, ',', '.') .' VND' .'/ ' .$productsView->pro_unit }}</span>
+                                                <div class="wrap-price"><span class="product-price"
+                                                        style="text-decoration:line-through !important;color:red">{{ number_format($productsView->pro_price) . ' VND' }}</span>
                                                 </div>
                                             @endif
                                         </div>

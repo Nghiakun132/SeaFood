@@ -83,6 +83,8 @@ Route::group(['namespace' => 'backend', 'prefix' => 'cpanel'], function () {
         Route::get('/xoa/{id}','ProductController@destroy_sales')->name('admin.sales.destroy');
         //change status
         Route::get('/thay-doi-trang-thai/{id}','ProductController@changeStatus_sales')->name('admin.sales.changeStatus');
-        Route::get('/them-san-pham/{id}','ProductController@add_product')->name('admin.sales.add_product');
+        Route::get('/them-san-pham/{id}','ProductController@addProduct')->name('admin.sales.add_product');
+        Route::post('/them-san-pham/{id}','ProductController@add_product_post')->name('admin.sales.add_product_post');
+        Route::get('/kiem-tra','ProductController@checkExpired')->name('admin.sales.check');
     });
 });

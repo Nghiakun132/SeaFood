@@ -10,6 +10,7 @@ use App\Models\import_product_details;
 use App\Models\products;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -255,7 +256,12 @@ class ProductController extends Controller
     {
         $sales = DB::table('sales')->get();
         $countSales = DB::table('sales')->where('sale_status', 1)->count();
-        return view('backend.sales.index', compact('sales', 'countSales'));
+        $productsV2 = DB::table('sale_details')
+            ->join('sales', 'sales.id', '=', 'sale_details.sale_id')
+            ->join('products', 'sale_details.product_id', '=', 'products.pro_id')
+            ->where('sale_status', 1)
+            ->get();
+        return view('backend.sales.index', compact('sales', 'countSales', 'productsV2'));
     }
     public function store_sales(Request $request)
     {
@@ -295,6 +301,12 @@ class ProductController extends Controller
     public function changeStatus_sales($id)
     {
         $sale = DB::table('sales')->where('id', $id)->first();
+        $details = DB::table('sale_details')->where('sale_id', $id)->get();
+        foreach ($details as $detail) {
+            DB::table('products')->where('pro_id', $detail->product_id)->update([
+                'pro_sale' => 0,
+            ]);
+        }
         if ($sale->sale_status == 1) {
             DB::table('sales')->where('id', $id)->update([
                 'sale_status' => 0,
@@ -302,8 +314,39 @@ class ProductController extends Controller
         }
         return redirect()->route('admin.sales')->with('success', 'Thay đổi trạng thái thành công');
     }
-    public function add_product($id)
+    public function addProduct($id)
     {
+        $products = DB::table('products')->get();
 
+        return view('backend.sales.addProduct', compact('products', 'id'));
+    }
+
+    public function add_product_post(Request $request, $id)
+    {
+        $sale_percent = DB::table('sales')->where('sale_status', 1)->first();
+        foreach ($request->check as $check) {
+            $checkv2[] = (int)$check;
+        }
+        foreach ($checkv2 as $db) {
+            $checkExist = DB::table('sale_details')->where('product_id', $db)->where('sale_id', $id)->first();
+            if ($checkExist) {
+                continue;
+            } else {
+                DB::table('sale_details')->insert([
+                    'sale_id' => $id,
+                    'product_id' => $db,
+                    'created_at' => Carbon::now('Asia/Ho_Chi_Minh'),
+                ]);
+                DB::table('products')->where('pro_id', $db)->update([
+                    'pro_sale' => $sale_percent->sale_percent,
+                ]);
+            }
+        }
+        return redirect()->route('admin.sales')->with('success', 'Thêm sản phẩm khuyến mãi thành công');
+    }
+    public function checkExpired()
+    {
+        Artisan::call('check:Discount');
+        return redirect()->back()->with('success', 'Kiểm tra hết hạn thành công');
     }
 }

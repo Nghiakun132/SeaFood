@@ -60,7 +60,14 @@ class HomeController extends Controller
         $productsDiscount = products::orderBy('pro_sale', 'desc')->take(8)->get();
         //san pham duoc xem nhieu nhat
         $productsView = products::orderBy('pro_view', 'desc')->take(8)->get();
-        $timestamp = Carbon::now('Asia/Ho_Chi_Minh')->addMonths(1)->format('Y/m/d H:i:s');
-        return view('frontend.home.index', compact('productsLatest', 'productsDiscount', 'productsView', 'pro_sale_arr', 'products', 'timestamp'));
+
+        $timestamp = DB::table('sales')->where('sale_status', 1)->first();
+        $timestamp = $timestamp ? Carbon::parse($timestamp->time_end)->format('Y/m/d H:i:s') : null;
+        $sales = DB::table('sales')
+        ->join('sale_details', 'sales.id', '=', 'sale_details.sale_id')
+        ->join('products', 'sale_details.product_id', '=', 'products.pro_id')
+        ->where('sale_status',1)
+        ->get();
+        return view('frontend.home.index', compact('productsLatest', 'productsDiscount', 'productsView', 'pro_sale_arr', 'products', 'sales','timestamp'));
     }
 }
