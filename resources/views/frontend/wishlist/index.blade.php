@@ -46,7 +46,11 @@
                                             <a href="{{ route('detail', $value->pro_slug) }}"
                                                 class="product-name"><span>{{ $value->pro_name }}</span></a>
                                             <div class="wrap-price"><span
-                                                    class="product-price">{{ number_format(($value->pro_price - ($value->pro_price * $value->pro_sale)),0,',',','). ' VND'}}</span></div>
+                                                    class="product-price">{{ number_format(($value->pro_price - ($value->pro_price * $value->pro_sale)),0,',',','). ' VND'}}</span>
+                                                    @if ($value->pro_sale > 0)
+                                                    <span
+                                                        class="product-price" style="color:red; text-decoration:line-through">{{ number_format(($value->pro_price),0,',',','). ' VND'}}</span></div>
+                                                        @endif
                                             @if ($value->pro_qty > 0)
                                             <a href="{{ route('quickAddCart', $value->pro_slug) }}"
                                                 class="btn add-to-cart">Thêm vào giỏ hàng</a>

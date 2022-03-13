@@ -20,7 +20,7 @@ class checkDiscount extends Command
      *
      * @var string
      */
-    protected $description = 'Kiểm tra sản phẩm có giảm giá hay không';
+    protected $description = 'Kiểm tra sản phẩm có chương trình khuyến mãi hay không';
 
     /**
      * Create a new command instance.
@@ -43,8 +43,16 @@ class checkDiscount extends Command
         $expired = DB::table('sales')->where('sale_status', 1)->first();
         if ($expired) {
             if (strtotime($now) > strtotime($expired->time_end)) {
+                $details = DB::table('sale_details')->where('sale_id', $expired->id)->get();
+                foreach ($details as $detail) {
+                    DB::table('products')->where('pro_id', $detail->product_id)->update([
+                        'pro_sale' => 0,
+                    ]);
+                }
                 DB::table('sales')->where('id', $expired->id)->update(['sale_status' => 0]);
             }
+        }else{
+            $this->info('Không có chương trình giảm giá nào');
         }
     }
 }

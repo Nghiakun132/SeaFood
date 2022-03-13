@@ -67,6 +67,18 @@
         margin-bottom: 0;
     }
 
+    .search-speech {
+        background: #fff !important;
+        color: #000000 !important;
+        border-radius: 50% !important;
+        border: 1px solid;
+        position: absolute !important;
+        top: 0px !important;
+        right: 72px !important;
+        cursor: pointer !important;
+        font-size: 23px;
+    }
+
 </style>
 
 <body class="home-page home-01 ">
@@ -144,13 +156,17 @@
                                 <div class="wrap-search-form" style="border-color:#2e9ed5">
                                     <form action="{{ route('search') }}" method="GET">
                                         @csrf
-                                        <input type="text" name="search" class="search_input"
-                                            placeholder="Search here...">
+                                        <input type="text" name="search" class="search_input" id="output"
+                                            placeholder="Tìm kiếm ...">
                                         <button type="submit" style="background:rgb(241, 13, 5)"><i
                                                 class="fa fa-search" aria-hidden="true"></i></button>
+                                        <a href="#" class="search-speech" onclick="runSpeechRecognition()">
+                                            <i class="fa fa-microphone-slash" aria-hidden="true"></i>
+                                        </a>
                                     </form>
                                 </div>
                             </div>
+
                             <div class="wrap-icon right-section">
 
                                 <div class="wrap-icon-section minicart">
@@ -412,95 +428,9 @@
                         </div>
 
                     </div>
-
-                    {{-- <div class="row">
-
-                        <div class="col-lg-4 col-sm-4 col-md-4 col-xs-12">
-                            <div class="wrap-footer-item">
-                                <h3 class="item-header">We Using Safe Payments:</h3>
-                                <div class="item-content">
-                                    <div class="wrap-list-item wrap-gallery">
-                                        <img src="{{ asset('frontend/images/payment.png') }}"
-                                            style="max-width: 260px;">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-sm-4 col-md-4 col-xs-12">
-                            <div class="wrap-footer-item">
-                                <h3 class="item-header">Social network</h3>
-                                <div class="item-content">
-                                    <div class="wrap-list-item social-network">
-                                        <ul>
-                                            <li><a href="#" class="link-to-item" title="twitter"><i
-                                                        class="fa-brands fa-twitter"></i></a></li>
-                                            <li><a href="https://facebook.com/nghiakun132" target="_blank"
-                                                    class="link-to-item" title="facebook"><i
-                                                        class="fa-brands fa-facebook"></i></a></li>
-                                            <li><a href="#" class="link-to-item" title="pinterest"><i
-                                                        class="fa-brands fa-pinterest"></i></a></li>
-                                            <li><a href="#" class="link-to-item" title="instagram"><i
-                                                        class="fa-brands fa-instagram"></i></a></li>
-                                            <li><a href="#" class="link-to-item" title="vimeo"><i
-                                                        class="fa-brands fa-vimeo"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-sm-4 col-md-4 col-xs-12">
-                            <div class="wrap-footer-item">
-                                <h3 class="item-header">Dowload App</h3>
-                                <div class="item-content">
-                                    <div class="wrap-list-item apps-list">
-                                        <ul>
-                                            <li><a href="#" class="link-to-item"
-                                                    title="our application on apple store">
-                                                    <figure><img
-                                                            src="{{ asset('frontend/images/brands/apple-store.png') }}"
-                                                            alt="apple store" width="128" height="36"></figure>
-                                                </a></li>
-                                            <li><a href="#" class="link-to-item"
-                                                    title="our application on google play store">
-                                                    <figure><img
-                                                            src="{{ asset('frontend/images/brands/google-play-store.png') }}"
-                                                            alt="google play store" width="128" height="36"></figure>
-                                                </a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div> --}}
                     <div style="margin-bottom:10px"></div>
                 </div>
             </div>
-
-            {{-- <div class="coppy-right-box">
-                <div class="container">
-                    <div class="coppy-right-item item-left">
-                        <p class="coppy-right-text">Copyright © 2020 Surfside Media. All rights reserved</p>
-                    </div>
-                    <div class="coppy-right-item item-right">
-                        <div class="wrap-nav horizontal-nav">
-                            <ul>
-                                <li class="menu-item"><a href="about-us.html" class="link-term">About us</a>
-                                </li>
-                                <li class="menu-item"><a href="privacy-policy.html"
-                                        class="link-term">Privacy Policy</a></li>
-                                <li class="menu-item"><a href="terms-conditions.html"
-                                        class="link-term">Terms & Conditions</a></li>
-                                <li class="menu-item"><a href="return-policy.html" class="link-term">Return
-                                        Policy</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-            </div> --}}
         </div>
     </footer>
     <script src="{{ asset('frontend/js/jquery-1.12.4.minb8ff.js') }}"></script>
@@ -513,7 +443,26 @@
     <script src="{{ asset('frontend/js/jquery.sticky.js') }}"></script>
     <script src="{{ asset('frontend/js/functions.js') }}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-
+    <script>
+        function runSpeechRecognition() {
+            var output = document.getElementById("output");
+            var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+            var recognition = new SpeechRecognition();
+            recognition.lang = 'vi-VN';
+            recognition.onstart = function() {
+                output.setAttribute('value', 'Đang nhận dạng...');
+            };
+            recognition.onspeechend = function() {
+                output.setAttribute('value', 'Ngừng nhận dạng');
+                recognition.stop();
+            }
+            recognition.onresult = function(event) {
+                var transcript = event.results[0][0].transcript;
+                output.setAttribute('value', transcript);
+            };
+            recognition.start();
+        }
+    </script>
 </body>
 
 </html>

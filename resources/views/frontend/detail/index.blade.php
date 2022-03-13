@@ -57,7 +57,7 @@
                                 @endif
                             </div>
                             <div class="quantity">
-                                <span>Quantity:</span>
+                                <span>Số lượng: </span>
                                 <div class="quantity-input">
                                     <input type="text" name="product_quatity" value="1"
                                         data-max="{{ $product->pro_qty }}" pattern="[0-9]*">
@@ -189,18 +189,23 @@
                                                         <label for="comment">Bình luận của bạn <span
                                                                 class="required">*</span>
                                                         </label>
-                                                        <textarea id="comment" name="comment" cols="45"
-                                                            rows="8"></textarea>
+                                                        <textarea id="comment" name="comment" cols="45" rows="8"></textarea>
                                                     </p>
+                                                    @if ($errors->has('comment'))
+                                                        <div class="alert alert-danger">
+                                                            <strong>{{ $errors->first('comment') }}</strong>
+                                                        </div>
+                                                    @endif
+
                                                     <p class="form-submit">
                                                         <input name="submit" type="submit" id="submit"
                                                             class="submit" value="Submit">
                                                     </p>
                                                 </form>
 
-                                            </div><!-- .comment-respond-->
-                                        </div><!-- #review_form -->
-                                    </div><!-- #review_form_wrapper -->
+                                            </div>
+                                        </div>
+                                    </div>
 
                                 </div>
                             </div>
@@ -208,8 +213,6 @@
                     </div>
                 </div>
             </div>
-            <!--end main products area-->
-
             <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 sitebar">
                 <div class="widget widget-our-services ">
                     <div class="widget-content">
@@ -245,8 +248,7 @@
                             </li>
                         </ul>
                     </div>
-                </div><!-- Categories widget-->
-
+                </div>
                 <div class="widget mercado-widget widget-product">
                     <h2 class="widget-title">Sản phẩm phổ biến</h2>
                     <div class="widget-content">
@@ -268,6 +270,11 @@
                                             <div class="wrap-price"><span
                                                     class="product-price">{{ number_format($popularProducts->pro_price - $popularProducts->pro_price * $popularProducts->pro_sale,0,',',',') . ' VND' }}</span>
                                             </div>
+                                            @if ($popularProducts->pro_sale > 0)
+                                                <div class="wrap-price"><span class="product-price"
+                                                        style="color:red;text-decoration-line: line-through">{{ number_format($popularProducts->pro_price, 0, ',', ',') . ' VND' }}</span>
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </li>
@@ -277,8 +284,6 @@
                 </div>
 
             </div>
-            <!--end sitebar-->
-
             <div class="single-advance-box col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="wrap-show-advance-info-box style-1 box-in-site">
                     <h3 class="title-box">Related Products</h3>
@@ -306,24 +311,22 @@
                                     <div class="product-info">
                                         <a href="#" class="product-name"><span>{{ $related->pro_name }}</span></a>
                                         <div class="wrap-price"><span
-                                                class="product-price">{{ number_format($related->pro_price, 0, ',', ',') . ' VND' }}</span>
+                                                class="product-price">{{ number_format($related->pro_price - $related->pro_price * $related->pro_sale, 0, ',', ',') . ' VND' }}</span>
                                         </div>
+                                        @if ($related->pro_sale > 0)
+                                                <div class="wrap-price"><span class="product-price"
+                                                        style="color:red;text-decoration-line: line-through">{{ number_format($related->pro_price, 0, ',', ',') . ' VND' }}</span>
+                                                </div>
+                                            @endif
                                     </div>
                                 </div>
                             @endforeach
-
                         </div>
                     </div>
-                    <!--End wrap-products-->
                 </div>
             </div>
-
         </div>
-        <!--end row-->
-
     </div>
-    <!--end container-->
-
 </main>
 <?php
 $success = Session::get('success');
@@ -342,8 +345,8 @@ if ($success) {
     var qty_input = document.querySelector('input[name="product_quatity"]');
     var checkCart = {{ $checkValue }};
     btn.addEventListener('click', function(e) {
-        if ( parseInt(qty_input.value) > parseInt(qty.innerHTML)) {
-            console.log( parseInt(qty_input.value));
+        if (parseInt(qty_input.value) > parseInt(qty.innerHTML)) {
+            console.log(parseInt(qty_input.value));
             console.log(parseInt(qty.innerHTML));
             alert('Số lượng sản phẩm không đủ');
             e.preventDefault();

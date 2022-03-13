@@ -1,4 +1,5 @@
 @extends('layouts.frontend')
+@section('title', 'Tìm kiếm')
 @section('content')
     <main id="main" class="main-site left-sidebar">
         <div class="container">
@@ -10,21 +11,8 @@
             </div>
             <div class="row">
                 <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 col-xs-12 main-content-area">
-                    {{-- <div class="banner-shop">
-                        <a href="#" class="banner-link">
-                            <figure><img src="./frontend/images/shop-banner.jpg" alt=""></figure>
-                        </a>
-                    </div> --}}
                     <div class="wrap-shop-control">
                         <h1 class="shop-title">Tim kiem</h1>
-                        {{-- <div class="wrap-right">
-                            <div class="sort-item orderby">
-                                <a class="sort_by" href="{{ Request::URL() }}" style="margin:8px"><label>Mặc định</label></a>
-                                <a class="sort_by" href="{{ Request::URL() }}?sort_by=gia-giam-dan" style="margin:8px"><label>Giá giảm dần</label></a>
-                                <a class="sort_by" href="{{ Request::URL() }}?sort_by=gia-tang-dan" style="margin:8px"><label>Giá tăng dần</label></a>
-                                <a class="sort_by" href="{{ Request::URL() }}?sort_by=moi-nhat" style="margin:8px"><label>Mới nhất</label></a>
-                            </div>
-                        </div> --}}
                     </div>
                     <div class="row">
                         <ul class="product-list grid-products equal-container">
@@ -44,11 +32,16 @@
                                                 <a href="{{ route('detail', $value->pro_slug) }}"
                                                     class="product-name"><span>{{ $value->pro_name }}</span></a>
                                                 <div class="wrap-price"><span
-                                                        class="product-price">{{ number_format($value->pro_price, 0, ',', ',') . ' VND' }}</span>
+                                                        class="product-price">{{ number_format($value->pro_price - $value->pro_price * $value->pro_sale, 0, ',', ',') . ' VND' }}</span>
+                                                    @if ($value->pro_sale > 0)
+                                                        <span class="product-price"
+                                                            style="color:red;text-decoration:line-through">{{ number_format($value->pro_price, 0, ',', ',') . ' VND' }}</span>
+                                                    @endif
                                                 </div>
                                                 @if ($value->pro_qty > 0)
                                                     <a href="{{ route('quickAddCart', $value->pro_slug) }}"
-                                                        class="btn add-to-cart">Thêm vào giỏ hàng</a>
+                                                        class="btn add-to-cart">Thêm
+                                                        vào giỏ hàng</a>
                                                 @else
                                                     <a href="#" class="btn add-to-cart">Hết hàng</a>
                                                 @endif

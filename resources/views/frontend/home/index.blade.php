@@ -1,7 +1,14 @@
 @extends('layouts.frontend')
 @section('content')
 @section('title', 'Trang chủ')
-
+<style>
+    .style-nav-1 .owl-nav button i{
+        font-family: 'FontAwesome' !important;
+    }
+    .style-nav-1 .owl-nav button:hover{
+        background-color: red !important;
+    }
+</style>
 <main id="main">
     <div class="container">
         <div class="wrap-main-slide">

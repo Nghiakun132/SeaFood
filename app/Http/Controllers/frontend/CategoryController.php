@@ -40,4 +40,5 @@ class CategoryController extends Controller
             return redirect()->route('home');
         }
     }
+
 }

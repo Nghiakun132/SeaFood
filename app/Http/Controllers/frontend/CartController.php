@@ -101,6 +101,9 @@ class CartController extends Controller
     public function updateCart(Request $request, $cart_id)
     {
         $this->AuthLogin();
+        if($request->product_quatity <= 0){
+            return redirect()->back()->with('error', 'Số lượng sản phẩm phải lớn hơn 0');
+        }
         $cart = cart::where('cart_id', $cart_id)->first();
         $qty = $request->product_quatity - $cart->cart_product_quantity;
         $pro_qty = DB::table('products')->where('pro_id', $cart->cart_product_id)->first()->pro_qty;
@@ -121,9 +124,6 @@ class CartController extends Controller
     {
         $this->AuthLogin();
         $pro_id = DB::table('cart')->where('cart_id', $cart_id)->first()->cart_product_id;
-        // DB::table('products')->where('pro_id', $pro_id)->update([
-        //     'pro_qty' => DB::table('products')->where('pro_id', $pro_id)->first()->pro_qty + DB::table('cart')->where('cart_id', $cart_id)->first()->cart_product_quantity,
-        // ]);
         $cart = cart::where('cart_id', $cart_id)->first();
         $cart->delete();
         return redirect()->route('cart')->with('success', 'Xóa giỏ hàng thành công');
@@ -133,11 +133,6 @@ class CartController extends Controller
     {
         $this->AuthLogin();
         $products = DB::table('cart')->where('cart_user_id', Session::get('user')->id)->get();
-        // foreach ($products as $product) {
-        //     DB::table('products')->where('pro_id', $product->cart_product_id)->update([
-        //         'pro_qty' => DB::table('products')->where('pro_id', $product->cart_product_id)->first()->pro_qty + $product->cart_product_quantity,
-        //     ]);
-        // }
         $cart = cart::where('cart_user_id', Session::get('user')->id)->delete();
         return redirect()->route('cart')->with('success', 'Xóa giỏ hàng thành công');
     }
@@ -290,11 +285,11 @@ class CartController extends Controller
             }
         } else if ($request->payment_method == 'VnPay') {
 
-            $vnp_TmnCode = "LPNHQO44"; //Website ID in VNPAY System
-            $vnp_HashSecret = "URBRUBRVRUICHPLUYIPETISISDUYGYEU"; //Secret key
-            $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-            $vnp_Returnurl = "http://localhost/nienluan/public/thanh-toan-vnpay";
-            $vnp_apiUrl = "http://sandbox.vnpayment.vn/merchant_webapi/merchant.html";
+            $vnp_TmnCode = env('vnp_TmnCode');
+            $vnp_HashSecret = env('vnp_HashSecret');
+            $vnp_Url = env('vnp_Url');
+            $vnp_Returnurl = env('vnp_Returnurl');
+            $vnp_apiUrl = env('vnp_apiUrl');
             //Config input format
             //Expire
             // $startTime = Carbon::now('Asia/Ho_Chi_Minh');
@@ -375,15 +370,15 @@ class CartController extends Controller
             } else {
                 $total = $total;
             }
-            $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
-            $partnerCode = 'MOMOBKUN20180529';
-            $accessKey = 'klm05TvNBzhg7h7j';
-            $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
+            $endpoint = env('endpoint');
+            $partnerCode = env('partnerCode');
+            $accessKey = env('accessKey');
+            $secretKey = env('secretKey');
             $orderInfo = "Thanh toán qua MoMo";
             $amount = (int)$total;
             $orderId = time() . "";
-            $redirectUrl = "http://localhost/nienluan/public/thanh-toan-momo";
-            $ipnUrl = "http://localhost/nienluan/public/thanh-toan-momo";
+            $redirectUrl = env('redirectUrl');
+            $ipnUrl = env('ipnUrl');
             $extraData = "";
 
             $requestId = time() . "";
@@ -413,8 +408,6 @@ class CartController extends Controller
             return redirect()->to($jsonResult['payUrl']);
             // header('Location: ' . $jsonResult['payUrl']);
         } else {
-
-
             $cart = DB::table('cart')->where('cart_user_id', Session::get('user')->id)->get();
             $total = DB::table('cart')->where('cart_user_id', Session::get('user')->id)->sum('cart_product_total');
             if (Session::get('cou_value')) {

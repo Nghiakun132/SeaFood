@@ -123,7 +123,7 @@
                                                                 <td>
                                                                     @if ($order->order_status == 0)
                                                                         <a href="{{ route('cancel', $order->order_id) }}"
-                                                                            class="btn btn-danger btn-sm">Huy</a>
+                                                                            class="btn btn-danger btn-sm">Hủy</a>
                                                                     @endif
                                                                     <a href="{{ route('order.detail', $order->order_id) }}"
                                                                         class="btn btn-primary btn-sm">Chi tiết</a>
@@ -188,7 +188,7 @@
                                                                 <td>
                                                                     @if ($order1->order_status == 0)
                                                                         <a href="{{ route('cancel', $order1->order_id) }}"
-                                                                            class="btn btn-danger btn-sm">Huy</a>
+                                                                            class="btn btn-danger btn-sm">Hủy</a>
                                                                     @endif
                                                                     <a href="{{ route('order.detail', $order1->order_id) }}"
                                                                         class="btn btn-primary btn-sm">Chi tiết</a>
@@ -253,7 +253,7 @@
                                                                 <td>
                                                                     @if ($order2->order_status == 0)
                                                                         <a href="{{ route('cancel', $order2->order_id) }}"
-                                                                            class="btn btn-danger btn-sm">Huy</a>
+                                                                            class="btn btn-danger btn-sm">Hủy</a>
                                                                     @endif
                                                                     <a href="{{ route('order.detail', $order2->order_id) }}"
                                                                         class="btn btn-primary btn-sm">Chi tiết</a>
@@ -318,7 +318,7 @@
                                                                 <td>
                                                                     @if ($order3->order_status == 0)
                                                                         <a href="{{ route('cancel', $order3->order_id) }}"
-                                                                            class="btn btn-danger btn-sm">Huy</a>
+                                                                            class="btn btn-danger btn-sm">Hủy</a>
                                                                     @endif
                                                                     <a href="{{ route('order.detail', $order3->order_id) }}"
                                                                         class="btn btn-primary btn-sm">Chi tiết</a>
@@ -384,7 +384,7 @@
                                                                 <td>
                                                                     @if ($order4->order_status == 0)
                                                                         <a href="{{ route('cancel', $order4->order_id) }}"
-                                                                            class="btn btn-danger btn-sm">Huy</a>
+                                                                            class="btn btn-danger btn-sm">Hủy</a>
                                                                     @endif
                                                                     <a href="{{ route('order.detail', $order4->order_id) }}"
                                                                         class="btn btn-primary btn-sm">Chi tiết</a>

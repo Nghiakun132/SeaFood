@@ -92,6 +92,12 @@ class ProductController extends Controller
 
     public function comments(Request $request, $id)
     {
+        $this->validate($request,[
+            'comment' => 'required|max:255',
+        ], [
+            'comment.required' => 'Bạn chưa nhập nội dung bình luận',
+            'comment.max' => 'Nội dung bình luận phải có nhiều nhất 255 ký tự',
+        ]);
         $this->AuthLogin();
         $product = products::where('pro_id', $id)->first();
         $data = array();

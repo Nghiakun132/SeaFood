@@ -39,7 +39,6 @@ Route::group(['namespace' => 'frontend'], function () {
     // tìm kiếm
     Route::get('/tim-kiem', 'CategoryController@search')->name('search');
 
-
     //chi tiết sản phẩm
     Route::group(['prefix' => 'chi-tiet-san-pham'], function () {
         Route::get('/{slug}', 'ProductController@index')->name('detail');
