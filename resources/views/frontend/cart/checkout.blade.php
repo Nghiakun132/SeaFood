@@ -128,6 +128,11 @@
                                     <b>{{ Session::get('user')->phone }}</b>
                                 </td>
                             </tr>
+                            <tr>
+                                <td>
+                                    <a href="#" id="myBtn" class="btn btn-info">Thêm địa chỉ</a>
+                                </td>
+                            </tr>
                         </table>
                     </div>
                 </form>
@@ -137,7 +142,7 @@
                     <form action="{{ route('postCoupon') }}" method="post">
                         @csrf
                         <p class="row-in-form">
-                            <label for="coupon-code">Enter Your Coupon code:</label>
+                            <label for="coupon-code">Nhập mã giảm giá:</label>
                             @if (Session::get('cou_code'))
                                 <input id="coupon-code" type="text" name="coupon_code"
                                     placeholder="{{ Session::get('cou_code') }} " disabled>
@@ -145,13 +150,13 @@
                                 <input id="coupon-code" type="text" name="coupon_code" placeholder="Nhap ma giam gia ">
                             @endif
 
-                            <button type="submit" class="btn btn-small">Apply</button>
+                            <button type="submit" class="btn btn-small">Áp mã</button>
                         </p>
-                        <a href="{{ route('deleteCoupon') }}" class="btn btn-small">Cancel</a>
+                        <a href="{{ route('deleteCoupon') }}" class="btn btn-small">Hủy</a>
                     </form>
                 </div>
             </div>
-            <div class="wrap-show-advance-info-box style-1 box-in-site">
+            {{-- <div class="wrap-show-advance-info-box style-1 box-in-site">
                 <h3 class="title-box">Most Viewed Products</h3>
                 <div class="wrap-products">
                     <div class="products slide-carousel owl-carousel style-nav-1 equal-container" data-items="5"
@@ -330,10 +335,52 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 </main>
+<div class="container2">
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close"><i class="fa-solid fa-circle-xmark"></i></span>
+            <form action="{{ route('addAddress') }}" method="post">
+                @csrf
+                <div class="form-group">
+                    <label for="">
+                        <strong>Địa chỉ</strong>
+                    </label>
+                    <input type="text" name="address" class="form-control" placeholder="Nhập địa chỉ">
+                </div>
+                <div class="form-group">
+                    <label for="">Đặt là mặc định</label>
+                    <input type="checkbox" name="default" value="1">
+                </div>
+                @if ($errors->has('address'))
+                    <div class="alert alert-danger">
+                        <strong>{{ $errors->first('address') }}</strong>
+                    </div>
+                @endif
+                <button class="btn btn-primary" type="submit">Thêm địa chỉ</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    var modal = document.getElementById('myModal');
+    var btn = document.getElementById("myBtn");
+    var span = document.getElementsByClassName("close")[0];
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
 <?php
 $success = Session::get('success');
 $error = Session::get('error');

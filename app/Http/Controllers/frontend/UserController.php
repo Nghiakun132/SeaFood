@@ -267,11 +267,20 @@ class UserController extends Controller
             ]
         );
         $id = Session::get('user')->id;
-        DB::table('address')->insert([
-            'user_id' => $id,
-            'address' => $request->address,
-            'isDefault' => 0,
-        ]);
+        if($request->default == 1){
+            DB::table('address')->where('user_id', $id)->update(['isDefault' => 0]);
+            DB::table('address')->insert([
+                'user_id' => $id,
+                'address' => $request->address,
+                'isDefault' => 1,
+            ]);
+        }else{
+            DB::table('address')->insert([
+                'user_id' => $id,
+                'address' => $request->address,
+                'isDefault' => 0,
+            ]);
+        }
         return redirect()->back()->with('success', 'Thêm địa chỉ thành công');
     }
     public function deleteAddress($id)

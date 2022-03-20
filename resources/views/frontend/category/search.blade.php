@@ -12,7 +12,7 @@
             <div class="row">
                 <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 col-xs-12 main-content-area">
                     <div class="wrap-shop-control">
-                        <h1 class="shop-title">Tim kiem</h1>
+                        <h1 class="shop-title">Tìm kiếm</h1>
                     </div>
                     <div class="row">
                         <ul class="product-list grid-products equal-container">
