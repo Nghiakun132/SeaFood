@@ -305,19 +305,21 @@
                                             <span class="flash-item new-label">new</span>
                                         </div>
                                         <div class="wrap-btn">
-                                            <a href="#" class="function-link">quick view</a>
+                                            <a href="{{ route('detail', $related->pro_slug) }}"
+                                                class="function-link">Xem chi tiết</a>
                                         </div>
                                     </div>
                                     <div class="product-info">
-                                        <a href="#" class="product-name"><span>{{ $related->pro_name }}</span></a>
+                                        <a href="{{ route('detail', $related->pro_slug) }}"
+                                            class="product-name"><span>{{ $related->pro_name }}</span></a>
                                         <div class="wrap-price"><span
                                                 class="product-price">{{ number_format($related->pro_price - $related->pro_price * $related->pro_sale, 0, ',', ',') . ' VND' }}</span>
                                         </div>
                                         @if ($related->pro_sale > 0)
-                                                <div class="wrap-price"><span class="product-price"
-                                                        style="color:red;text-decoration-line: line-through">{{ number_format($related->pro_price, 0, ',', ',') . ' VND' }}</span>
-                                                </div>
-                                            @endif
+                                            <div class="wrap-price"><span class="product-price"
+                                                    style="color:red;text-decoration-line: line-through">{{ number_format($related->pro_price, 0, ',', ',') . ' VND' }}</span>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             @endforeach

@@ -33,5 +33,7 @@ Route::group(['namespace' => 'api'], function () {
     Route::group(['prefix' => 'san-pham'], function () {
         Route::get('/', "ProductController@index");
         Route::get('/ngay-gan-nhat', "ProductController@getQuantity");
+        Route::get('/san-pham-theo-ngay', "ProductController@getQuantityByDaysName");
+        Route::get('/san-pham-theo-thang', "ProductController@getQuantityByMonthsName");
     });
 });

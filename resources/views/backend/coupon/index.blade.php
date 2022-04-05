@@ -1,10 +1,10 @@
 @extends('layouts.backend')
 @section('content')
-@section('title', 'Ma giam gia')
+@section('title', 'Mã giảm giá')
 <div class="container-fluid">
-    <h1 class="h3 mb-2 text-gray-800">Ma giam gia</h1>
+    <h1 class="h3 mb-2 text-gray-800">Mã giảm giá</h1>
     <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#myModal">
-        Them ma giam gia
+        Thêm
     </button>
     <div class="card shadow mb-4">
         <div class="card-body">
@@ -57,29 +57,29 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Modal Heading</h4>
+                <h4 class="modal-title">Thêm mã </h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
                 <form action="" method="post">
                     @csrf
                     <div class="form-group">
-                        <label for="">So lan</label>
+                        <label for="">Số lượt sử dụng</label>
                         <input type="number" class="form-control" name="cou_number">
                     </div>
                     <div class="form-group">
-                        <label for="">Ngay het han</label>
+                        <label for="">Ngày hết hạn</label>
                         <input type="date" class="form-control" name="cou_date">
                     </div>
                     <div class="form-group">
-                        <label for="">Giam ? %</label>
+                        <label for="">Giảm ? %</label>
                         <input type="text" class="form-control" name="cou_value">
                     </div>
-                    <button type="submit" class="btn btn-primary">Tao</button>
+                    <button type="submit" class="btn btn-primary">Tạo</button>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
             </div>
         </div>
     </div>

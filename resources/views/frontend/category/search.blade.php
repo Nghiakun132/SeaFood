@@ -1,6 +1,26 @@
 @extends('layouts.frontend')
 @section('title', 'Tìm kiếm')
 @section('content')
+    <style>
+        @media (min-width:1200px) {
+            .col-lg-3 {
+                width: 24% !important;
+            }
+        }
+
+        @media (min-width:992px) and (max-width:1199px) {
+            .col-md-4 {
+                width: 32% !important;
+            }
+        }
+
+        @media (min-width:768px) and (max-width:992px) {
+            .col-sm-4 {
+                width: 31.5% !important;
+            }
+        }
+
+    </style>
     <main id="main" class="main-site left-sidebar">
         <div class="container">
             <div class="wrap-breadcrumb ">
@@ -18,11 +38,11 @@
                         <ul class="product-list grid-products equal-container">
                             @if (count($products) > 0)
                                 @foreach ($products as $value)
-                                    <li class="col-lg-4 col-md-6 col-sm-6 col-xs-6 ">
+                                    <li class="col-lg-3 col-md-4 col-sm-4 col-xs-5 ">
                                         <div class="product product-style-3 equal-elem ">
                                             <div class="product-thumnail">
                                                 <a href="{{ route('detail', $value->pro_slug) }}"
-                                                    title="T-Shirt Raw Hem Organic Boro Constrast Denim">
+                                                    title="{{ $value->pro_name }}">
                                                     <figure><img
                                                             src="{{ asset('./uploads/products/' . $value->pro_avatar) }}"
                                                             alt=""></figure>
@@ -32,16 +52,18 @@
                                                 <a href="{{ route('detail', $value->pro_slug) }}"
                                                     class="product-name"><span>{{ $value->pro_name }}</span></a>
                                                 <div class="wrap-price"><span
-                                                        class="product-price">{{ number_format($value->pro_price - $value->pro_price * $value->pro_sale, 0, ',', ',') . ' VND' }}</span>
+                                                        class="product-price">{{ number_format($value->pro_price - $value->pro_price * $value->pro_sale, 0, '.', '.') . ' VND' }}</span>
                                                     @if ($value->pro_sale > 0)
                                                         <span class="product-price"
-                                                            style="color:red;text-decoration:line-through">{{ number_format($value->pro_price, 0, ',', ',') . ' VND' }}</span>
+                                                            style="color:red;text-decoration:line-through">{{ number_format($value->pro_price, 0, '.', '.') . ' VND' }}</span>
                                                     @endif
                                                 </div>
                                                 @if ($value->pro_qty > 0)
                                                     <a href="{{ route('quickAddCart', $value->pro_slug) }}"
                                                         class="btn add-to-cart">Thêm
                                                         vào giỏ hàng</a>
+                                                    <a href="{{ route('addWishlist', $value->pro_id) }}"
+                                                        class="btn add-to-cart">Thêm vào wishlist</a>
                                                 @else
                                                     <a href="#" class="btn add-to-cart">Hết hàng</a>
                                                 @endif

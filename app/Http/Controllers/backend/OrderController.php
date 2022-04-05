@@ -22,13 +22,13 @@ class OrderController extends Controller
     }
     public function index()
     {
-        $this->AuthLogin();
-        $orders = DB::table('orders')->orderBy('order_id', 'asc')->get();
+        // $this->AuthLogin();
+        $orders = DB::table('orders')->orderBy('order_id', 'DESC')->get();
         return view('backend.orders.index', compact('orders'));
     }
     public function changeStatus($id)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $order = DB::table('orders')->where('order_id', $id)->first();
         if ($order->order_status == 0) {
             DB::table('orders')->where('order_id', $id)->update(['order_status' => 1]);
@@ -41,13 +41,13 @@ class OrderController extends Controller
     }
     public function destroy($id)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         DB::table('orders')->where('order_id', $id)->delete();
         return redirect()->back();
     }
     public function show($id)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $orders = DB::table('order_details')
             ->join('products', 'order_details.product_id', '=', 'products.pro_id')
             ->where('order_id', $id)
@@ -57,7 +57,7 @@ class OrderController extends Controller
     }
     public function print($id)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $data = [
             'orders' => DB::table('orders')
             ->join('users', 'orders.user_id', '=', 'users.id')

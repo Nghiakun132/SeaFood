@@ -145,40 +145,40 @@ class UserController extends Controller
 
     public function notifications()
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $user = Session::get('user')->id;
         $notifications = DB::table('notifications')->where('user_id', $user)->orderBy('id', 'desc')->get();
         return view('frontend.notification.index', compact('notifications'));
     }
     public function readNotifications($id)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         DB::table('notifications')->where('id', $id)->update(['read' => 1]);
         return redirect()->route('notifications')->with('success', 'Đã đọc thông báo');
     }
     public function deleteNotifications($id)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         DB::table('notifications')->where('id', $id)->delete();
         return redirect()->route('notifications')->with('success', 'Đã xóa thông báo');
     }
     public function deleteAllNotifications()
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         DB::table('notifications')->where('user_id', Session::get('user')->id)->delete();
         return redirect()->route('notifications')->with('success', 'Đã xóa tất cả thông báo');
     }
 
     public function profile()
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $id = Session::get('user')->id;
         $user = User::find($id);
         return view('frontend.user.index', compact('user'));
     }
     public function postProfile(Request $request)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $this->validate($request, [
             'name' => 'required',
             'phone' => 'required|numeric|min:10|unique:users,phone,' . Session::get('user')->id,
@@ -213,7 +213,7 @@ class UserController extends Controller
     }
     public function changePassword(Request $request)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $this->validate($request, [
             'old' => 'required',
             'new' => 'required|min:8',
@@ -248,14 +248,14 @@ class UserController extends Controller
     }
     public function address()
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $id = Session::get('user')->id;
         $user = User::join('address', 'users.id', '=', 'address.user_id')->where('users.id', $id)->get();
         return view('frontend.user.address', compact('user'));
     }
     public function addAddress(Request $request)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $this->validate(
             $request,
             [
@@ -285,13 +285,13 @@ class UserController extends Controller
     }
     public function deleteAddress($id)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         DB::table('address')->where('id', $id)->delete();
         return redirect()->back()->with('success', 'Đã xóa địa chỉ');
     }
     public function setDefault($id)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         DB::table('address')->where('user_id', Session::get('user')->id)
             ->update(['isDefault' => 0]);
         DB::table('address')->where('user_id', Session::get('user')->id)
@@ -300,13 +300,13 @@ class UserController extends Controller
     }
     public function editAddress($id)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $address = DB::table('address')->where('id', $id)->first();
         return view('frontend.user.updateAddress', compact('address'));
     }
     public function updateAddress(Request $request, $id)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $this->validate(
             $request,
             [
@@ -324,7 +324,7 @@ class UserController extends Controller
     }
     public function coupon()
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $id = Session::get('user')->id;
         $vc = DB::table('coupons_user')
             ->join('coupons', 'coupons_user.cou_id', '=', 'coupons.cou_id')

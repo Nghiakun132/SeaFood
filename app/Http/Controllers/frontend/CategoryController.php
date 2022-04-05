@@ -25,7 +25,8 @@ class CategoryController extends Controller
                     $products = products::where('pro_category_id', $cate->c_id)->where('pro_status', 0)->orderBy('pro_id', 'asc')->paginate(18);
                 }
             }
-            return view('frontend.category.index', compact('products', 'cate'));
+            $popularProducts = products::where('pro_status', 0)->orderBy('pro_view', 'desc')->limit(4)->get();
+            return view('frontend.category.index', compact('products', 'cate', 'popularProducts'));
         } catch (\Throwable $th) {
             return redirect()->route('home');
         }
@@ -34,7 +35,7 @@ class CategoryController extends Controller
     {
         if (isset($_GET['search'])) {
             $keyword = $_GET['search'];
-            $products = products::where('pro_name', 'like', '%' . $keyword . '%')->where('pro_status', 0)->paginate(18);
+            $products = products::where('pro_name', 'like', '%' . $keyword . '%')->where('pro_status', 0)->paginate(40);
             return view('frontend.category.search', compact('products'));
         } else {
             return redirect()->route('home');

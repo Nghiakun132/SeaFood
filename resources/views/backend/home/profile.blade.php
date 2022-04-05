@@ -36,12 +36,10 @@
                         <label for="">Address</label>
                         <input type="text" class="form-control" name="address" value="{{ $admin->address }}">
                     </div>
-                    @if ($admin->birthday != NULL)
+                    @if ($admin->birthday != null)
                         <div class="form-group">
                             <label for="">Age</label>
-                            <input type="text" class="form-control"
-                                value="{{ \Carbon\Carbon::now('Asia/Ho_Chi_Minh')->year - \Carbon\Carbon::parse($admin->birthday)->year . ' tuoi' }}"
-                                name="birthday" disabled>
+                            <input type="text" class="form-control" placeholder="{{ $age }} tuổi" disabled>
                         </div>
                     @else
                         <div class="form-group">
@@ -72,13 +70,13 @@
                             <div class="card-footer">
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroupFileAddon01">Cap nhat Anh dai
-                                            dien</span>
+                                        <span class="input-group-text" id="inputGroupFileAddon01">Cập nhật ảnh đại
+                                            diện</span>
                                     </div>
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="avatar" id="inputGroupFile01"
                                             aria-describedby="inputGroupFileAddon01">
-                                        <label class="custom-file-label" for="inputGroupFile01">Chon anh</label>
+                                        <label class="custom-file-label" for="inputGroupFile01">Chọn ảnh</label>
                                     </div>
                                 </div>
                             </div>
@@ -94,9 +92,71 @@
                             </div>
                         </div>
                     @endif
+                    <a class="btn btn-primary mt-4" data-toggle="modal" data-target="#myModal">Đổi mật khẩu</a>
                 </div>
             </div>
-            <button class="btn btn-primary">Cap nhat</button>
+            <button class="btn btn-primary">Cập nhật</button>
         </form>
     </div>
+
+
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Đổi mật khẩu</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('admin.changePassword') }}" method="post">
+                        @csrf
+                        <div class="form-group">
+                            <label for="">Mật khẩu cũ</label>
+                            <input type="password" class="form-control" name="old_password">
+                        </div>
+                        @if ($errors->has('old_password'))
+                            <div class="alert alert-danger">
+                                {{ $errors->first('old_password') }}
+                            </div>
+                        @endif
+                        <div class="form-group">
+                            <label for="">Mật khẩu mới</label>
+                            <input type="password" class="form-control" name="new_password">
+                        </div>
+                        @if ($errors->has('new_password'))
+                            <div class="alert alert-danger">
+                                {{ $errors->first('new_password') }}
+                            </div>
+                        @endif
+                        <div class="form-group">
+                            <label for="">Nhập lại mật khẩu mới</label>
+                            <input type="password" class="form-control" name="re_password">
+                        </div>
+                        @if ($errors->has('re_password'))
+                            <div class="alert alert-danger">
+                                {{ $errors->first('re_password') }}
+                            </div>
+                        @endif
+                        <button type="submit" class="btn btn-primary">Cập nhật</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php
+    $error = Session::get('error');
+    $success = Session::get('success');
+    if ($error) {
+        echo "<script>alert('$error')</script>";
+        Session::forget('error');
+    }
+    if ($success) {
+        echo "<script>alert('$success')</script>";
+        Session::forget('success');
+    }
+
+    ?>
 @stop

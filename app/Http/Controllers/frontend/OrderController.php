@@ -22,7 +22,7 @@ class OrderController extends Controller
     }
     public function index()
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $orders = DB::table('orders')->orderBy('order_id', 'desc')->where('user_id', Session::get('user')->id)->get();
         $ordersWait = DB::table('orders')->orderBy('order_id', 'desc')->where('user_id', Session::get('user')->id)->where('order_status', '0')->get();
         $ordersConfirmed = DB::table('orders')->orderBy('order_id', 'desc')->where('user_id', Session::get('user')->id)->where('order_status', '1')->get();
@@ -32,7 +32,7 @@ class OrderController extends Controller
     }
     public function detail($id)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $order_detail = DB::table('order_details')
         ->join('products', 'products.pro_id', '=', 'order_details.product_id')
         ->where('order_id', $id)->get();
@@ -40,13 +40,13 @@ class OrderController extends Controller
     }
     public function cancel($id)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $order = DB::table('orders')->where('order_id', $id)->first();
         return view('frontend.order.cancel', compact('order'));
     }
     public function postCancel(Request $request)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $reason = $request->reason;
         $order_id = $request->order_id;
         $product = DB::table('order_details')->where('order_id', $order_id)->get();

@@ -53,9 +53,9 @@
                                 </td>
                                 <td>
                                     @if ($user->status == 1)
-                                        <span class="badge badge-success">Offline</span>
+                                        <span class="badge badge-danger">Offline</span>
                                     @else
-                                        <span class="badge badge-danger">{{ $user->status }}</span>
+                                        <span class="badge badge-success">{{ $user->status }}</span>
                                     @endif
                                 <td>
                                     {{ $user->type }}

@@ -4,6 +4,7 @@
 <div class="container-fluid">
 
     <h1 class="h3 mb-2 text-gray-800">Sản phẩm</h1>
+    <a class="btn btn-primary mb-3" href="{{route('admin.notification.destroyAll')}}">Xóa tất cả</a>
     <div class="card shadow mb-4">
         <div class="card-body">
             <div class="table-responsive">
@@ -45,9 +46,14 @@
 
 <?php
 $success = Session::get('success');
+$error = Session::get('error');
 if ($success) {
     echo "<script>alert('$success')</script>";
     Session::forget('success');
+}
+if ($error) {
+    echo "<script>alert('$error')</script>";
+    Session::forget('error');
 }
 ?>
 @stop

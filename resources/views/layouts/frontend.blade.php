@@ -157,20 +157,21 @@
                                     <form action="{{ route('search') }}" method="GET">
                                         @csrf
                                         <input type="text" name="search" class="search_input" id="output"
-                                            placeholder="Tìm kiếm ...">
+                                            placeholder="Tìm kiếm ..." title="Tìm kiếm bằng văn bản">
                                         <button type="submit" style="background:rgb(241, 13, 5)"><i
-                                                class="fa fa-search" aria-hidden="true"></i></button>
-                                        <a href="#" class="search-speech" onclick="runSpeechRecognition()">
+                                                class="fa fa-search" aria-hidden="true" title="Tìm"></i></button>
+                                        <a href="#" class="search-speech" onclick="runSpeechRecognition()" title="Tìm kiếm bằng giọng nói">
                                             <i class="fa fa-microphone-slash" aria-hidden="true"></i>
                                         </a>
                                     </form>
                                 </div>
+
                             </div>
 
                             <div class="wrap-icon right-section">
 
                                 <div class="wrap-icon-section minicart">
-                                    <a href="{{ route('cart') }}" class="link-direction">
+                                    <a href="{{ route('cart') }}" class="link-direction" title="Giỏ hàng">
                                         <i class="fa fa-shopping-basket" aria-hidden="true"
                                             style="color:rgb(18, 238, 18)"></i>
                                         <div class="left-info">
@@ -181,7 +182,7 @@
                                     </a>
                                 </div>
                                 <div class="wrap-icon-section minicart dropdown">
-                                    <a href="#" class="link-direction dropdown-toggle" data-toggle="dropdown">
+                                    <a href="#" class="link-direction dropdown-toggle" data-toggle="dropdown" title="Thông báo">
                                         <i class="fa-solid fa-bell" style="color:yellow"></i>
                                         <div class="left-info">
                                             <span class="index">{{ $countNotification }} mới</span>
@@ -272,7 +273,7 @@
                 </div> --}}
                 <div class="primary-nav-section">
                     <div class="container">
-                        <ul class="nav primary clone-main-menu" id="mercado_main" data-menuname="Main menu">
+                        <ul class="nav primary clone-main-menu" id="mercado_main" data-menuname="Danh mục">
                             <li class="menu-item home-icon">
                                 <a href="{{ route('home') }}" class="link-term mercado-item-title"><i
                                         class="fa fa-home" aria-hidden="true"></i></a>
@@ -433,6 +434,34 @@
             </div>
         </div>
     </footer>
+
+    {{-- plugin Facebook Messages --}}
+    {{-- <div id="fb-root"></div>
+    <div id="fb-customer-chat" class="fb-customerchat">
+    </div>
+    <script>
+        var chatbox = document.getElementById('fb-customer-chat');
+        chatbox.setAttribute("page_id", "101249449220577");
+        chatbox.setAttribute("attribution", "biz_inbox");
+    </script>
+    <script>
+        window.fbAsyncInit = function() {
+            FB.init({
+                xfbml: true,
+                version: 'v13.0'
+            });
+        };
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script> --}}
+    {{-- End plugin Facebook Messages --}}
+
     <script src="{{ asset('frontend/js/jquery-1.12.4.minb8ff.js') }}"></script>
     <script src="{{ asset('frontend/js/jquery-ui-1.12.4.minb8ff.js') }}"></script>
     <script src="{{ asset('frontend/js/bootstrap.min.js') }}"></script>

@@ -36,20 +36,20 @@ class ProductController extends Controller
 
     public function index()
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $products = $this->products->join('categories', 'products.pro_category_id', '=', 'categories.c_id')
             ->select('products.*', 'categories.c_name')->get();
         return view('backend.products.index', compact('products'));
     }
     public function create()
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $categories = $this->categories->all();
         return view('backend.products.create', compact('categories'));
     }
     public function store(Request $request)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $this->validate($request, [
             'pro_name' => 'required|unique:products,pro_name',
             'pro_price' => 'required',
@@ -115,14 +115,14 @@ class ProductController extends Controller
     }
     public function edit($id)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $categories = $this->categories->all();
         $product = $this->products->where('pro_id', $id)->first();
         return view('backend.products.edit', compact('product', 'categories'));
     }
     public function update(Request $request, $id)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $qty = $this->products->where('pro_id', $id)->first();
         if ($request->pro_qty != $qty->pro_qty) {
             $this->validate(
@@ -206,7 +206,7 @@ class ProductController extends Controller
     }
     public function destroy($id)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $product = $this->products->where('pro_id', $id)->first();
         $product->delete();
         $image = image_products::where('img_product_id', $id)->get();
@@ -222,7 +222,7 @@ class ProductController extends Controller
     }
     public function changeStatus($id)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $product = $this->products->where('pro_id', $id)->first();
         if ($product->pro_status == 1) {
             $product->pro_status = 0;
@@ -234,7 +234,7 @@ class ProductController extends Controller
     }
     public function import()
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $import = DB::table('import_products')
             ->join('admins', 'import_products.ip_admin_id', '=', 'admins.id')
             ->select('import_products.*', 'admins.name')
@@ -243,7 +243,7 @@ class ProductController extends Controller
     }
     public function import_detail($id)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $import = DB::table('import_products')
             ->join('admins', 'import_products.ip_admin_id', '=', 'admins.id')
             ->join('import_product_details', 'import_products.ip_id', '=', 'import_product_details.ipd_import_product_id')

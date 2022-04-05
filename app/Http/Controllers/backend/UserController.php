@@ -20,20 +20,20 @@ class UserController extends Controller
     }
     public function index()
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $users = User::all();
         return view('backend.users.index', compact('users'));
     }
     public function destroy($id)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $user = User::find($id);
         $user->delete();
         return redirect()->back()->with('success', 'Xóa thành công');
     }
     public function block($id)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $user = User::find($id);
         if ($user->block == 1) {
             $user->block = 0;

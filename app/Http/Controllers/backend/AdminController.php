@@ -12,22 +12,21 @@ use Session;
 
 class AdminController extends Controller
 {
-    public function AuthLogin()
-    {
-        $ad = Session::get('admins');
-        if ($ad) {
-            return redirect()->route('admin.home');
-        } else {
-            return redirect()->route('admin.login')->send();
-        }
-    }
+    // public function AuthLogin()
+    // {
+    //     $ad = Session::get('admins');
+    //     if ($ad) {
+    //         return redirect()->route('admin.home');
+    //     } else {
+    //         return redirect()->route('admin.login')->send();
+    //     }
+    // }
     public function __construct(admins $admins)
     {
         $this->admins = $admins;
     }
     public function index()
     {
-        $this->AuthLogin();
         $staff = $this->admins->all();
         return view('backend.staffs.index', compact('staff'));
     }
@@ -76,31 +75,33 @@ class AdminController extends Controller
 
     public function getNotifications()
     {
-        $this->AuthLogin();
         $notis = DB::table('notifications')->where('role', 1)->get();
         return view('backend.home.notification', compact('notis'));
     }
     public function destroyNotification($id)
     {
-        $this->AuthLogin();
         DB::table('notifications')->where('id', $id)->delete();
         return redirect()->back()->with('success', 'Xóa thành công');
     }
     public function readNotification($id)
     {
-        $this->AuthLogin();
         DB::table('notifications')->where('id', $id)->update(['read' => 1]);
         return redirect()->route('admin.order');
     }
+    public function destroyAllNotification()
+    {
+        DB::table('notifications')->where('role', 1)->delete();
+        return redirect()->back()->with('success', 'Xóa thành công');
+    }
+
     public function statistics()
     {
-        $this->AuthLogin();
+
         if (isset($_GET['from_date']) && isset($_GET['to_date'])) {
             $from_date = $_GET['from_date'];
             $to_date = $_GET['to_date'];
             // format date
             if ($from_date == '') {
-                $to_date = Carbon::parse($to_date)->format('Y-d-m');
                 $details = DB::table('orders')
                     ->join('order_details', 'orders.order_id', '=', 'order_details.order_id')
                     ->join('products', 'order_details.product_id', '=', 'products.pro_id')
@@ -113,8 +114,6 @@ class AdminController extends Controller
                 $details = json_decode(json_encode($details), true);
                 return view('backend.home.statistic', compact('details'));
             } else {
-                $from_date = Carbon::parse($from_date)->format('Y-d-m');
-                $to_date = Carbon::parse($to_date)->format('Y-d-m');
                 $details = DB::table('orders')
                     ->join('order_details', 'orders.order_id', '=', 'order_details.order_id')
                     ->join('products', 'order_details.product_id', '=', 'products.pro_id')
@@ -127,9 +126,8 @@ class AdminController extends Controller
                 $details = json_decode(json_encode($details), true);
                 return view('backend.home.statistic', compact('details'));
             }
-        } else {
-            $details = [];
-            return view('backend.home.statistic', compact('details'));
         }
+        $details = [];
+        return view('backend.home.statistic', compact('details'));
     }
 }

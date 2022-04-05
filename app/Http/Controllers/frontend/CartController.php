@@ -26,7 +26,7 @@ class CartController extends Controller
     }
     public function index()
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $cart = DB::table('cart')->where('cart_user_id', Session::get('user')->id)
             ->join('products', 'products.pro_id', '=', 'cart.cart_product_id')
             ->get();
@@ -38,7 +38,7 @@ class CartController extends Controller
     //them vao gio hang
     public function addCart(Request $request)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $product = cart::where('cart_product_id', $request->pro_id)->where('cart_user_id', Session::get('user')->id)->first();
         //ktra co ton tai chua ?
@@ -73,7 +73,7 @@ class CartController extends Controller
     //them nhanh 1 sp vao gio hang
     public function quickAddCart($pro_id)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $productAdd = products::where('pro_slug', $pro_id)->first();
         $product = cart::where('cart_product_id', $productAdd->pro_id)->where('cart_user_id', Session::get('user')->id)->first();
@@ -100,8 +100,8 @@ class CartController extends Controller
     //cap nhap gio hang
     public function updateCart(Request $request, $cart_id)
     {
-        $this->AuthLogin();
-        if($request->product_quatity <= 0){
+        // $this->AuthLogin();
+        if ($request->product_quatity <= 0) {
             return redirect()->back()->with('error', 'Số lượng sản phẩm phải lớn hơn 0');
         }
         $cart = cart::where('cart_id', $cart_id)->first();
@@ -122,7 +122,7 @@ class CartController extends Controller
     //xoa 1 sp khoi gio hang
     public function deleteCart($cart_id)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $pro_id = DB::table('cart')->where('cart_id', $cart_id)->first()->cart_product_id;
         $cart = cart::where('cart_id', $cart_id)->first();
         $cart->delete();
@@ -131,7 +131,7 @@ class CartController extends Controller
     //xoa toan bo gio hang
     public function clearCart()
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $products = DB::table('cart')->where('cart_user_id', Session::get('user')->id)->get();
         $cart = cart::where('cart_user_id', Session::get('user')->id)->delete();
         return redirect()->route('cart')->with('success', 'Xóa giỏ hàng thành công');
@@ -141,23 +141,24 @@ class CartController extends Controller
     // trang thanh toan
     public function checkout()
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $cart = DB::table('cart')->where('cart_user_id', Session::get('user')->id)
             ->join('products', 'products.pro_id', '=', 'cart.cart_product_id')
             ->get();
         $total = DB::table('cart')->where('cart_user_id', Session::get('user')->id)->sum('cart_product_total');
+        $total2 = DB::table('cart')->where('cart_user_id', Session::get('user')->id)->sum('cart_product_total');
         if (Session::get('cou_value')) {
             $total = $total - (Session::get('cou_value') * $total);
         }
         $address = DB::table('address')->where('user_id', Session::get('user')->id)->get();
         $countCart = count($cart);
-        return view('frontend.cart.checkout', compact('cart', 'total', 'address', 'countCart'));
+        return view('frontend.cart.checkout', compact('cart', 'total', 'address', 'countCart', 'total2'));
     }
 
     // them voucher
     public function postCoupon(Request $request)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $checkCoupon = DB::table('coupons')
             ->join('coupons_user', 'coupons.cou_id', '=', 'coupons_user.cou_id')
             ->where('coupons_user.user_id', Session::get('user')->id)
@@ -182,7 +183,7 @@ class CartController extends Controller
     //xoa voicher
     public function deleteCoupon()
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         if (Session::get('cou_value')) {
             Session::forget('cou_code');
             Session::forget('cou_value');
@@ -232,7 +233,7 @@ class CartController extends Controller
     // thanh toan
     public function postCheckout(Request $request)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         DB::table('address')
             ->where('address', $request->address_user)
             ->where('user_id', Session::get('user')->id)->update([

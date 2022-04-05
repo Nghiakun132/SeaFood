@@ -37,6 +37,7 @@ class ProductController extends Controller
             ->join('users', 'users.id', '=', 'comments.cm_user_id')
             ->select('comments.*', 'users.name', 'users.avatar', 'users.type')
             ->where('products.pro_id', $product->pro_id)
+            ->where('comments.cm_status', 0)
             ->paginate(10);
         $countComments = count($comments);
         $star = DB::table('comments')->where('cm_product_id', $product->pro_id)->avg('cm_star');

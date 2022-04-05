@@ -20,7 +20,7 @@ class CommentController extends Controller
     }
     public function index()
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $comments = DB::table('comments')
             ->join('products', 'comments.cm_product_id', '=', 'products.pro_id')
             ->join('users', 'comments.cm_user_id', '=', 'users.id')
@@ -30,8 +30,19 @@ class CommentController extends Controller
     }
     public function destroy($id)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         DB::table('comments')->where('cm_id', $id)->delete();
         return redirect()->route('admin.comment')->with('success', 'Xóa thành công');
+    }
+    public function changeStatus($id)
+    {
+        // $this->AuthLogin();
+        $comment = DB::table('comments')->where('cm_id', $id)->first();
+        if ($comment->cm_status == 0) {
+            DB::table('comments')->where('cm_id', $id)->update(['cm_status' => 1]);
+        } elseif ($comment->cm_status == 1) {
+            DB::table('comments')->where('cm_id', $id)->update(['cm_status' => 0]);
+        }
+        return redirect()->back();
     }
 }

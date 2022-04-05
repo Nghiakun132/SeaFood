@@ -23,7 +23,7 @@
     		this.mercado_product_slider();
     		this.mercado_toggle_vertical_main_menu();
             this.mercado_sticky_menu();
-            this.mercado_google_maps();
+           // this.mercado_google_maps();
     	},
     	onReady: function(){
     		this.mercado_innit_carousel();
@@ -458,132 +458,132 @@
 			}
         },
 
-        mercado_google_maps: function () {
-            if ( $('.mercado-google-maps').length == 1 ) {
-                $('.mercado-google-maps').each(function () {
-                    var $this            = $(this),
-                        $id              = $this.attr('id'),
-                        $title_maps      = $this.attr('data-title_maps'),
-                        $phone           = $this.attr('data-phone'),
-                        $email           = $this.attr('data-email'),
-                        $zoom            = parseInt($this.attr('data-zoom')),
-                        $latitude        = $this.attr('data-latitude'),
-                        $longitude       = $this.attr('data-longitude'),
-                        $address         = $this.attr('data-address'),
-                        $map_type        = $this.attr('data-map-type'),
-                        $pin_icon        = $this.attr('data-pin-icon'),
-                        $modify_coloring = $this.attr('data-modify-coloring') === "true" ? true : false,
-                        $saturation      = $this.attr('data-saturation'),
-                        $hue             = $this.attr('data-hue'),
-                        $map_height      = $this.attr('data-map-height'),
-                        $map_style       = $this.data('map-style'),
-                        $styles;
-                    if ( $modify_coloring == true ) {
-                        var $styles = [
-                            {
-                                stylers: [
-                                    {hue: $hue},
-                                    {invert_lightness: false},
-                                    {saturation: $saturation},
-                                    {lightness: 1},
-                                    {
-                                        featureType: "landscape.man_made",
-                                        stylers: [ {
-                                            visibility: "on"
-                                        } ]
-                                    }
-                                ]
-                            }, {
-                                featureType: 'water',
-                                elementType: 'geometry',
-                                stylers: [
-                                    {color: '#46bcec'}
-                                ]
-                            }
-                        ];
-                    }
-                    var map,
-                        bounds     = new google.maps.LatLngBounds(),
-                        mapOptions = {
-                            zoom: $zoom,
-                            panControl: false,
-                            zoomControl: false,
-                            mapTypeControl: false,
-                            scaleControl: false,
-                            draggable: true,
-                            scrollwheel: false,
-                            mapTypeId:google.maps.MapTypeId[$map_type],
-                            styles: $styles
-                        };
+        // mercado_google_maps: function () {
+        //     if ( $('.mercado-google-maps').length == 1 ) {
+        //         $('.mercado-google-maps').each(function () {
+        //             var $this            = $(this),
+        //                 $id              = $this.attr('id'),
+        //                 $title_maps      = $this.attr('data-title_maps'),
+        //                 $phone           = $this.attr('data-phone'),
+        //                 $email           = $this.attr('data-email'),
+        //                 $zoom            = parseInt($this.attr('data-zoom')),
+        //                 $latitude        = $this.attr('data-latitude'),
+        //                 $longitude       = $this.attr('data-longitude'),
+        //                 $address         = $this.attr('data-address'),
+        //                 $map_type        = $this.attr('data-map-type'),
+        //                 $pin_icon        = $this.attr('data-pin-icon'),
+        //                 $modify_coloring = $this.attr('data-modify-coloring') === "true" ? true : false,
+        //                 $saturation      = $this.attr('data-saturation'),
+        //                 $hue             = $this.attr('data-hue'),
+        //                 $map_height      = $this.attr('data-map-height'),
+        //                 $map_style       = $this.data('map-style'),
+        //                 $styles;
+        //             if ( $modify_coloring == true ) {
+        //                 var $styles = [
+        //                     {
+        //                         stylers: [
+        //                             {hue: $hue},
+        //                             {invert_lightness: false},
+        //                             {saturation: $saturation},
+        //                             {lightness: 1},
+        //                             {
+        //                                 featureType: "landscape.man_made",
+        //                                 stylers: [ {
+        //                                     visibility: "on"
+        //                                 } ]
+        //                             }
+        //                         ]
+        //                     }, {
+        //                         featureType: 'water',
+        //                         elementType: 'geometry',
+        //                         stylers: [
+        //                             {color: '#46bcec'}
+        //                         ]
+        //                     }
+        //                 ];
+        //             }
+        //             var map,
+        //                 bounds     = new google.maps.LatLngBounds(),
+        //                 mapOptions = {
+        //                     zoom: $zoom,
+        //                     panControl: false,
+        //                     zoomControl: false,
+        //                     mapTypeControl: false,
+        //                     scaleControl: false,
+        //                     draggable: true,
+        //                     scrollwheel: false,
+        //                     mapTypeId:google.maps.MapTypeId[$map_type],
+        //                     styles: $styles
+        //                 };
 
-                    map = new google.maps.Map(document.getElementById($id), mapOptions);
-                    var map_dom = '#'+$id;
-                    $( map_dom ).css({ height: $map_height });
-                    map.setTilt(25);
+        //             map = new google.maps.Map(document.getElementById($id), mapOptions);
+        //             var map_dom = '#'+$id;
+        //             $( map_dom ).css({ height: $map_height });
+        //             map.setTilt(25);
 
-                    var markers           = [],
-                        infoWindowContent = [];
+        //             var markers           = [],
+        //                 infoWindowContent = [];
 
-                    if ( $latitude != '' && $longitude != '' ) {
-                        markers[ 0 ]           = [ $address, $latitude, $longitude ];
-                        infoWindowContent[ 0 ] = [ $address ];
-                    }
+        //             if ( $latitude != '' && $longitude != '' ) {
+        //                 markers[ 0 ]           = [ $address, $latitude, $longitude ];
+        //                 infoWindowContent[ 0 ] = [ $address ];
+        //             }
 
-                    var infoWindow = new google.maps.InfoWindow(), marker, i;
+        //             var infoWindow = new google.maps.InfoWindow(), marker, i;
 
-                    for ( i = 0; i < markers.length; i++ ) {
-                        var position = new google.maps.LatLng(markers[ i ][ 1 ], markers[ i ][ 2 ]);
-                        bounds.extend(position);
-                        marker = new google.maps.Marker({
-                            position: position,
-                            map: map,
-                            title: markers[ i ][ 0 ],
-                            icon: $pin_icon
-                        });
-                        if ( $map_style == '1' ) {
+        //             for ( i = 0; i < markers.length; i++ ) {
+        //                 var position = new google.maps.LatLng(markers[ i ][ 1 ], markers[ i ][ 2 ]);
+        //                 bounds.extend(position);
+        //                 marker = new google.maps.Marker({
+        //                     position: position,
+        //                     map: map,
+        //                     title: markers[ i ][ 0 ],
+        //                     icon: $pin_icon
+        //                 });
+        //                 if ( $map_style == '1' ) {
 
-                            if ( infoWindowContent[ i ][ 0 ].length > 1 ) {
-                                infoWindow.setContent(
-                                    '<div style="background-color:#fff; padding: 30px 30px 10px 25px; width:290px;line-height: 22px" class="mercado-map-info">' +
-                                    '<h4 class="map-title">' + $title_maps + '</h4>' +
-                                    '<div class="map-field"><i class="fa fa-map-marker"></i><span>&nbsp;' + $address + '</span></div>' +
-                                    '<div class="map-field"><i class="fa fa-phone"></i><span>&nbsp;' + $phone + '</span></div>' +
-                                    '<div class="map-field"><i class="fa fa-envelope"></i><span><a href="mailto:' + $email + '">&nbsp;' + $email + '</a></span></div> ' +
-                                    '</div>'
-                                );
-                            }
+        //                     if ( infoWindowContent[ i ][ 0 ].length > 1 ) {
+        //                         infoWindow.setContent(
+        //                             '<div style="background-color:#fff; padding: 30px 30px 10px 25px; width:290px;line-height: 22px" class="mercado-map-info">' +
+        //                             '<h4 class="map-title">' + $title_maps + '</h4>' +
+        //                             '<div class="map-field"><i class="fa fa-map-marker"></i><span>&nbsp;' + $address + '</span></div>' +
+        //                             '<div class="map-field"><i class="fa fa-phone"></i><span>&nbsp;' + $phone + '</span></div>' +
+        //                             '<div class="map-field"><i class="fa fa-envelope"></i><span><a href="mailto:' + $email + '">&nbsp;' + $email + '</a></span></div> ' +
+        //                             '</div>'
+        //                         );
+        //                     }
 
-                            infoWindow.open(map, marker);
+        //                     infoWindow.open(map, marker);
 
-                        }
-                        if ( $map_style == '2' ) {
-                            google.maps.event.addListener(marker, 'click', (function (marker, i) {
-                                return function () {
-                                    if ( infoWindowContent[ i ][ 0 ].length > 1 ) {
-                                        infoWindow.setContent(
-                                            '<div style="background-color:#fff; padding: 30px 30px 10px 25px; width:290px;line-height: 22px" class="mercado-map-info">' +
-                                            '<h4 class="map-title">' + $title_maps + '</h4>' +
-                                            '<div class="map-field"><i class="fa fa-map-marker"></i><span>&nbsp;' + $address + '</span></div>' +
-                                            '<div class="map-field"><i class="fa fa-phone"></i><span>&nbsp;' + $phone + '</span></div>' +
-                                            '<div class="map-field"><i class="fa fa-envelope"></i><span><a href="mailto:' + $email + '">&nbsp;' + $email + '</a></span></div> ' +
-                                            '</div>'
-                                        );
-                                    }
+        //                 }
+        //                 if ( $map_style == '2' ) {
+        //                     google.maps.event.addListener(marker, 'click', (function (marker, i) {
+        //                         return function () {
+        //                             if ( infoWindowContent[ i ][ 0 ].length > 1 ) {
+        //                                 infoWindow.setContent(
+        //                                     '<div style="background-color:#fff; padding: 30px 30px 10px 25px; width:290px;line-height: 22px" class="mercado-map-info">' +
+        //                                     '<h4 class="map-title">' + $title_maps + '</h4>' +
+        //                                     '<div class="map-field"><i class="fa fa-map-marker"></i><span>&nbsp;' + $address + '</span></div>' +
+        //                                     '<div class="map-field"><i class="fa fa-phone"></i><span>&nbsp;' + $phone + '</span></div>' +
+        //                                     '<div class="map-field"><i class="fa fa-envelope"></i><span><a href="mailto:' + $email + '">&nbsp;' + $email + '</a></span></div> ' +
+        //                                     '</div>'
+        //                                 );
+        //                             }
 
-                                    infoWindow.open(map, marker);
-                                };
-                            })(marker, i));
-                        }
-                        map.setCenter(bounds.getCenter());
-                    }
+        //                             infoWindow.open(map, marker);
+        //                         };
+        //                     })(marker, i));
+        //                 }
+        //                 map.setCenter(bounds.getCenter());
+        //             }
 
-                    var boundsListener = google.maps.event.addListener((map), 'bounds_changed', function (event) {
-                        this.setZoom($zoom);
-                        google.maps.event.removeListener(boundsListener);
-                    });
-                });
-            }
-        },
+        //             var boundsListener = google.maps.event.addListener((map), 'bounds_changed', function (event) {
+        //                 this.setZoom($zoom);
+        //                 google.maps.event.removeListener(boundsListener);
+        //             });
+        //         });
+        //     }
+        // },
 	}
 	/* ---------------------------------------------
 	 Scripts on load

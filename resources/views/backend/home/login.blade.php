@@ -20,10 +20,13 @@
 
 </head>
 <style>
-    .mt-5, .my-5{
+    .mt-5,
+    .my-5 {
         margin-top: 11rem !important;
     }
+
 </style>
+
 <body class="bg-gradient-primary">
     <div class="container">
         <div class="row justify-content-center">
@@ -42,6 +45,7 @@
                                         <div class="form-group">
                                             <input type="email" class="form-control form-control-user"
                                                 id="exampleInputEmail" name="email" aria-describedby="emailHelp"
+                                                value="{{ $cookie ? $cookie : '' }}"
                                                 placeholder="Enter Email Address...">
                                         </div>
                                         @if ($errors->has('email'))
@@ -88,12 +92,11 @@
     <script src="../backend/js/sb-admin-2.min.js"></script>
 
 </body>
-@php
+<?php
 $errors = Session::get('error');
 if ($errors) {
-    echo "<script>alert('$errors')</script>";
-    Session::forget('error');
+    echo "<script>alert('" . $errors . "')</script>";
 }
-@endphp
+?>
 
 </html>

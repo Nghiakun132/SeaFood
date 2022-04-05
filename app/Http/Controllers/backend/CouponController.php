@@ -21,7 +21,7 @@ class CouponController extends Controller
     }
     public function index()
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $cp = DB::table('coupons')->get();
         return view('backend.coupon.index', compact('cp'));
     }
@@ -45,13 +45,13 @@ class CouponController extends Controller
     }
     public function destroy($id)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         DB::table('coupons')->where('cou_id', $id)->delete();
         return redirect()->back()->with('success', 'Xóa mã giảm giá thành công');
     }
     public function changeStatus($id)
     {
-        $this->AuthLogin();
+        // $this->AuthLogin();
         $cp = DB::table('coupons')->where('cou_id', $id)->first();
         if ($cp->cou_status == 0) {
             DB::table('coupons')->where('cou_id', $id)->update([

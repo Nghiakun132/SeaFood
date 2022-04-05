@@ -31,9 +31,9 @@
                                 <td>{{ $comment->created_at }}</td>
                                 <td>
                                     @if ($comment->cm_status == 0)
-                                        <span class="badge badge-success">Đang hiện thị</span>
+                                       <a href="{{route('admin.comment.changeStatus',$comment->cm_id)}}"> <span class="badge badge-success">Đang hiện thị</span></a>
                                     @else
-                                        <span class="badge badge-danger">Đang ẩn</span>
+                                    <a href="{{route('admin.comment.changeStatus',$comment->cm_id)}}"><span class="badge badge-danger">Đang ẩn</span></a>
                                     @endif
                                 </td>
                                 <td>
@@ -51,7 +51,6 @@
     </div>
 
 </div>
-
 <?php
 $success = Session::get('success');
 if ($success) {

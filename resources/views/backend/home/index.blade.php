@@ -5,8 +5,7 @@
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
             <a href="{{ route('admin.checkCart') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                    class="fas fa-check-circle fa-sm text-white-50"></i> Check</a>
-            <a href="{{route('admin.test')}}">123</a>
+                    class="fas fa-check-circle fa-sm text-white-50"></i>Kiểm tra giỏ hàng</a>
         </div>
 
         <div class="row">
@@ -26,7 +25,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-xl-3 col-md-6 mb-4">
                 <div class="card border-left-success shadow h-100 py-2">
                     <div class="card-body">
@@ -182,26 +180,27 @@
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary">Sản phẩm</h6>
+                        <h6 class="m-0 font-weight-bold text-primary float-right">Tổng số</h6>
                     </div>
                     <div class="card-body">
-                        @foreach ($product_sell_arr as $vl)
+                        @foreach ($product_sell as $vl)
                             <?php
                             $bg = ['bg-info', 'bg-primary', 'bg-secondary', 'bg-danger', 'bg-success', 'bg-warning', 'bg-dark'];
                             $adu = $bg[rand(0, count($bg) - 1)];
                             ?>
 
-                            <h4 class="small font-weight-bold">{{ $vl['pro_name'] }} <span
-                                    class="float-right">{{ $vl['pro_qty'] + $vl['product_sell'] }}</span></h4>
+                            <h4 class="small font-weight-bold">{{ $vl->pro_name }} <span
+                                    class="float-right">{{ $vl->pro_qty + $vl->total }}</span></h4>
                             <?php
-                            $product_sell = $vl['product_sell'];
-                            $pro_qty = $vl['pro_qty'];
-                            $percent = ($product_sell / ($pro_qty + $product_sell)) * 100;
+                            $product_sell2 = $vl->total;
+                            $pro_qty = $vl->pro_qty;
+                            $percent = ($product_sell2 / ($pro_qty + $product_sell2)) * 100;
                             ?>
                             <div class="progress mb-4">
                                 <div class="progress-bar  <?php echo $adu; ?> progress-bar-striped progress-bar-animated"
-                                    role="progressbar" title="Bán được {{ $product_sell }} sản phẩm"
+                                    role="progressbar" title="Bán được {{ $vl->total }} sản phẩm"
                                     style="width: {{ $percent }}%;" aria-valuenow="20" aria-valuemin="0"
-                                    aria-valuemax="100">{{ $product_sell }}</div>
+                                    aria-valuemax="100">{{ $vl->total }}</div>
                             </div>
                         @endforeach
                     </div>
@@ -301,15 +300,26 @@
                 </div>
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Donut Chart</h6>
+                        <span class="m-0 font-weight-bold text-primary">Thống kê sản phẩm đã bán</span>
+                        <div class="dropdown" style="float: right">
+                            <button class="btn btn-primary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Thống kê theo
+                            </button>
+                            <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Mặc định</a>
+                                <a class="dropdown-item" href="#">7 ngày gần nhất</a>
+                                <a class="dropdown-item" href="#">Tháng gần nhất</a>
+                                <a class="dropdown-item" href="#">Năm</a>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
-                        <div class="chart-pie pt-4">
-                            <canvas id="myPieChart"></canvas>
+                        <div class="chart-bar">
+                            <canvas id="myBarChart2"></canvas>
                         </div>
                         <hr>
-                        Styling for the donut chart can be found in the
-                        <code>/js/demo/chart-pie-demo.js</code> file.
+                        <p class="chart-title"></p>
                     </div>
                 </div>
 
@@ -317,7 +327,7 @@
         </div>
     </div>
     <script src="{{ asset('backend/vendor/chart.js/Chart.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('backend/js/demo/chart-pie-demo.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('backend/js/demo/thongke.js') }}" type="text/javascript"></script>
     <script src="{{ asset('backend/js/demo/chart-bar-demo.js') }}" type="text/javascript"></script>
     <script>
         let title = document.querySelector('.chart-title')

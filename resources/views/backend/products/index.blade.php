@@ -42,10 +42,10 @@
                                 <td>
                                     @if ($value->pro_status == 0)
                                         <a href="{{ route('admin.product.changeStatus', $value->pro_id) }}"><span
-                                                class="badge badge-success">Dang hien thi</span></a>
+                                                class="badge badge-success">Đang hiển thị</span></a>
                                     @else
                                         <a href="{{ route('admin.product.changeStatus', $value->pro_id) }}"><span
-                                                class="badge badge-danger">Khong hien thi</span></a>
+                                                class="badge badge-danger">Đang ẩn</span></a>
                                     @endif
                                 </td>
                                 <td>
@@ -71,4 +71,5 @@ if ($success) {
     Session::forget('success');
 }
 ?>
+
 @stop

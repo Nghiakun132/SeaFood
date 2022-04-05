@@ -1310,6 +1310,7 @@ li.menu-item .nav-label.sale-label::before{
     position: relative;
     overflow: hidden;
     display: inline-block;
+    border-radius: 40px;
 }
 .banner-effect-1 figure::before{
     content: '';

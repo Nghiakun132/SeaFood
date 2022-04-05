@@ -28,7 +28,6 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 }
 var url2 = window.location.href;
 var thongke = url2.slice(url2.indexOf('=') + 1);
-console.log(thongke);
 var ctx = document.getElementById("myBarChart");
 if (thongke == '7_ngay') {
     var url = 'http://localhost/nienluan/public/api/doanh-thu/7-ngay-gan-nhat';
@@ -42,7 +41,6 @@ if (thongke == '7_ngay') {
     fetch(url, options)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             var max = (data.doanhthu).map(function (item) {
                 return item.doanhthu;
             });
@@ -149,7 +147,6 @@ if (thongke == '7_ngay') {
     fetch(url, options)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             var max = (data.doanhthu).map(function (item) {
                 return item.doanhthu;
             });
@@ -257,7 +254,6 @@ if (thongke == '7_ngay') {
     fetch(url, options)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             var max = (data.doanhthu).map(function (item) {
                 return item.doanhthu;
             });
@@ -364,7 +360,6 @@ if (thongke == '7_ngay') {
     fetch(url, options)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             var max = (data.doanhthu).map(function (item) {
                 return item.doanhthu;
             });

@@ -86,6 +86,15 @@
                                 <span>Thanh toán qua Paypal</span>
                             </label>
                         </div>
+                        <p class="summary-info grand-total"><span>Giảm giá</span> <span
+                            class="grand-total-price">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            @if (Session::get('cou_value'))
+                            {{ number_format($total2 * Session::get('cou_value'), 0, ',', ',') . ' VND' }}
+                            @else
+                            0 VND
+                            @endif
+                        </span>
+                    </p>
                         <p class="summary-info grand-total"><span>Thành tiền</span> <span
                                 class="grand-total-price">{{ number_format($total, 0, ',', ',') . ' VND' }}</span>
                         </p>
