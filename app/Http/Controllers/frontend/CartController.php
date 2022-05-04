@@ -38,63 +38,70 @@ class CartController extends Controller
     //them vao gio hang
     public function addCart(Request $request)
     {
-        // $this->AuthLogin();
-        $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $product = cart::where('cart_product_id', $request->pro_id)->where('cart_user_id', Session::get('user')->id)->first();
-        //ktra co ton tai chua ?
-        if ($product) {
-            $product->cart_product_quantity = $product->cart_product_quantity + $request->product_quatity;
-            $product->cart_product_total =  $product->cart_product_total + ($request->product_quatity * $product->cart_product_price);
-            $product->created_at = Carbon::now('Asia/Ho_Chi_Minh');
-            $product->save();
-            // DB::table('products')->where('pro_id', $request->pro_id)->update([
-            //     'pro_qty' => DB::table('products')->where('pro_id', $request->pro_id)->first()->pro_qty - $request->product_quatity,
-            // ]);
-            return redirect()->route('cart')->with('success', 'Thêm sản phẩm thành công');
-        } else {
-            $cart = new cart();
-            $cart->cart_id = substr(str_shuffle($permitted_chars), 0, 16);
-            $cart->cart_user_id = Session::get('user')->id;
-            $cart->cart_product_id = $request->pro_id;
-            $cart->cart_product_image = $request->pro_avatar;
-            $cart->cart_product_price = $request->pro_price;
-            $cart->cart_product_total = $request->pro_price * $request->product_quatity;
-            $cart->cart_product_quantity = $request->product_quatity;
-            $cart->created_at = Carbon::now('Asia/Ho_Chi_Minh');
-            $cart->save();
-
-            // DB::table('products')->where('pro_id', $request->pro_id)->update([
-            //     'pro_qty' => DB::table('products')->where('pro_id', $request->pro_id)->first()->pro_qty - $request->product_quatity,
-            // ]);
-
-            return redirect()->route('cart')->with('success', 'Thêm giỏ hàng thành công');
+        try {
+            $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $qty = products::where('pro_id', $request->pro_id)->first()->pro_qty;
+            $product = cart::where('cart_product_id', $request->pro_id)->where('cart_user_id', Session::get('user')->id)->first();
+            //ktra co ton tai chua ?
+            if ($request->qty > $qty) {
+                return redirect()->back()->with('error', 'Số lượng sản phẩm không đủ');
+            } else {
+                if ($product) {
+                    $product->cart_product_quantity = $product->cart_product_quantity + $request->product_quatity;
+                    $product->cart_product_total =  $product->cart_product_total + ($request->product_quatity * $product->cart_product_price);
+                    $product->created_at = Carbon::now('Asia/Ho_Chi_Minh');
+                    $product->save();
+                    DB::table('products')->where('pro_id', $request->pro_id)->update([
+                        'pro_qty' => DB::table('products')->where('pro_id', $request->pro_id)->first()->pro_qty - $request->product_quatity,
+                    ]);
+                    return redirect()->route('cart')->with('success', 'Thêm sản phẩm thành công');
+                } else {
+                    $cart = new cart();
+                    $cart->cart_id = substr(str_shuffle($permitted_chars), 0, 16);
+                    $cart->cart_user_id = Session::get('user')->id;
+                    $cart->cart_product_id = $request->pro_id;
+                    $cart->cart_product_image = $request->pro_avatar;
+                    $cart->cart_product_price = $request->pro_price;
+                    $cart->cart_product_total = $request->pro_price * $request->product_quatity;
+                    $cart->cart_product_quantity = $request->product_quatity;
+                    $cart->created_at = Carbon::now('Asia/Ho_Chi_Minh');
+                    $cart->save();
+                    return redirect()->route('cart')->with('success', 'Thêm giỏ hàng thành công');
+                }
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Thêm giỏ hàng thất bại ! Vui lòng thử lại');
         }
     }
     //them nhanh 1 sp vao gio hang
     public function quickAddCart($pro_id)
     {
         // $this->AuthLogin();
-        $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $productAdd = products::where('pro_slug', $pro_id)->first();
-        $product = cart::where('cart_product_id', $productAdd->pro_id)->where('cart_user_id', Session::get('user')->id)->first();
-        if ($product) {
-            $product->cart_product_quantity = $product->cart_product_quantity + 1;
-            $product->cart_product_total =  $product->cart_product_total + (1 * $product->cart_product_price);
-            $product->created_at = Carbon::now('Asia/Ho_Chi_Minh');
-            $product->save();
-            return redirect()->route('cart')->with('success', 'Thêm sản phẩm thành công');
-        } else {
-            $cart = new cart();
-            $cart->cart_id = substr(str_shuffle($permitted_chars), 0, 16);
-            $cart->cart_user_id = Session::get('user')->id;
-            $cart->cart_product_id = $productAdd->pro_id;
-            $cart->cart_product_image = $productAdd->pro_avatar;
-            $cart->cart_product_price = $productAdd->pro_price;
-            $cart->cart_product_total = $productAdd->pro_price * 1;
-            $cart->cart_product_quantity = 1;
-            $cart->created_at = Carbon::now('Asia/Ho_Chi_Minh');
-            $cart->save();
-            return redirect()->route('cart')->with('success', 'Thêm giỏ hàng thành công');
+        try {
+            $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $productAdd = products::where('pro_slug', $pro_id)->first();
+            $product = cart::where('cart_product_id', $productAdd->pro_id)->where('cart_user_id', Session::get('user')->id)->first();
+            if ($product) {
+                $product->cart_product_quantity = $product->cart_product_quantity + 1;
+                $product->cart_product_total =  $product->cart_product_total + (1 * $product->cart_product_price);
+                $product->created_at = Carbon::now('Asia/Ho_Chi_Minh');
+                $product->save();
+                return redirect()->route('cart')->with('success', 'Thêm sản phẩm thành công');
+            } else {
+                $cart = new cart();
+                $cart->cart_id = substr(str_shuffle($permitted_chars), 0, 16);
+                $cart->cart_user_id = Session::get('user')->id;
+                $cart->cart_product_id = $productAdd->pro_id;
+                $cart->cart_product_image = $productAdd->pro_avatar;
+                $cart->cart_product_price = $productAdd->pro_price;
+                $cart->cart_product_total = $productAdd->pro_price * 1;
+                $cart->cart_product_quantity = 1;
+                $cart->created_at = Carbon::now('Asia/Ho_Chi_Minh');
+                $cart->save();
+                return redirect()->route('cart')->with('success', 'Thêm giỏ hàng thành công');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Thêm giỏ hàng thất bại ! Vui lòng thử lại');
         }
     }
     //cap nhap gio hang

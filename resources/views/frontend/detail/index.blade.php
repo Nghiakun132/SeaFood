@@ -282,11 +282,10 @@
                         </ul>
                     </div>
                 </div>
-
             </div>
             <div class="single-advance-box col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="wrap-show-advance-info-box style-1 box-in-site">
-                    <h3 class="title-box">Related Products</h3>
+                    <h3 class="title-box">Sản phẩm tương tự</h3>
                     <div class="wrap-products">
                         <div class="products slide-carousel owl-carousel style-nav-1 equal-container" data-items="5"
                             data-loop="false" data-nav="true" data-dots="false"
@@ -345,14 +344,20 @@ if ($success) {
     var qty = document.querySelector('.availability b');
     var btn = document.querySelector('.add-to-cart');
     var qty_input = document.querySelector('input[name="product_quatity"]');
-    var checkCart = {{ $checkValue }};
+    var data_max = parseInt(qty_input.getAttribute('data-max'));
     btn.addEventListener('click', function(e) {
-        if (parseInt(qty_input.value) > parseInt(qty.innerHTML)) {
-            console.log(parseInt(qty_input.value));
-            console.log(parseInt(qty.innerHTML));
-            alert('Số lượng sản phẩm không đủ');
+        var qty_val = parseInt(qty_input.value);
+        if (qty_val > data_max) {
+            alert('Số lượng sản phẩm không đủ hàng');
             e.preventDefault();
+            window.location.reload();
+        }
+        if (qty_val <= 0) {
+            alert('Số lượng phải lớn hơn 0');
+            e.preventDefault();
+            window.location.reload();
         }
     });
 </script>
+
 @stop

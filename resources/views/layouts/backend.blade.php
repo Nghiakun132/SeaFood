@@ -105,12 +105,12 @@
                         <i class="fas fa-fw fa-chart-area"></i>
                         <span>Khách hàng</span></a>
                 </li>
-                <li class="nav-item item-hover">
+                {{-- <li class="nav-item item-hover">
                     <a href="{{ route('admin.statistic') }}" class="nav-link">
                         <i class="fas fa-fw fa-chart-area"></i>
                         <span>Thống kê</span></a>
                     </a>
-                </li>
+                </li> --}}
                 {{-- giảm giá sản phẩm --}}
             @endif
 
