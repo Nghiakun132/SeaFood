@@ -199,7 +199,7 @@
 
                                                     <p class="form-submit">
                                                         <input name="submit" type="submit" id="submit"
-                                                            class="submit" value="Submit">
+                                                            class="submit" value="Bình luận">
                                                     </p>
                                                 </form>
 

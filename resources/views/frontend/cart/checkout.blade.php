@@ -156,10 +156,9 @@
                                 <input id="coupon-code" type="text" name="coupon_code"
                                     placeholder="{{ Session::get('cou_code') }} " disabled>
                             @else
-                                <input id="coupon-code" type="text" name="coupon_code" placeholder="Nhap ma giam gia ">
+                                <input id="coupon-code" type="text" name="coupon_code" placeholder="Nhập mã giảm giá">
                             @endif
-
-                            <button type="submit" class="btn btn-small">Áp mã</button>
+                            <button type="submit" class="btn btn-small">Áp mã giảm giá</button>
                         </p>
                         <a href="{{ route('deleteCoupon') }}" class="btn btn-small">Hủy</a>
                     </form>
@@ -401,6 +400,4 @@ if ($success) {
     Session::forget('error');
 }
 ?>
-
-
 @stop

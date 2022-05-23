@@ -29,7 +29,8 @@ class CategoriesController extends Controller
     {
         // $this->AuthLogin();
         $categories = $this->categories->all();
-        return view('backend.categories.index', compact('categories'));
+        $parents = $this->categories->all();
+        return view('backend.categories.index', compact('categories','parents'));
     }
     public function store(Request $request)
     {
@@ -56,7 +57,8 @@ class CategoriesController extends Controller
     {
         // $this->AuthLogin();
         $categories = $this->categories->where('c_id', $id)->first();
-        return view('backend.categories.edit', compact('categories'));
+        $parent = $this->categories->all();
+        return view('backend.categories.edit', compact('categories','parent'));
     }
     public function update(Request $request, $id)
     {
@@ -69,6 +71,7 @@ class CategoriesController extends Controller
         $categories = $this->categories->where('c_id', $id)->first();
         $categories->c_name = $request->c_name;
         $categories->c_slug = Str::slug($request->c_name);
+        $categories->parent = $request->parent;
         $categories->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
         if ($request->c_banner) {
             $file = $request->file('c_banner');
@@ -76,6 +79,7 @@ class CategoriesController extends Controller
             $file->move("uploads/banner", $name);
             $categories->c_banner = $name;
         }
+
         $categories->save();
 
         return redirect()->route('admin.categories')->with('cate_success', 'Sửa danh mục thành công');

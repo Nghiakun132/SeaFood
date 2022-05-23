@@ -75,7 +75,7 @@
                 </div>
                 <div class="checkout-info">
                     @if ($countCart > 0)
-                    <a class="btn btn-checkout" href="{{ route('checkout') }}">Check out</a>
+                    <a class="btn btn-checkout" href="{{ route('checkout') }}">Thanh toán</a>
                     @else
                     <a class="btn btn-checkout" id="disabled_btn" disabled href="#" onclick="return alert('Giỏ hàng đang rỗng, Hãy thêm gì đó vào giỏ hang !!!')">Check out</a>
                     @endif

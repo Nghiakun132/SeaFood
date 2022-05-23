@@ -32,7 +32,7 @@ class AdminController extends Controller
     }
     public function store(Request $request)
     {
-        $this->authLogin();
+        //$this->authLogin();
         $this->validate($request, [
             'name' => 'required',
             'phone' => 'required',
@@ -56,13 +56,13 @@ class AdminController extends Controller
     }
     public function destroy($id)
     {
-        $this->authLogin();
+        //$this->authLogin();
         $this->admins->find($id)->delete();
         return redirect()->back()->with('success', 'Xóa thành công');
     }
     public function promoteStaff($id)
     {
-        $this->authLogin();
+        //$this->authLogin();
         $admin = $this->admins->find($id);
         if ($admin->role == 1) {
             $this->admins->where('id', $id)->update(['role' => 0]);

@@ -20,7 +20,19 @@
                             <label for="">Banner</label>
                             <input type="file" name="c_banner" class="form-control">
                         </div>
-                        <button class="btn btn-primary">Sửa</button>
+                        <div class="form-group">
+                            <label for="">Danh mục cha</label>
+                            <select name="parent" id="" class="form-control">
+                                <option value="0">Danh mục gốc</option>
+                                @foreach ($parent as $category)
+                                    <option value="{{ $category->c_id }}"
+                                        @if ($categories->parent == $category->c_id)
+                                            selected
+                                        @endif
+                                    >{{ $category->c_name }}</option>
+                                @endforeach
+                            </select>
+                        <button class="btn btn-primary mt-4">Sửa</button>
                     </form>
                 </div>
             </div>

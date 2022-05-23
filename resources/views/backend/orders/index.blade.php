@@ -53,7 +53,7 @@
                                         onclick="return confirm('Ban co chac muon xoa don hang nay ?')">Xóa</a>
                                     @if ($order->order_status != 2)
                                         <a href="{{ route('admin.order.print', $order->order_id) }}"
-                                            class="btn-sm btn btn-warning">In hóa đơn</a>
+                                            class="btn-sm btn btn-warning" target="_blank">In hóa đơn</a>
                                     @endif
                                 </td>
                             </tr>

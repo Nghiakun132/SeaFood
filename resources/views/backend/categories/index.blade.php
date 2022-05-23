@@ -17,6 +17,7 @@
                             <th>ID</th>
                             <th>Tên</th>
                             <th>Banner</th>
+                            <th>Danh mục cha</th>
                             <th>Trạng thái</th>
                             <th>Ngày tạo</th>
                             <th>Ngày cập nhật</th>
@@ -24,7 +25,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($categories as $category)
+                        @foreach ($categories as $key => $category)
                             <tr>
                                 <td>{{ $category->c_id }}</td>
                                 <td>{{ $category->c_name }}</td>
@@ -33,6 +34,17 @@
                                         Có
                                     @else
                                         Không
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($category->parent == 0)
+                                        {{ 'Danh mục gốc' }}
+                                    @else
+                                        @foreach ($parents as $key => $cate_sub)
+                                            @if ($cate_sub->c_id == $category->parent)
+                                                {{ $cate_sub->c_name.' (' . $cate_sub->c_id.')' }}
+                                            @endif
+                                        @endforeach
                                     @endif
                                 <td>
                                     @if ($category->c_status == 1)

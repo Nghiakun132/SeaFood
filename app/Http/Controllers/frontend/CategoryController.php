@@ -22,7 +22,7 @@ class CategoryController extends Controller
                 } elseif ($sort_by == 'gia-giam-dan') {
                     $products = products::where('pro_category_id', $cate->c_id)->where('pro_status', 0)->orderBy('pro_price', 'desc')->paginate(18);
                 } elseif ($sort_by == 'gia-tang-dan') {
-                    $products = products::where('pro_category_id', $cate->c_id)->where('pro_status', 0)->orderBy('pro_id', 'asc')->paginate(18);
+                    $products = products::where('pro_category_id', $cate->c_id)->where('pro_status', 0)->orderBy('pro_price', 'asc')->paginate(18);
                 }
             }
             $popularProducts = products::where('pro_status', 0)->orderBy('pro_view', 'desc')->limit(4)->get();

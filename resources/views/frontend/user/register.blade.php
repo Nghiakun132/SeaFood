@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>SB Admin 2 - Register</title>
+    <title>Đăng ký thành viên</title>
     <link href="{{ asset('backend/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -90,7 +90,7 @@
                                 <input type="hidden" name="avatar"
                                     value="{{ Session::get('userResisgter') ? Session::get('userResisgter')->avatar : '' }}">
                                 <button class="btn btn-primary btn-user btn-block">
-                                    Register Account
+                                    Đăng ký
                                 </button>
                                 <hr>
                                 <a href="{{ route('login.google') }}" class="btn btn-google btn-user btn-block">
@@ -102,7 +102,7 @@
                                 <a href="{{ route('forgotPassword') }}">Quên mật khẩu</a>
                             </div>
                             <div class="text-center">
-                                <a href="{{ route('login') }}">Bạn đã có mật khẩu! Đăng nhập ngay thôi !!!</a>
+                                <a href="{{ route('login') }}">Bạn đã có tài khoản! Đăng nhập ngay thôi !!!</a>
                             </div>
                         </div>
                     </div>
